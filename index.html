@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Así funciona · QR</title>
+<style>
+:root{--navy:#192653;--bg:#0B0F24;--blue:#4B5BFF;--amber:#FFB703;--dim:#8A93B8;--bad:#FF5A5F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#141c44,var(--bg) 70%);font-family:Montserrat,Inter,Arial,sans-serif;color:#fff}
+.grid{position:absolute;inset:0;background-image:linear-gradient(#ffffff0f 1px,transparent 1px),linear-gradient(90deg,#ffffff0f 1px,transparent 1px);background-size:60px 60px}
+.abs{position:absolute}
+#cap{position:absolute;left:0;right:0;top:300px;height:200px}
+.chunk{position:absolute;left:0;right:0;top:0;text-align:center;font-size:76px;font-weight:600;line-height:1.3;opacity:0;visibility:hidden}
+.chunk span{color:var(--dim);display:inline-block;margin:0 10px;position:relative}
+.chunk span.key{border:4px solid var(--blue);padding:0 14px;border-radius:6px}
+.chunk span.key::before,.chunk span.key::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue)}
+.chunk span.key::before{left:-12px;top:-12px}.chunk span.key::after{right:-12px;bottom:-12px}
+#qrwrap{left:127px;top:500px;width:825px;height:825px;background:#fff;border-radius:36px;clip-path:inset(0px)}
+#qrsvg{position:absolute;left:66px;top:66px}
+.m{fill:#0B0F24}
+.patch{left:317px;top:317px;width:190px;height:190px;background:var(--navy);border:6px dashed var(--amber);border-radius:20px;opacity:0}
+#logo{left:317px;top:317px;width:190px;height:190px;background:var(--blue);border-radius:36px;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;opacity:0}
+#lbls div{position:absolute;left:0;right:0;top:1360px;text-align:center;font-size:46px;font-weight:800;letter-spacing:2px;opacity:0;visibility:hidden}
+.card{position:absolute;top:1100px;width:300px;height:220px;border-radius:28px;background:var(--navy);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:800;opacity:0}
+#dato{position:absolute;inset:0;text-align:center}
+#num{position:absolute;left:0;right:0;top:700px;font-size:260px;font-weight:800;color:var(--amber)}
+#dato .t{position:absolute;left:0;right:0;top:1030px;font-size:48px;font-weight:800}
+#dato .s{position:absolute;left:0;right:0;top:1130px;font-size:34px;color:var(--dim)}
+#sheet{position:absolute;left:90px;top:760px;width:900px;height:560px;background:#141a33;border-radius:40px;border:3px solid #ffffff22}
+#sheet .h{position:absolute;left:0;right:0;top:36px;text-align:center;font-size:40px;font-weight:600;color:var(--dim)}
+.av{position:absolute;top:150px;width:150px;height:150px;border-radius:50%;background:var(--navy);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:800}
+#ring{position:absolute;left:105px;top:105px;width:240px;height:240px;border-radius:50%;border:6px solid var(--amber);opacity:0}
+#sent{position:absolute;left:150px;right:150px;top:400px;height:100px;border-radius:50px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;opacity:0}
+</style></head><body>
+<div id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
+  <div class="grid clip" data-start="0" data-duration="74" data-track-index="0"></div>
+  <div id="qrwrap" class="abs clip" data-start="0" data-duration="63" data-track-index="1">
+    <svg id="qrsvg" width="693" height="693" viewBox="0 0 693 693"></svg>
+    <div id="p1" class="abs patch"></div><div id="logo" class="abs">LOGO</div>
+  </div>
+  <div id="lbls" class="clip" data-start="0" data-duration="63" data-track-index="2"></div>
+  <div id="cards" class="clip" data-start="6" data-duration="7" data-track-index="3">
+    <div class="card" style="left:60px">MENÚ</div><div class="card" style="left:390px">ENTRADA</div><div class="card" style="left:720px">PAGO</div>
+  </div>
+  <div id="dato" class="clip" data-start="63" data-duration="6" data-track-index="3">
+    <div id="num">1900</div><div class="t">NACE EN JAPÓN</div><div class="s">Fuente: Denso Wave · ISO/IEC 18004</div>
+  </div>
+  <div id="cta" class="clip" data-start="69" data-duration="5" data-track-index="3">
+    <div id="sheet"><div class="h">Enviar a</div>
+      <div class="av" style="left:75px">A</div><div class="av" style="left:285px">B</div><div class="av" style="left:495px">C</div><div class="av" style="left:705px">D</div>
+      <div id="ring"></div><div id="sent">✓ Enviado</div></div>
+  </div>
+  <div id="cap" class="clip" data-start="0" data-duration="74" data-track-index="5"></div>
+  <!-- Cuando tengas la voz TTS como voz.wav, descomenta:
+  <audio src="voz.wav" data-start="0" data-duration="74" data-track-index="9" data-volume="1"></audio> -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+  const tl=gsap.timeline({paused:true});
+  const N=[[0, 6, "Tapa un trozo de un [QR] y sigue funcionando. Tapa una [esquina] y no."], [6, 13, "Está en [menús], entradas y pagos. ¿Pero qué hay dentro de esos [cuadraditos]?"], [13, 23, "Es una cuadrícula de cuadrados negros y blancos. Cada uno es un [bit]: un uno o un cero."], [23, 34, "Los tres cuadrados grandes de las [esquinas] le dicen a la cámara dónde empieza el código y cómo está girado."], [34, 45, "El resto guarda un [enlace] en bits. Leerlo no necesita [internet]: el móvil solo abre lo que dice."], [45, 55, "Y hay un truco: guarda datos de sobra. Por eso aguanta un [logo] encima o un rasguño, hasta cierto punto."], [55, 63, "Pero las [esquinas] no se pueden reconstruir, y sin [margen] blanco alrededor, tampoco se lee."], [63, 69, "Nació en [1994] en Japón, para seguir piezas de coches."], [69, 74, "Envíaselo a quien aún [desconfía] de escanear QR."]];
+  const n=21,m=33,rnd=(()=>{let a=7;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}})();
+  let f='',t='',d='';
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++){
+    const R=`<rect x="${c*m}" y="${r*m}" width="${m-3}" height="${m-3}" rx="5"/>`;
+    if((r<7&&c<7)||(r<7&&c>=n-7)||(r>=n-7&&c<7)){const a=r<7?r:r-(n-7),b=c<7?c:c-(n-7);if(a%6===0||b%6===0||(a>1&&a<5&&b>1&&b<5))f+=R;}
+    else if((r<8&&c<8)||(r<8&&c>=n-8)||(r>=n-8&&c<8)){}
+    else if(r===6||c===6){if((r===6&&c%2===0)||(c===6&&r%2===0))t+=R;}
+    else if(rnd()>.5)d+=R;
+  }
+  const S7=7*m;
+  const hl=[[0,0],[(n-7)*m,0],[0,(n-7)*m]].map(([x,y])=>`<rect x="${x-14}" y="${y-14}" width="${S7+25}" height="${S7+25}" fill="none" stroke="#4B5BFF" stroke-width="7" rx="8"/>`+[[x-14,y-14],[x+S7+11,y-14],[x-14,y+S7+11],[x+S7+11,y+S7+11]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="13" fill="#4B5BFF"/>`).join('')).join('');
+  document.getElementById('qrsvg').innerHTML=`<g id="f" class="m">${f}</g><g id="t" class="m">${t}</g><g id="d" class="m">${d}</g><g id="hl" opacity="0">${hl}</g>`;
+  const W='#qrwrap';
+  // ---- subtítulos karaoke (tiempos repartidos por tramo; sustituir por tiempos reales de Whisper) ----
+  const cap=document.getElementById('cap');
+  N.forEach(([a,b,txt])=>{
+    const w=txt.split(' '),dur=(b-a-0.4)/w.length;
+    for(let i=0;i<w.length;i+=3){
+      const ch=w.slice(i,i+3),el=document.createElement('div');el.className='chunk';
+      const sp=ch.map(x=>{const s=document.createElement('span'),k=/\[.*\]/.test(x);s.textContent=x.replace(/[\[\]]/g,'');if(k)s.className='key';el.appendChild(s);return s;});
+      cap.appendChild(el);
+      const s0=a+i*dur,e0=a+(i+ch.length)*dur;
+      tl.set(el,{autoAlpha:1},s0).set(el,{autoAlpha:0},e0);
+      sp.forEach((s,j)=>tl.set(s,{color:'#fff',fontWeight:800},s0+j*dur));
+    }
+  });
+  // ---- etiquetas ----
+  const LB=[[1.4,3.2,'✓ SE LEE'],[3.8,5.8,'✕ NO SE LEE','bad'],[13.6,19,'NEGRO = 1  ·  BLANCO = 0'],[19.2,22.8,'1 0 1 1 0 0 1 0'],[24,33.4,'ESQUINAS → POSICIÓN Y GIRO'],[34.6,39.6,'DATOS → ENLACE EN BITS'],[40,44.6,'SIN INTERNET'],[46,49,'LOGO ENCIMA ✓'],[49.2,54.6,'SE RECUPERA HASTA ~30 % (NIVEL H)'],[55.6,58.5,'✕ ESQUINA TAPADA','bad'],[59.6,62.8,'✕ SIN MARGEN BLANCO','bad']];
+  const lb=document.getElementById('lbls');
+  LB.forEach(([a,b,txt,c])=>{const e=document.createElement('div');e.textContent=txt;e.style.color=c==='bad'?'var(--bad)':'var(--amber)';lb.appendChild(e);tl.fromTo(e,{autoAlpha:0},{autoAlpha:1,duration:.25},a).to(e,{autoAlpha:0,duration:.2},b);});
+  // ---- 1 gancho ----
+  tl.from(W,{scale:.6,autoAlpha:0,duration:.8,ease:'power2.out'},0)
+    .to('#p1',{opacity:1,duration:.4},1.2)
+    .to('#p1',{left:40,top:40,width:270,height:270,duration:.5},3.4)
+    .to('#p1',{opacity:0,duration:.4},5.4);
+  // ---- 2 ancla ----
+  tl.to(W,{scale:.4,y:-300,duration:.8,ease:'power2.inOut'},6)
+    .fromTo('.card',{y:60,opacity:0},{y:0,opacity:1,duration:.5,stagger:.25},7.2)
+    .to(W,{scale:1,y:0,duration:.8,ease:'power2.inOut'},12.2);
+  // ---- 3 cuadrícula / bits ----
+  tl.to('.m rect',{opacity:.12,duration:.3},13).to('.m rect',{opacity:1,duration:.01,stagger:.02},13.4);
+  // ---- 4 esquinas ----
+  tl.to('#d rect,#t rect',{opacity:.15,duration:.4},23).to('#hl',{opacity:1,duration:.5},24)
+    .to(W,{rotation:90,duration:1.4,ease:'power2.inOut'},28).to(W,{rotation:0,duration:1.2,ease:'power2.inOut'},31)
+    .to('#hl',{opacity:0,duration:.3},33.5);
+  // ---- 5 datos ----
+  tl.to('#d rect,#t rect',{opacity:1,duration:.3},34).to('#f rect',{opacity:.15,duration:.3},34)
+    .to('#d',{fill:'#FFB703',duration:.4},34.4)
+    .to('#d',{fill:'#0B0F24',duration:.3},45).to('#f rect',{opacity:1,duration:.3},45);
+  // ---- 6 corrección de errores ----
+  tl.fromTo('#logo',{scale:.3,opacity:0},{scale:1,opacity:1,duration:.5},46).to('#logo',{opacity:0,duration:.3},54.5);
+  // ---- 7 esquina tapada y margen ----
+  tl.set('#p1',{left:40,top:40,width:270,height:270},54.9).to('#p1',{opacity:1,duration:.4},55.5).to('#p1',{opacity:0,duration:.4},58.6)
+    .to(W,{clipPath:'inset(66px 66px 66px 66px)',duration:.8},59.3);
+  // ---- 8 dato ----
+  const o={v:1900},num=document.getElementById('num');
+  tl.fromTo(o,{v:1900},{v:1994,duration:1.5,ease:'power2.out',snap:{v:1},onUpdate:()=>{num.textContent=o.v}},63.2);
+  // ---- 9 CTA ----
+  tl.from('#sheet',{y:300,opacity:0,duration:.6},69.2).from('.av',{scale:0,duration:.3,stagger:.1},69.8)
+    .fromTo('#ring',{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},71).to('#sent',{opacity:1,duration:.3},71.6);
+  window.__timelines=window.__timelines||{};window.__timelines['qr-ep01']=tl;
+  </script>
+</div></body></html>

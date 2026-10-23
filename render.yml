@@ -1,0 +1,31 @@
+name: render-video
+on:
+  workflow_dispatch:
+    inputs:
+      episodio:
+        description: "Carpeta dentro de episodios/"
+        default: "ep01-qr"
+        required: true
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Diagnóstico
+        working-directory: episodios/${{ inputs.episodio }}
+        run: npx hyperframes doctor
+        continue-on-error: true
+      - name: Lint
+        working-directory: episodios/${{ inputs.episodio }}
+        run: npx hyperframes lint
+      - name: Render
+        working-directory: episodios/${{ inputs.episodio }}
+        run: npx hyperframes render
+      - uses: actions/upload-artifact@v4
+        with:
+          name: video-${{ inputs.episodio }}
+          path: episodios/${{ inputs.episodio }}/**/*.mp4

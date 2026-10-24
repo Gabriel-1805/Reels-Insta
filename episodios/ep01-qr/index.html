@@ -6,12 +6,13 @@
 body{background:#000}
 #stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#141c44,var(--bg) 70%);font-family:Montserrat,Inter,Arial,sans-serif;color:#fff}
 .abs{position:absolute}
-#bgclip,#qrclip{left:0;top:0;width:1080px;height:1920px}
+#bgclip{left:0;top:0;width:1080px;height:1920px}
+#qrclip{left:0;top:0;width:1080px;height:1920px;-webkit-mask-image:linear-gradient(180deg,transparent 430px,#000 530px);mask-image:linear-gradient(180deg,transparent 430px,#000 530px)}
 .grid{position:absolute;inset:-480px;background-image:linear-gradient(#ffffff0f 1px,transparent 1px),linear-gradient(90deg,#ffffff0f 1px,transparent 1px);background-size:60px 60px}
 #dust,#world{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:540px 960px}
 .dot{position:absolute;border-radius:50%;background:#9fb0ff}
-#cap{position:absolute;left:0;right:0;top:300px;height:200px}
-.chunk{position:absolute;left:0;right:0;top:0;text-align:center;font-size:76px;font-weight:600;line-height:1.3;opacity:0;visibility:hidden}
+#cap{position:absolute;left:0;right:0;top:130px;height:290px}
+.chunk{position:absolute;left:0;right:0;top:0;text-align:center;font-size:72px;font-weight:600;line-height:1.3;opacity:0;visibility:hidden}
 .chunk span{color:var(--dim);display:inline-block;margin:0 10px;position:relative}
 .chunk span.key{border:4px solid var(--blue);padding:0 14px;border-radius:6px}
 .chunk span.key::before,.chunk span.key::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue)}
@@ -20,46 +21,44 @@ body{background:#000}
 #qrsvg{position:absolute;left:66px;top:66px}
 .m{fill:#0B0F24}
 .patch{left:317px;top:317px;width:190px;height:190px;background:var(--navy);border:6px dashed var(--amber);border-radius:20px;opacity:0}
-#logo{left:317px;top:317px;width:190px;height:190px;background:var(--blue);border-radius:36px;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;opacity:0}
-#lbls div{position:absolute;left:0;right:0;top:1360px;text-align:center;font-size:46px;font-weight:800;letter-spacing:2px;opacity:0;visibility:hidden}
-.card{position:absolute;top:1100px;width:300px;height:220px;border-radius:28px;background:var(--navy);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:800;opacity:0}
-#dato{position:absolute;inset:0;text-align:center}
-#datoin{position:absolute;inset:0}
-#num{position:absolute;left:0;right:0;top:700px;font-size:260px;font-weight:800;color:var(--amber)}
-#dato .t{position:absolute;left:0;right:0;top:1030px;font-size:48px;font-weight:800}
-#dato .s{position:absolute;left:0;right:0;top:1130px;font-size:34px;color:var(--dim)}
+#beam{left:0;top:0;width:825px;height:10px;background:var(--amber);box-shadow:0 0 30px 8px #FFB70388;opacity:0}
+#lbls div{position:absolute;left:50%;top:1340px;transform:translateX(-50%);width:max-content;max-width:980px;text-align:center;font-size:40px;font-weight:800;letter-spacing:1.5px;padding:16px 36px;border-radius:44px;background:rgba(11,15,36,.92);border:3px solid #ffffff22;opacity:0;visibility:hidden}
+.card{position:absolute;top:1100px;width:300px;height:220px;border-radius:28px;background:var(--navy);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;opacity:0}
 #sheet{position:absolute;left:90px;top:760px;width:900px;height:560px;background:#141a33;border-radius:40px;border:3px solid #ffffff22}
 #sheet .h{position:absolute;left:0;right:0;top:36px;text-align:center;font-size:40px;font-weight:600;color:var(--dim)}
 .av{position:absolute;top:150px;width:150px;height:150px;border-radius:50%;background:var(--navy);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:800}
 #ring{position:absolute;left:105px;top:105px;width:240px;height:240px;border-radius:50%;border:6px solid var(--amber);opacity:0}
 #sent{position:absolute;left:150px;right:150px;top:400px;height:100px;border-radius:50px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;opacity:0}
+#fol{position:absolute;left:340px;top:560px;width:400px;height:96px;border-radius:48px;background:var(--amber);color:#0B0F24;font-size:44px;font-weight:800}
+#fol span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+#fol2{opacity:0}
 </style></head><body>
 <div id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
-  <div id="bgclip" class="abs clip" data-start="0" data-duration="74" data-track-index="0"><div id="bg-grid" class="grid"></div><div id="dust"></div></div>
-  <div id="qrclip" class="abs clip" data-start="0" data-duration="63" data-track-index="1">
+  <div id="bgclip" class="abs clip" data-start="0" data-duration="70.0" data-track-index="0"><div id="bg-grid" class="grid"></div><div id="dust"></div></div>
+  <div id="qrclip" class="abs clip" data-start="0" data-duration="65.0" data-track-index="1">
     <div id="world"><div id="qrwrap" class="abs">
       <svg id="qrsvg" width="693" height="693" viewBox="0 0 693 693"></svg>
-      <div id="p1" class="abs patch"></div><div id="logo" class="abs">LOGO</div>
+      <div id="p1" class="abs patch"></div><div id="beam" class="abs"></div>
     </div></div>
   </div>
-  <div id="lbls" class="clip" data-start="0" data-duration="63" data-track-index="2"></div>
-  <div id="cards" class="clip" data-start="6" data-duration="7" data-track-index="3">
-    <div class="card" style="left:60px">MENÚ</div><div class="card" style="left:390px">ENTRADA</div><div class="card" style="left:720px">PAGO</div>
+  <div id="lbls" class="clip" data-start="0" data-duration="65.0" data-track-index="2"></div>
+  <div id="cards" class="clip" data-start="47.21" data-duration="6.77" data-track-index="3">
+    <div class="card" style="left:60px">MENSAJE</div><div class="card" style="left:390px">CONTACTO</div><div class="card" style="left:720px">WEB</div>
   </div>
-  <div id="dato" class="clip" data-start="63" data-duration="6" data-track-index="3"><div id="datoin">
-    <div id="num">1900</div><div class="t">NACE EN JAPÓN</div><div class="s">Fuente: Denso Wave · ISO/IEC 18004</div>
-  </div></div>
-  <div id="cta" class="clip" data-start="69" data-duration="5" data-track-index="3">
+  <div id="cta" class="clip" data-start="65.0" data-duration="5" data-track-index="3">
+    <div id="fol"><span id="fol1">＋ Seguir</span><span id="fol2">✓ Siguiendo</span></div>
     <div id="sheet"><div class="h">Enviar a</div>
       <div class="av" style="left:75px">A</div><div class="av" style="left:285px">B</div><div class="av" style="left:495px">C</div><div class="av" style="left:705px">D</div>
       <div id="ring"></div><div id="sent">✓ Enviado</div></div>
   </div>
-  <div id="cap" class="clip" data-start="0" data-duration="74" data-track-index="5"></div>
-  <audio id="voz" src="voz.wav" data-start="0" data-duration="74" data-track-index="9" data-volume="1"></audio>
+  <div id="cap" class="clip" data-start="0" data-duration="70.0" data-track-index="5"></div>
+  <audio id="voz" src="voz.wav" data-start="0" data-duration="69.46" data-track-index="9" data-volume="1"></audio>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script>
   const tl=gsap.timeline({paused:true});
-  const N=[[0, 6, "Tapa un trozo de un [QR] y sigue funcionando. Tapa una [esquina] y no."], [6, 13, "Está en [menús], entradas y pagos. ¿Pero qué hay dentro de esos [cuadraditos]?"], [13, 23, "Es una cuadrícula de cuadrados negros y blancos. Cada uno es un [bit]: un uno o un cero."], [23, 34, "Los tres cuadrados grandes de las [esquinas] le dicen a la cámara dónde empieza el código y cómo está girado."], [34, 45, "El resto guarda un [enlace] en bits. Leerlo no necesita [internet]: el móvil solo abre lo que dice."], [45, 55, "Y hay un truco: guarda datos de sobra. Por eso aguanta un [logo] encima o un rasguño, hasta cierto punto."], [55, 63, "Pero las [esquinas] no se pueden reconstruir, y sin [margen] blanco alrededor, tampoco se lee."], [63, 69, "Nació en [1994] en Japón, para seguir piezas de coches."], [69, 74, "Envíaselo a quien aún [desconfía] de escanear QR."]];
+  const SC=[[0.0, 7.07], [7.07, 11.07], [11.07, 19.58], [19.58, 27.31], [27.31, 33.86], [33.86, 47.21], [47.21, 53.98], [53.98, 59.18], [59.18, 65.0], [65.0, 70.0]],CL=[[0.13, 3.33], [3.88, 6.6], [7.07, 10.62], [11.07, 11.79], [11.92, 19.25], [19.58, 20.81], [20.98, 26.99], [27.31, 33.61], [33.86, 34.32], [34.32, 34.85], [35.01, 37.19], [37.45, 38.66], [39.01, 39.64], [39.86, 41.62], [41.97, 46.8], [47.21, 49.57], [49.83, 51.25], [51.42, 53.66], [53.98, 56.21], [56.39, 58.81], [59.18, 59.79], [60.13, 64.67], [64.99, 69.32]],CTA=65.0,TOT=70.0;
+  const T=(i,f)=>SC[i][0]+f*(SC[i][1]-SC[i][0]);
+  const C=(k,f=0)=>CL[k][0]+f*(CL[k][1]-CL[k][0]);
   const n=21,m=33,rnd=(()=>{let a=7;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}})();
   let f='',t='',d='';
   for(let r=0;r<n;r++)for(let c=0;c<n;c++){
@@ -71,14 +70,14 @@ body{background:#000}
   }
   const S7=7*m;
   const hl=[[0,0],[(n-7)*m,0],[0,(n-7)*m]].map(([x,y])=>`<rect x="${x-14}" y="${y-14}" width="${S7+25}" height="${S7+25}" fill="none" stroke="#4B5BFF" stroke-width="7" rx="8"/>`+[[x-14,y-14],[x+S7+11,y-14],[x-14,y+S7+11],[x+S7+11,y+S7+11]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="13" fill="#4B5BFF"/>`).join('')).join('');
-  document.getElementById('qrsvg').innerHTML=`<g id="f" class="m">${f}</g><g id="t" class="m">${t}</g><g id="d" class="m">${d}</g><g id="hl" opacity="0">${hl}</g>`;
-  const W='#qrwrap';
-  // ---- polvo flotante (profundidad) ----
+  const scr='<path d="M110 120 L330 330" stroke="#fff" stroke-width="13" stroke-linecap="round"/><path d="M200 80 L420 300" stroke="#fff" stroke-width="9" stroke-linecap="round"/><path d="M90 250 L250 420" stroke="#fff" stroke-width="11" stroke-linecap="round"/>';
+  document.getElementById('qrsvg').innerHTML=`<g id="f" class="m">${f}</g><g id="t" class="m">${t}</g><g id="d" class="m">${d}</g><g id="hl" opacity="0">${hl}</g><g id="scr" opacity="0">${scr}</g><ellipse id="stn" cx="470" cy="470" rx="105" ry="80" fill="#8a6a3b" opacity="0"/>`;
+  const W='#qrwrap',NR=document.querySelectorAll('.m rect').length;
+  // ---- polvo flotante ----
   const dust=document.getElementById('dust');
   for(let i=0;i<26;i++){const e=document.createElement('div');e.className='dot';const z=3+rnd()*5;e.style.cssText=`left:${rnd()*1080}px;top:${rnd()*1920}px;width:${z}px;height:${z}px;opacity:${.2+rnd()*.35}`;dust.appendChild(e);}
-  tl.to('.dot',{y:i=>-(120+(i%5)*70),duration:74,ease:'none'},0);
+  tl.to('.dot',{y:i=>-(120+(i%5)*70),duration:TOT,ease:'none'},0);
   // ---- CÁMARA VIRTUAL ----
-  // focus(px,py,S): lleva el punto (px,py) del mundo al centro de la pantalla con zoom S
   const focus=(px,py,S)=>({x:-S*(px-540),y:-S*(py-960),s:S,r:0});
   const cl=(v,a)=>Math.max(-a,Math.min(a,v));
   function cam(t0,dur,st,ease='power2.inOut'){
@@ -88,33 +87,36 @@ body{background:#000}
       .to('#dust',{x:cl(st.x*.5,400),y:cl(st.y*.5,400),scale:1+(ps-1)*.4,duration:dur,ease},t0);
   }
   const blur=(t0,dur,px=7)=>tl.to('#world',{filter:`blur(${px}px)`,duration:dur/2,ease:'power1.out'},t0).to('#world',{filter:'blur(0px)',duration:dur/2,ease:'power1.in'},t0+dur/2);
+  const WIDE={x:0,y:0,s:1,r:0}, DIVE0=CTA-1.4;
   tl.set('#world',{x:0,y:0,scale:1,rotation:0,filter:'blur(0px)'},0);
-  cam(0,6,{x:0,y:0,s:1.1,r:0},'none');                       // 1 gancho: empuje lento
-  cam(6,1.3,{x:0,y:-279,s:.4,r:0},'power3.inOut'); blur(6.1,.9);   // 2 ancla: la cámara se aleja
-  cam(7.4,4.8,{x:0,y:-292,s:.42,r:0},'none');
-  cam(12.2,1.4,focus(307,680,2.2),'power3.inOut'); blur(12.3,.9);  // 3 bits: zoom a los módulos
-  cam(13.6,5.4,focus(560,900,2.2),'none');
-  cam(19,1.4,{x:0,y:0,s:1,r:0});
-  cam(23,1.2,focus(307,680,2.3),'power3.inOut'); blur(23.1,.8,6);  // 4 esquinas: recorre las tres
-  cam(26.2,1.1,focus(769,680,2.3));
-  cam(28.6,1.1,focus(307,1142,2.3));
-  cam(31,1.5,{x:0,y:0,s:1,r:90}); blur(31,1.4,5);                  // giro: la orientación
-  cam(33.1,1.5,focus(640,911,1.5)); blur(33.1,1.3,5);
-  cam(34.6,9.4,focus(440,911,1.5),'none');                          // 5 datos: deriva lenta
-  cam(44,1.6,focus(538,911,1.6));                                   // 6 corrección: empuje al centro
-  tl.to(W,{x:7,y:-5,duration:.05},46.5).to(W,{x:-6,y:4,duration:.05},46.55).to(W,{x:0,y:0,duration:.08},46.6);  // impacto del logo
-  cam(49,6,focus(538,911,1.25),'none');
-  cam(55,1.1,focus(307,680,1.9));                                   // 7 esquina tapada
-  cam(59,1.2,{x:0,y:0,s:1,r:0});
-  cam(61.5,1.5,focus(307,680,64),'power3.in');                      // zoom-through hacia el dato
-  tl.to('#world',{filter:'blur(10px)',duration:1.5,ease:'power2.in'},61.5);
-  tl.to('#bg-grid',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},63).to('#dust',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},63);   // el fondo se asienta en el dato
-  // ---- subtítulos karaoke (tiempos reales por palabra, generados por tts_guion.py) ----
-  const CAPS=/*CAPS_START*/[{"w": "Tapa", "s": 0.0, "e": 0.35}, {"w": "un", "s": 0.35, "e": 0.52}, {"w": "trozo", "s": 0.52, "e": 0.87}, {"w": "de", "s": 0.87, "e": 1.04}, {"w": "un", "s": 1.04, "e": 1.21}, {"w": "[QR]", "s": 1.21, "e": 1.56}, {"w": "y", "s": 1.56, "e": 1.73}, {"w": "sigue", "s": 1.73, "e": 2.08}, {"w": "funcionando.", "s": 2.08, "e": 2.78, "f": true}, {"w": "Tapa", "s": 3.06, "e": 3.38}, {"w": "una", "s": 3.38, "e": 3.71}, {"w": "[esquina]", "s": 3.71, "e": 4.2}, {"w": "y", "s": 4.2, "e": 4.36}, {"w": "no.", "s": 4.36, "e": 4.52, "f": true}, {"w": "Está", "s": 6.0, "e": 6.35}, {"w": "en", "s": 6.35, "e": 6.52}, {"w": "[menús],", "s": 6.52, "e": 6.87}, {"w": "entradas", "s": 7.05, "e": 7.57}, {"w": "y", "s": 7.57, "e": 7.74}, {"w": "pagos.", "s": 7.74, "e": 8.09, "f": true}, {"w": "¿Pero", "s": 8.37, "e": 8.73}, {"w": "qué", "s": 8.73, "e": 8.91}, {"w": "hay", "s": 8.91, "e": 9.08}, {"w": "dentro", "s": 9.08, "e": 9.44}, {"w": "de", "s": 9.44, "e": 9.62}, {"w": "esos", "s": 9.62, "e": 9.98}, {"w": "[cuadraditos]?", "s": 9.98, "e": 10.69, "f": true}, {"w": "Es", "s": 13.0, "e": 13.18}, {"w": "una", "s": 13.18, "e": 13.55}, {"w": "cuadrícula", "s": 13.55, "e": 14.29}, {"w": "de", "s": 14.29, "e": 14.47}, {"w": "cuadrados", "s": 14.47, "e": 15.03}, {"w": "negros", "s": 15.03, "e": 15.4}, {"w": "y", "s": 15.4, "e": 15.58}, {"w": "blancos.", "s": 15.58, "e": 15.95, "f": true}, {"w": "Cada", "s": 16.23, "e": 16.53}, {"w": "uno", "s": 16.53, "e": 16.82}, {"w": "es", "s": 16.82, "e": 16.97}, {"w": "un", "s": 16.97, "e": 17.12}, {"w": "[bit]:", "s": 17.12, "e": 17.27}, {"w": "un", "s": 17.45, "e": 17.6}, {"w": "uno", "s": 17.6, "e": 17.89}, {"w": "o", "s": 17.89, "e": 18.04}, {"w": "un", "s": 18.04, "e": 18.19}, {"w": "cero.", "s": 18.19, "e": 18.49, "f": true}, {"w": "Los", "s": 23.0, "e": 23.17}, {"w": "tres", "s": 23.17, "e": 23.34}, {"w": "cuadrados", "s": 23.34, "e": 23.86}, {"w": "grandes", "s": 23.86, "e": 24.2}, {"w": "de", "s": 24.2, "e": 24.38}, {"w": "las", "s": 24.38, "e": 24.55}, {"w": "[esquinas]", "s": 24.55, "e": 25.06}, {"w": "le", "s": 25.06, "e": 25.24}, {"w": "dicen", "s": 25.24, "e": 25.58}, {"w": "a", "s": 25.58, "e": 25.75}, {"w": "la", "s": 25.75, "e": 25.92}, {"w": "cámara", "s": 25.92, "e": 26.44}, {"w": "dónde", "s": 26.44, "e": 26.78}, {"w": "empieza", "s": 26.78, "e": 27.3}, {"w": "el", "s": 27.3, "e": 27.47}, {"w": "código", "s": 27.47, "e": 27.99}, {"w": "y", "s": 27.99, "e": 28.16}, {"w": "cómo", "s": 28.16, "e": 28.5}, {"w": "está", "s": 28.5, "e": 28.85}, {"w": "girado.", "s": 28.85, "e": 29.36, "f": true}, {"w": "El", "s": 34.0, "e": 34.21}, {"w": "resto", "s": 34.21, "e": 34.62}, {"w": "guarda", "s": 34.62, "e": 35.03}, {"w": "un", "s": 35.03, "e": 35.23}, {"w": "[enlace]", "s": 35.23, "e": 35.85}, {"w": "en", "s": 35.85, "e": 36.06}, {"w": "bits.", "s": 36.06, "e": 36.26, "f": true}, {"w": "Leerlo", "s": 36.54, "e": 36.87}, {"w": "no", "s": 36.87, "e": 37.04}, {"w": "necesita", "s": 37.04, "e": 37.69}, {"w": "[internet]:", "s": 37.69, "e": 38.19}, {"w": "el", "s": 38.37, "e": 38.53}, {"w": "móvil", "s": 38.53, "e": 38.86}, {"w": "solo", "s": 38.86, "e": 39.19}, {"w": "abre", "s": 39.19, "e": 39.51}, {"w": "lo", "s": 39.51, "e": 39.68}, {"w": "que", "s": 39.68, "e": 39.84}, {"w": "dice.", "s": 39.84, "e": 40.17, "f": true}, {"w": "Y", "s": 45.0, "e": 45.18}, {"w": "hay", "s": 45.18, "e": 45.37}, {"w": "un", "s": 45.37, "e": 45.55}, {"w": "truco:", "s": 45.55, "e": 45.92}, {"w": "guarda", "s": 46.1, "e": 46.47}, {"w": "datos", "s": 46.47, "e": 46.84}, {"w": "de", "s": 46.84, "e": 47.02}, {"w": "sobra.", "s": 47.02, "e": 47.39, "f": true}, {"w": "Por", "s": 47.67, "e": 47.84}, {"w": "eso", "s": 47.84, "e": 48.16}, {"w": "aguanta", "s": 48.16, "e": 48.66}, {"w": "un", "s": 48.66, "e": 48.82}, {"w": "[logo]", "s": 48.82, "e": 49.15}, {"w": "encima", "s": 49.15, "e": 49.64}, {"w": "o", "s": 49.64, "e": 49.8}, {"w": "un", "s": 49.8, "e": 49.97}, {"w": "rasguño,", "s": 49.97, "e": 50.46}, {"w": "hasta", "s": 50.64, "e": 50.97}, {"w": "cierto", "s": 50.97, "e": 51.29}, {"w": "punto.", "s": 51.29, "e": 51.62, "f": true}, {"w": "Pero", "s": 55.0, "e": 55.36}, {"w": "las", "s": 55.36, "e": 55.54}, {"w": "[esquinas]", "s": 55.54, "e": 56.08}, {"w": "no", "s": 56.08, "e": 56.26}, {"w": "se", "s": 56.26, "e": 56.44}, {"w": "pueden", "s": 56.44, "e": 56.8}, {"w": "reconstruir,", "s": 56.8, "e": 57.33}, {"w": "y", "s": 57.51, "e": 57.69}, {"w": "sin", "s": 57.69, "e": 57.87}, {"w": "[margen]", "s": 57.87, "e": 58.23}, {"w": "blanco", "s": 58.23, "e": 58.59}, {"w": "alrededor,", "s": 58.59, "e": 59.31}, {"w": "tampoco", "s": 59.49, "e": 60.03}, {"w": "se", "s": 60.03, "e": 60.21}, {"w": "lee.", "s": 60.21, "e": 60.39, "f": true}, {"w": "Nació", "s": 63.0, "e": 63.35}, {"w": "en", "s": 63.35, "e": 63.53}, {"w": "[1994]", "s": 63.53, "e": 65.28}, {"w": "en", "s": 65.28, "e": 65.46}, {"w": "Japón,", "s": 65.46, "e": 65.81}, {"w": "para", "s": 65.99, "e": 66.34}, {"w": "seguir", "s": 66.34, "e": 66.69}, {"w": "piezas", "s": 66.69, "e": 67.04}, {"w": "de", "s": 67.04, "e": 67.22}, {"w": "coches.", "s": 67.22, "e": 67.57, "f": true}, {"w": "Envíaselo", "s": 69.0, "e": 69.77}, {"w": "a", "s": 69.77, "e": 69.96}, {"w": "quien", "s": 69.96, "e": 70.15}, {"w": "aún", "s": 70.15, "e": 70.35}, {"w": "[desconfía]", "s": 70.35, "e": 70.92}, {"w": "de", "s": 70.92, "e": 71.11}, {"w": "escanear", "s": 71.11, "e": 71.69}, {"w": "QR.", "s": 71.69, "e": 72.08, "f": true}]/*CAPS_END*/;
+  cam(0,SC[0][1],{x:0,y:0,s:1.08,r:0},'none');                                   // 0 gancho
+  cam(T(1,0),SC[1][1]-SC[1][0],focus(538,911,1.2),'none');                         // 1 respuesta
+  cam(T(2,0),1.3,focus(307,680,2.2),'power3.inOut'); blur(T(2,0)+.1,.9);           // 2 cuadrícula
+  cam(T(2,0)+1.3,T(2,.8)-T(2,0)-1.3,focus(560,900,2.2),'none');
+  cam(T(2,.8),1.3,WIDE);
+  cam(T(3,0),1.2,focus(307,680,2.3),'power3.inOut'); blur(T(3,0)+.1,.8,6);         // 3 esquinas
+  cam(T(3,.22),1.1,focus(769,680,2.3));
+  cam(T(3,.45),1.1,focus(307,1142,2.3));
+  cam(T(3,.68),1.4,{x:0,y:0,s:1.1,r:0});
+  cam(T(4,0),1.4,focus(640,911,1.5));                                              // 4 respaldo
+  cam(T(4,0)+1.4,T(4,.95)-T(4,0)-1.4,focus(480,911,1.5),'none');
+  cam(T(5,0),1.3,focus(538,911,1.15));                                             // 5 casos límite
+  cam(C(12),1.0,WIDE);
+  cam(C(14,.62),1.2,focus(307,680,1.8));
+  cam(T(6,0),1.3,{x:0,y:-279,s:.4,r:0},'power3.inOut'); blur(T(6,0)+.1,.9);        // 6 resultado
+  cam(T(6,0)+1.3,SC[6][1]-T(6,0)-2.5,{x:0,y:-292,s:.42,r:0},'none');
+  cam(T(7,0),1.2,WIDE,'power3.inOut');                                             // 7 rapidez
+  cam(C(19),CL[19][1]-CL[19][0],focus(538,911,1.2),'none');
+  cam(T(8,0),1.2,focus(538,911,1.3));                                              // 8 cierre
+  cam(T(8,0)+1.2,DIVE0-T(8,0)-1.2,focus(538,911,1.4),'none');
+  cam(DIVE0,1.4,focus(307,680,64),'power3.in');                                    // zoom-through al CTA
+  tl.to('#world',{filter:'blur(10px)',duration:1.4,ease:'power2.in'},DIVE0);
+  tl.to('#bg-grid',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},CTA).to('#dust',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},CTA);
+  // ---- subtítulos karaoke (tiempos de palabra medidos sobre tu audio) ----
+  const CAPS=[{"w": "Este", "s": 0.13, "e": 0.4}, {"w": "código", "s": 0.4, "e": 0.8}, {"w": "[QR]", "s": 0.8, "e": 0.93}, {"w": "puede", "s": 0.93, "e": 1.2}, {"w": "tener", "s": 1.2, "e": 1.46}, {"w": "una", "s": 1.46, "e": 1.73}, {"w": "parte", "s": 1.73, "e": 2.0}, {"w": "[dañada]", "s": 2.0, "e": 2.4}, {"w": "y", "s": 2.4, "e": 2.53}, {"w": "aun", "s": 2.53, "e": 2.66}, {"w": "así", "s": 2.66, "e": 2.93}, {"w": "funcionar.", "s": 2.93, "e": 3.33, "f": true}, {"w": "¿Cómo", "s": 3.88, "e": 4.17}, {"w": "puede", "s": 4.17, "e": 4.45}, {"w": "tu", "s": 4.45, "e": 4.6}, {"w": "celular", "s": 4.6, "e": 5.03}, {"w": "leer", "s": 5.03, "e": 5.17}, {"w": "información", "s": 5.17, "e": 5.74}, {"w": "que", "s": 5.74, "e": 5.89}, {"w": "parece", "s": 5.89, "e": 6.32}, {"w": "faltar?", "s": 6.32, "e": 6.6, "f": true}, {"w": "La", "s": 7.07, "e": 7.22}, {"w": "respuesta", "s": 7.22, "e": 7.69}, {"w": "está", "s": 7.69, "e": 7.99}, {"w": "en", "s": 7.99, "e": 8.15}, {"w": "una", "s": 8.15, "e": 8.46}, {"w": "tecnología", "s": 8.46, "e": 9.08}, {"w": "llamada", "s": 9.08, "e": 9.54}, {"w": "[corrección]", "s": 9.54, "e": 10.01}, {"w": "de", "s": 10.01, "e": 10.16}, {"w": "[errores.]", "s": 10.16, "e": 10.62, "f": true}, {"w": "Para", "s": 11.07, "e": 11.31}, {"w": "entenderla,", "s": 11.31, "e": 11.79, "f": true}, {"w": "primero", "s": 11.92, "e": 12.41}, {"w": "tenés", "s": 12.41, "e": 12.73}, {"w": "que", "s": 12.73, "e": 12.9}, {"w": "saber", "s": 12.9, "e": 13.22}, {"w": "que", "s": 13.22, "e": 13.38}, {"w": "un", "s": 13.38, "e": 13.55}, {"w": "[QR]", "s": 13.55, "e": 13.71}, {"w": "almacena", "s": 13.71, "e": 14.36}, {"w": "información", "s": 14.36, "e": 15.01}, {"w": "mediante", "s": 15.01, "e": 15.5}, {"w": "pequeños", "s": 15.5, "e": 15.99}, {"w": "[módulos]", "s": 15.99, "e": 16.48}, {"w": "blancos", "s": 16.48, "e": 16.81}, {"w": "y", "s": 16.81, "e": 16.97}, {"w": "negros", "s": 16.97, "e": 17.29}, {"w": "organizados", "s": 17.29, "e": 18.11}, {"w": "en", "s": 18.11, "e": 18.27}, {"w": "una", "s": 18.27, "e": 18.6}, {"w": "[cuadrícula.]", "s": 18.6, "e": 19.25, "f": true}, {"w": "Cuando", "s": 19.58, "e": 19.83}, {"w": "apuntás", "s": 19.83, "e": 20.2}, {"w": "con", "s": 20.2, "e": 20.32}, {"w": "la", "s": 20.32, "e": 20.44}, {"w": "cámara,", "s": 20.44, "e": 20.81, "f": true}, {"w": "el", "s": 20.98, "e": 21.13}, {"w": "celular", "s": 21.13, "e": 21.56}, {"w": "identifica", "s": 21.56, "e": 22.27}, {"w": "los", "s": 22.27, "e": 22.41}, {"w": "patrones", "s": 22.41, "e": 22.84}, {"w": "de", "s": 22.84, "e": 22.98}, {"w": "las", "s": 22.98, "e": 23.13}, {"w": "[esquinas]", "s": 23.13, "e": 23.56}, {"w": "y", "s": 23.56, "e": 23.7}, {"w": "analiza", "s": 23.7, "e": 24.27}, {"w": "la", "s": 24.27, "e": 24.41}, {"w": "distribución", "s": 24.41, "e": 24.99}, {"w": "de", "s": 24.99, "e": 25.13}, {"w": "esos", "s": 25.13, "e": 25.41}, {"w": "[módulos]", "s": 25.41, "e": 25.84}, {"w": "para", "s": 25.84, "e": 26.13}, {"w": "reconstruir", "s": 26.13, "e": 26.56}, {"w": "los", "s": 26.56, "e": 26.7}, {"w": "datos.", "s": 26.7, "e": 26.99, "f": true}, {"w": "Pero", "s": 27.31, "e": 27.63}, {"w": "el", "s": 27.63, "e": 27.78}, {"w": "código", "s": 27.78, "e": 28.26}, {"w": "también", "s": 28.26, "e": 28.57}, {"w": "contiene", "s": 28.57, "e": 29.05}, {"w": "información", "s": 29.05, "e": 29.68}, {"w": "adicional", "s": 29.68, "e": 30.31}, {"w": "que", "s": 30.31, "e": 30.46}, {"w": "permite", "s": 30.46, "e": 30.94}, {"w": "[recuperar]", "s": 30.94, "e": 31.57}, {"w": "parte", "s": 31.57, "e": 31.88}, {"w": "de", "s": 31.88, "e": 32.04}, {"w": "los", "s": 32.04, "e": 32.2}, {"w": "datos", "s": 32.2, "e": 32.51}, {"w": "que", "s": 32.51, "e": 32.67}, {"w": "no", "s": 32.67, "e": 32.83}, {"w": "se", "s": 32.83, "e": 32.98}, {"w": "pudieron", "s": 32.98, "e": 33.46}, {"w": "leer.", "s": 33.46, "e": 33.61, "f": true}, {"w": "Por", "s": 33.86, "e": 34.01}, {"w": "eso,", "s": 34.01, "e": 34.32, "f": true}, {"w": "si", "s": 34.32, "e": 34.41}, {"w": "está", "s": 34.41, "e": 34.59}, {"w": "[rayado,]", "s": 34.59, "e": 34.85, "f": true}, {"w": "[sucio]", "s": 35.01, "e": 35.3}, {"w": "o", "s": 35.3, "e": 35.44}, {"w": "tiene", "s": 35.44, "e": 35.74}, {"w": "una", "s": 35.74, "e": 36.03}, {"w": "pequeña", "s": 36.03, "e": 36.46}, {"w": "zona", "s": 36.46, "e": 36.75}, {"w": "[tapada,]", "s": 36.75, "e": 37.19, "f": true}, {"w": "todavía", "s": 37.45, "e": 37.9}, {"w": "puede", "s": 37.9, "e": 38.2}, {"w": "funcionar.", "s": 38.2, "e": 38.66, "f": true}, {"w": "Sin", "s": 39.01, "e": 39.17}, {"w": "embargo,", "s": 39.17, "e": 39.64, "f": true}, {"w": "no", "s": 39.86, "e": 40.0}, {"w": "significa", "s": 40.0, "e": 40.59}, {"w": "que", "s": 40.59, "e": 40.74}, {"w": "sea", "s": 40.74, "e": 40.88}, {"w": "[indestructible:]", "s": 40.88, "e": 41.62, "f": true}, {"w": "la", "s": 41.97, "e": 42.1}, {"w": "capacidad", "s": 42.1, "e": 42.64}, {"w": "de", "s": 42.64, "e": 42.78}, {"w": "recuperación", "s": 42.78, "e": 43.45}, {"w": "depende", "s": 43.45, "e": 43.85}, {"w": "del", "s": 43.85, "e": 43.98}, {"w": "nivel", "s": 43.98, "e": 44.25}, {"w": "de", "s": 44.25, "e": 44.38}, {"w": "[corrección]", "s": 44.38, "e": 44.79}, {"w": "utilizado", "s": 44.79, "e": 45.46}, {"w": "y", "s": 45.46, "e": 45.59}, {"w": "de", "s": 45.59, "e": 45.73}, {"w": "qué", "s": 45.73, "e": 45.86}, {"w": "parte", "s": 45.86, "e": 46.13}, {"w": "esté", "s": 46.13, "e": 46.4}, {"w": "[dañada.]", "s": 46.4, "e": 46.8, "f": true}, {"w": "Una", "s": 47.21, "e": 47.46}, {"w": "vez", "s": 47.46, "e": 47.58}, {"w": "que", "s": 47.58, "e": 47.7}, {"w": "el", "s": 47.7, "e": 47.83}, {"w": "teléfono", "s": 47.83, "e": 48.33}, {"w": "consigue", "s": 48.33, "e": 48.7}, {"w": "interpretar", "s": 48.7, "e": 49.19}, {"w": "los", "s": 49.19, "e": 49.32}, {"w": "datos,", "s": 49.32, "e": 49.57, "f": true}, {"w": "puede", "s": 49.83, "e": 50.15}, {"w": "descubrir", "s": 50.15, "e": 50.62}, {"w": "un", "s": 50.62, "e": 50.78}, {"w": "[mensaje,]", "s": 50.78, "e": 51.25, "f": true}, {"w": "información", "s": 51.42, "e": 52.02}, {"w": "de", "s": 52.02, "e": 52.16}, {"w": "[contacto]", "s": 52.16, "e": 52.61}, {"w": "o", "s": 52.61, "e": 52.76}, {"w": "una", "s": 52.76, "e": 53.06}, {"w": "dirección", "s": 53.06, "e": 53.51}, {"w": "web.", "s": 53.51, "e": 53.66, "f": true}, {"w": "Lo", "s": 53.98, "e": 54.11}, {"w": "sorprendente", "s": 54.11, "e": 54.6}, {"w": "es", "s": 54.6, "e": 54.73}, {"w": "que", "s": 54.73, "e": 54.85}, {"w": "todo", "s": 54.85, "e": 55.1}, {"w": "esto", "s": 55.1, "e": 55.34}, {"w": "sucede", "s": 55.34, "e": 55.71}, {"w": "en", "s": 55.71, "e": 55.84}, {"w": "[segundos,]", "s": 55.84, "e": 56.21, "f": true}, {"w": "sin", "s": 56.39, "e": 56.52}, {"w": "que", "s": 56.52, "e": 56.66}, {"w": "tengas", "s": 56.66, "e": 56.93}, {"w": "que", "s": 56.93, "e": 57.06}, {"w": "entender", "s": 57.06, "e": 57.46}, {"w": "qué", "s": 57.46, "e": 57.6}, {"w": "significa", "s": 57.6, "e": 58.14}, {"w": "cada", "s": 58.14, "e": 58.41}, {"w": "cuadrado.", "s": 58.41, "e": 58.81, "f": true}, {"w": "No", "s": 59.18, "e": 59.33}, {"w": "es", "s": 59.33, "e": 59.49}, {"w": "[magia.]", "s": 59.49, "e": 59.79, "f": true}, {"w": "Es", "s": 60.13, "e": 60.27}, {"w": "información", "s": 60.27, "e": 60.82}, {"w": "codificada", "s": 60.82, "e": 61.51}, {"w": "con", "s": 61.51, "e": 61.64}, {"w": "un", "s": 61.64, "e": 61.78}, {"w": "sistema", "s": 61.78, "e": 62.19}, {"w": "preparado", "s": 62.19, "e": 62.74}, {"w": "para", "s": 62.74, "e": 63.02}, {"w": "detectar", "s": 63.02, "e": 63.43}, {"w": "y", "s": 63.43, "e": 63.57}, {"w": "corregir", "s": 63.57, "e": 63.98}, {"w": "ciertos", "s": 63.98, "e": 64.25}, {"w": "[errores.]", "s": 64.25, "e": 64.67, "f": true}, {"w": "Sígueme", "s": 64.99, "e": 65.39}, {"w": "y", "s": 65.39, "e": 65.53}, {"w": "envíaselo", "s": 65.53, "e": 66.07}, {"w": "a", "s": 66.07, "e": 66.21}, {"w": "ese", "s": 66.21, "e": 66.48}, {"w": "[amigo]", "s": 66.48, "e": 66.88}, {"w": "que", "s": 66.88, "e": 67.02}, {"w": "piensa", "s": 67.02, "e": 67.29}, {"w": "que", "s": 67.29, "e": 67.42}, {"w": "un", "s": 67.42, "e": 67.56}, {"w": "[QR]", "s": 67.56, "e": 67.69}, {"w": "deja", "s": 67.69, "e": 67.97}, {"w": "de", "s": 67.97, "e": 68.1}, {"w": "funcionar", "s": 68.1, "e": 68.51}, {"w": "apenas", "s": 68.51, "e": 68.91}, {"w": "se", "s": 68.91, "e": 69.05}, {"w": "raya.", "s": 69.05, "e": 69.32, "f": true}];
   const cap=document.getElementById('cap');
-  const WORDS=CAPS.length?CAPS:N.flatMap(([a,b,txt])=>{const w=txt.split(' '),d=(b-a-0.4)/w.length;return w.map((x,i)=>({w:x,s:a+i*d,e:a+(i+1)*d}))});
   const G=[];let cur=[];
-  WORDS.forEach(x=>{cur.push(x);if(cur.length===3||x.f){G.push(cur);cur=[];}});
+  CAPS.forEach(x=>{cur.push(x);if(cur.length===3||x.f){G.push(cur);cur=[];}});
   if(cur.length)G.push(cur);
   G.forEach((g,gi)=>{
     const el=document.createElement('div');el.className='chunk';
@@ -125,25 +127,35 @@ body{background:#000}
     tl.set(el,{autoAlpha:1},s0).set(el,{autoAlpha:0},e0);
     sp.forEach((s,j)=>tl.set(s,{color:'#fff',fontWeight:800},g[j].s));
   });
-  // ---- etiquetas ----
-  const LB=[[1.4,3.2,'✓ SE LEE'],[3.8,5.8,'✕ NO SE LEE','bad'],[13.6,19,'NEGRO = 1  ·  BLANCO = 0'],[19.2,22.8,'1 0 1 1 0 0 1 0'],[24,33.4,'ESQUINAS → POSICIÓN Y GIRO'],[34.6,39.6,'DATOS → ENLACE EN BITS'],[40,44.6,'SIN INTERNET'],[46,49,'LOGO ENCIMA ✓'],[49.2,54.6,'SE RECUPERA HASTA ~30 % (NIVEL H)'],[55.6,58.5,'✕ ESQUINA TAPADA','bad'],[59.6,62.8,'✕ SIN MARGEN BLANCO','bad']];
+  // ---- etiquetas (con fondo propio para no mezclarse con el QR) ----
+  const LB=[[1.9,3.25,'✓ DAÑADO Y SE LEE'],[C(1,.08),CL[1][1],'¿CÓMO LEE LO QUE FALTA?'],[C(2,.3),CL[2][1],'CORRECCIÓN DE ERRORES'],
+   [T(2,.1),T(2,.55),'NEGRO = 1  ·  BLANCO = 0'],[T(2,.58),T(2,.8),'1 0 1 1 0 0 1 0'],
+   [T(3,.02),T(3,.6),'ESQUINAS → POSICIÓN'],[T(3,.68),T(3,.97),'MÓDULOS → DATOS'],[T(4,.1),T(4,.97),'DATOS + RESPALDO'],
+   [CL[9][0],CL[10][1],'RAYADO · SUCIO · TAPADO'],[CL[11][0],CL[11][1],'✓ TODAVÍA SE LEE'],[CL[13][0],CL[13][1],'✕ NO ES INDESTRUCTIBLE','bad'],
+   [C(14,.05),C(14,.55),'L 7 % · M 15 % · Q 25 % · H 30 %'],[C(14,.66),CL[14][1],'✕ ESQUINA DAÑADA','bad'],
+   [C(18,.5),CL[18][1],'EN SEGUNDOS'],[CL[19][0],CL[19][1],'SIN ENTENDER CADA CUADRADO'],
+   [CL[20][0],CL[20][1],'NO ES MAGIA'],[C(21,.1),CL[21][1],'INFORMACIÓN + RESPALDO = ✓']];
   const lb=document.getElementById('lbls');
   LB.forEach(([a,b,txt,c])=>{const e=document.createElement('div');e.textContent=txt;e.style.color=c==='bad'?'var(--bad)':'var(--amber)';lb.appendChild(e);tl.fromTo(e,{autoAlpha:0},{autoAlpha:1,duration:.25},a).to(e,{autoAlpha:0,duration:.2},b);});
   // ---- escenas ----
-  tl.from(W,{scale:.6,autoAlpha:0,duration:.8,ease:'power2.out'},0)
-    .to('#p1',{opacity:1,duration:.4},1.2).to('#p1',{x:-237,y:-237,scale:1.421,duration:.5},3.4).to('#p1',{opacity:0,duration:.4},5.4);
-  tl.fromTo('.card',{y:60,opacity:0},{y:0,opacity:1,duration:.5,stagger:.25},7.2);
-  tl.to('.m rect',{opacity:.12,duration:.3},13).to('.m rect',{opacity:1,duration:.01,stagger:.02},13.4);
-  tl.to('#d rect,#t rect',{opacity:.15,duration:.4},23).to('#hl',{opacity:1,duration:.5},24).to('#hl',{opacity:0,duration:.3},33.5);
-  tl.to('#d rect,#t rect',{opacity:1,duration:.3},34).to('#f rect',{opacity:.15,duration:.3},34)
-    .to('#d',{fill:'#FFB703',duration:.4},34.4).to('#d',{fill:'#0B0F24',duration:.3},45).to('#f rect',{opacity:1,duration:.3},45);
-  tl.fromTo('#logo',{scale:.3,opacity:0},{scale:1,opacity:1,duration:.5},46).to('#logo',{opacity:0,duration:.3},54.5);
-  tl.to('#p1',{opacity:1,duration:.4},55.5).to('#p1',{opacity:0,duration:.4},58.6).to(W,{clipPath:'inset(66px 66px 66px 66px)',duration:.8},59.3);
-  const o={v:1900},num=document.getElementById('num');
-  tl.from('#datoin',{scale:1.8,opacity:0,filter:'blur(12px)',duration:.9,ease:'power3.out'},63)
-    .fromTo(o,{v:1900},{v:1994,duration:1.5,ease:'power2.out',snap:{v:1},onUpdate:()=>{num.textContent=o.v}},63.2);
-  tl.from('#sheet',{y:300,opacity:0,duration:.6},69.2).from('.av',{scale:0,duration:.3,stagger:.1},69.8)
-    .fromTo('#ring',{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},71).to('#sent',{opacity:1,duration:.3},71.6);
+  tl.from(W,{scale:.6,autoAlpha:0,duration:.8,ease:'power2.out'},0);
+  tl.to('#scr',{opacity:1,duration:.4},.9).to('#stn',{opacity:.8,duration:.4},1.5).to('#scr,#stn',{opacity:0,duration:.4},T(1,.55));   // 0 daño
+  tl.to('.m rect',{opacity:.12,duration:.3},T(2,0)).to('.m rect',{opacity:1,duration:.01,stagger:(.58*(SC[2][1]-SC[2][0]))/NR},T(2,.12));   // 2
+  tl.to('#d rect,#t rect',{opacity:.15,duration:.4},T(3,0)).to('#hl',{opacity:1,duration:.5},T(3,.03)).to('#hl',{opacity:0,duration:.3},T(3,.66)).to('#d rect,#t rect',{opacity:1,duration:.4},T(3,.68));   // 3
+  tl.to('#f rect',{opacity:.15,duration:.4},T(4,0)).to('#d',{fill:'#FFB703',duration:.4},T(4,.05)).to('#d rect:nth-child(3n)',{fill:'#4B5BFF',duration:.3,stagger:.02},T(4,.45));   // 4
+  tl.to('#d',{fill:'#0B0F24',duration:.3},T(5,0)).to('#d rect:nth-child(3n)',{fill:'#0B0F24',duration:.3},T(5,0)).to('#f rect',{opacity:1,duration:.3},T(5,0));   // 5
+  tl.to('#scr',{opacity:1,duration:.35},CL[9][0]+.3).to('#stn',{opacity:.8,duration:.35},CL[10][0]+.1).to('#p1',{opacity:1,duration:.4},C(10,.55))
+    .to('#scr,#stn,#p1',{opacity:0,duration:.35},CL[12][0]).set('#p1',{x:-237,y:-237,scale:1.421},CL[12][0]+.5)
+    .to('#p1',{opacity:1,duration:.4},C(14,.66)).to('#p1',{opacity:0,duration:.4},CL[14][1]);
+  tl.fromTo('.card:nth-child(1)',{y:60,opacity:0},{y:0,opacity:1,duration:.5},CL[16][0])                          // 6 tarjetas
+    .fromTo('.card:nth-child(2)',{y:60,opacity:0},{y:0,opacity:1,duration:.5},CL[17][0])
+    .fromTo('.card:nth-child(3)',{y:60,opacity:0},{y:0,opacity:1,duration:.5},C(17,.55));
+  tl.to('#beam',{opacity:1,duration:.2},C(18,.1)).to('#beam',{y:815,duration:1.5,ease:'power1.inOut'},C(18,.1)+.1)   // 7 haz de escaneo
+    .to('#beam',{y:0,duration:1.5,ease:'power1.inOut'},CL[19][0]).to('#beam',{opacity:0,duration:.3},CL[19][0]+1.6);
+  tl.to('#d',{fill:'#FFB703',duration:.4},C(21,.15)).to('#d rect:nth-child(3n)',{fill:'#4B5BFF',duration:.3,stagger:.02},C(21,.3));   // 8
+  tl.from('#fol',{y:-40,opacity:0,duration:.4},CTA+.1).to('#fol1',{opacity:0,duration:.2},C(22,.12)).to('#fol2',{opacity:1,duration:.2},C(22,.12))   // 9 CTA
+    .from('#sheet',{y:300,opacity:0,duration:.6},CTA+.3).from('.av',{scale:0,duration:.3,stagger:.1},CTA+.9)
+    .fromTo('#ring',{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},C(22,.42)).to('#sent',{opacity:1,duration:.3},C(22,.55));
   window.__timelines=window.__timelines||{};window.__timelines['qr-ep01']=tl;
   </script>
 </div></body></html>

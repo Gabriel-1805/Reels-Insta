@@ -13,6 +13,7 @@ body{background:#000}
 .chunk span.key{border:4px solid var(--blue);padding:0 14px;border-radius:6px}
 .chunk span.key::before,.chunk span.key::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue)}
 .chunk span.key::before{left:-12px;top:-12px}.chunk span.key::after{right:-12px;bottom:-12px}
+#qrclip{left:0;top:0;width:1080px;height:1920px}
 #qrwrap{left:127px;top:500px;width:825px;height:825px;background:#fff;border-radius:36px;clip-path:inset(0px)}
 #qrsvg{position:absolute;left:66px;top:66px}
 .m{fill:#0B0F24}
@@ -30,25 +31,25 @@ body{background:#000}
 #ring{position:absolute;left:105px;top:105px;width:240px;height:240px;border-radius:50%;border:6px solid var(--amber);opacity:0}
 #sent{position:absolute;left:150px;right:150px;top:400px;height:100px;border-radius:50px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;opacity:0}
 </style></head><body>
-<div id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
-  <div class="grid clip" data-start="0" data-duration="74" data-track-index="0"></div>
-  <div id="qrwrap" class="abs clip" data-start="0" data-duration="63" data-track-index="1">
-    <svg id="qrsvg" width="693" height="693" viewBox="0 0 693 693"></svg>
-    <div id="p1" class="abs patch"></div><div id="logo" class="abs">LOGO</div>
+<div data-hf-id="hf-7n1z" id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
+  <div data-hf-id="hf-bqx1" id="bg-grid" class="grid clip" data-start="0" data-duration="74" data-track-index="0"></div>
+  <div data-hf-id="hf-u56j" id="qrclip" class="abs clip" data-start="0" data-duration="63" data-track-index="1"><div data-hf-id="hf-3ztn" id="qrwrap" class="abs">
+    <svg data-hf-id="hf-tzsp" id="qrsvg" width="693" height="693" viewBox="0 0 693 693"></svg>
+    <div data-hf-id="hf-oa7d" id="p1" class="abs patch"></div><div data-hf-id="hf-wxkw" id="logo" class="abs">LOGO</div>
+  </div></div>
+  <div data-hf-id="hf-8rom" id="lbls" class="clip" data-start="0" data-duration="63" data-track-index="2"></div>
+  <div data-hf-id="hf-xuyz" id="cards" class="clip" data-start="6" data-duration="7" data-track-index="3">
+    <div data-hf-id="hf-lm09" class="card" style="left:60px">MENÚ</div><div data-hf-id="hf-x2vm" class="card" style="left:390px">ENTRADA</div><div data-hf-id="hf-tew7" class="card" style="left:720px">PAGO</div>
   </div>
-  <div id="lbls" class="clip" data-start="0" data-duration="63" data-track-index="2"></div>
-  <div id="cards" class="clip" data-start="6" data-duration="7" data-track-index="3">
-    <div class="card" style="left:60px">MENÚ</div><div class="card" style="left:390px">ENTRADA</div><div class="card" style="left:720px">PAGO</div>
+  <div data-hf-id="hf-582c" id="dato" class="clip" data-start="63" data-duration="6" data-track-index="3">
+    <div data-hf-id="hf-shkp" id="num">1900</div><div data-hf-id="hf-7zqu" class="t">NACE EN JAPÓN</div><div data-hf-id="hf-w5sp" class="s">Fuente: Denso Wave · ISO/IEC 18004</div>
   </div>
-  <div id="dato" class="clip" data-start="63" data-duration="6" data-track-index="3">
-    <div id="num">1900</div><div class="t">NACE EN JAPÓN</div><div class="s">Fuente: Denso Wave · ISO/IEC 18004</div>
+  <div data-hf-id="hf-tru1" id="cta" class="clip" data-start="69" data-duration="5" data-track-index="3">
+    <div data-hf-id="hf-0n66" id="sheet"><div data-hf-id="hf-naue" class="h">Enviar a</div>
+      <div data-hf-id="hf-m9y5" class="av" style="left:75px">A</div><div data-hf-id="hf-l2ex" class="av" style="left:285px">B</div><div data-hf-id="hf-ypoh" class="av" style="left:495px">C</div><div data-hf-id="hf-crvk" class="av" style="left:705px">D</div>
+      <div data-hf-id="hf-m1rf" id="ring"></div><div data-hf-id="hf-3j3k" id="sent">✓ Enviado</div></div>
   </div>
-  <div id="cta" class="clip" data-start="69" data-duration="5" data-track-index="3">
-    <div id="sheet"><div class="h">Enviar a</div>
-      <div class="av" style="left:75px">A</div><div class="av" style="left:285px">B</div><div class="av" style="left:495px">C</div><div class="av" style="left:705px">D</div>
-      <div id="ring"></div><div id="sent">✓ Enviado</div></div>
-  </div>
-  <div id="cap" class="clip" data-start="0" data-duration="74" data-track-index="5"></div>
+  <div data-hf-id="hf-qo00" id="cap" class="clip" data-start="0" data-duration="74" data-track-index="5"></div>
   <!-- Cuando tengas la voz TTS como voz.wav, descomenta:
   <audio src="voz.wav" data-start="0" data-duration="74" data-track-index="9" data-volume="1"></audio> -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -88,7 +89,7 @@ body{background:#000}
   // ---- 1 gancho ----
   tl.from(W,{scale:.6,autoAlpha:0,duration:.8,ease:'power2.out'},0)
     .to('#p1',{opacity:1,duration:.4},1.2)
-    .to('#p1',{left:40,top:40,width:270,height:270,duration:.5},3.4)
+    .to('#p1',{x:-237,y:-237,scale:1.421,duration:.5},3.4)
     .to('#p1',{opacity:0,duration:.4},5.4);
   // ---- 2 ancla ----
   tl.to(W,{scale:.4,y:-300,duration:.8,ease:'power2.inOut'},6)
@@ -107,7 +108,7 @@ body{background:#000}
   // ---- 6 corrección de errores ----
   tl.fromTo('#logo',{scale:.3,opacity:0},{scale:1,opacity:1,duration:.5},46).to('#logo',{opacity:0,duration:.3},54.5);
   // ---- 7 esquina tapada y margen ----
-  tl.set('#p1',{left:40,top:40,width:270,height:270},54.9).to('#p1',{opacity:1,duration:.4},55.5).to('#p1',{opacity:0,duration:.4},58.6)
+  tl.to('#p1',{opacity:1,duration:.4},55.5).to('#p1',{opacity:0,duration:.4},58.6)
     .to(W,{clipPath:'inset(66px 66px 66px 66px)',duration:.8},59.3);
   // ---- 8 dato ----
   const o={v:1900},num=document.getElementById('num');

@@ -20,7 +20,7 @@ html=f"""<!doctype html>
 {rd(raiz/'tokens.css')}{rd(ep/'escena.css')}</style></head><body>
 <div id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
   <div id="bgclip" class="abs clip" data-start="0" data-duration="{TOT}" data-track-index="0"><div id="bg-grid" class="grid"></div><div id="dust"></div></div>
-  <div id="qrclip" class="abs clip" data-start="0" data-duration="{CTA}" data-track-index="1"><div id="world">{rd(ep/'escena.mundo.html')}</div></div>
+  <div id="qrclip" class="abs clip" data-start="0" data-duration="{CTA}" data-track-index="1"><div id="world"><div id="tilt">{rd(ep/'escena.mundo.html')}</div></div><div id="fog"></div></div>
   <div id="lbls" class="clip" data-start="0" data-duration="{CTA}" data-track-index="2"></div>
 {rd(ep/'escena.clips.html')}
   <div id="cap" class="clip" data-start="0" data-duration="{TOT}" data-track-index="5"></div>

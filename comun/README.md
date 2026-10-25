@@ -3,12 +3,14 @@
 | Archivo | Para qué sirve |
 |---|---|
 | `tokens.css` | Colores de marca, escenario 1080×1920, subtítulos, etiquetas con fondo y la máscara que impide que el QR/zoom pase por detrás de los subtítulos |
-| `camara.js` | Polvo flotante y cámara virtual: `focus()`, `cam()`, `blur()` con paralaje del fondo |
+| `camara.js` | Polvo flotante y cámara virtual: `focus()`, `cam()`, `blur()` con paralaje del fondo y, desde la Fase 2, `tilt(inicio,dur,{rx,ry,rz})`: inclinación 3D con niebla de profundidad, y `enganchar()`: llega torcido y se endereza |
 | `subtitulos.js` | Karaoke en grupos de ≤3 palabras; las `[palabras]` llevan recuadro azul con nodos |
-| `etiquetas.js` | `etiquetas([[inicio,fin,'TEXTO','bad']])` — etiquetas con fondo propio |
+| `etiquetas.js` | `etiquetas([[inicio,fin,'TEXTO','bad']])` — etiquetas con fondo propio; la línea guía se dibuja, aparece el nodo y luego el texto |
 | `palabras.py` + `palabras_clave.txt` | Recuadros: lista fija (la del episodio + la común) y, si una cláusula no tiene ninguna, la palabra de contenido más larga |
 | `alinear.py` | Alinea `guion.txt` con `voz.wav` usando las pausas reales del audio → `tiempos.json` |
 | `construir.py` | Arma `index.html` del episodio juntando `comun/` + lo propio del episodio |
+| `probar.js` | Banco de pruebas de la línea de tiempo (errores, cámara, animaciones que se pisan, determinismo). No ve imágenes |
+| `patrones.md` | Recetas visuales validadas y dónde está su código |
 
 ## Episodio nuevo (resumen)
 1. Copia `episodios/ep01-qr/` a `episodios/epNN-tema/` como base.
@@ -25,3 +27,16 @@
 - Todo debe poder buscarse en el tiempo (`tl.set`/`tl.to` con posición absoluta). Nunca encadenar `.to()` sin posición.
 - No solapar dos animaciones de la misma propiedad sobre el mismo elemento.
 - Si el preview muestra un video viejo: borrar la caché `episodios/epNN/.hyperframes`.
+
+## Fase 2 (perspectiva y profundidad)
+- `construir.py` envuelve el mundo en `#tilt` y añade `#fog`: cualquier episodio puede llamar a `tilt()`.
+- `tilt()` usa perspectiva 1400 y rotaciones; úsalo en planos amplios (en primeros planos desplaza el encuadre).
+- Brillo: copia desenfocada del elemento debajo (`filter` de SVG), no `drop-shadow` sobre el propio elemento.
+- No poner `transform` en el CSS de un elemento que GSAP vaya a animar desde cero: usar `fromTo`.
+
+## Probar antes del preview
+```
+npm install --no-save gsap jsdom        # una vez
+node comun/probar.js episodios/ep01-qr/index.html
+```
+Debe decir `animaciones que se pisan: 0` y `determinista: true`. Después, siempre, mirar el preview.

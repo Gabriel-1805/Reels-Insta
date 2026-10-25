@@ -15,4 +15,8 @@ body{background:#000}
 .chunk span.key{border:4px solid var(--blue);padding:0 14px;border-radius:6px}
 .chunk span.key::before,.chunk span.key::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue)}
 .chunk span.key::before{left:-12px;top:-12px}.chunk span.key::after{right:-12px;bottom:-12px}
-#lbls div{position:absolute;left:50%;top:1340px;transform:translateX(-50%);width:max-content;max-width:980px;text-align:center;font-size:40px;font-weight:800;letter-spacing:1.5px;padding:16px 36px;border-radius:44px;background:rgba(11,15,36,.92);border:3px solid #ffffff22;opacity:0;visibility:hidden}
+#lbls .lb{position:absolute;left:50%;top:1340px;transform:translateX(-50%);width:max-content;max-width:980px;text-align:center;font-size:40px;font-weight:800;letter-spacing:1.5px;padding:16px 36px;border-radius:44px;background:rgba(11,15,36,.92);border:3px solid #ffffff22;opacity:0;visibility:hidden}
+.lbl-line{position:absolute;left:538px;top:1210px;width:4px;height:130px;transform-origin:50% 100%}
+.lbl-node{position:absolute;left:531px;top:1201px;width:18px;height:18px;border-radius:50%}
+#tilt{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#fog{position:absolute;left:0;top:430px;width:1080px;height:640px;background:linear-gradient(180deg,rgba(11,15,36,.92),rgba(11,15,36,0));opacity:0;pointer-events:none}

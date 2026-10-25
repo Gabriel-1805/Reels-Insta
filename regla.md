@@ -1,19 +1,22 @@
 # regla.md — Serie "Así funciona"
 
 Especificación viva para producir episodios de divulgación en formato vertical, renderizados con HyperFrames.
-Los patrones salen de un análisis de video de referencia. **Todo el contenido (guion, textos, gráficos) es original.**
+Los patrones salen de un análisis de un video de referencia. **Todo el contenido (guion, textos, gráficos) es original.**
 
-Versión: v0.2 · Los valores `TBD` se completan al verificarlos.
+Versión: **v0.3** · Fase 1 (cámara y transiciones) validada en el Episodio 1 · Los valores `TBD` se completan al verificarlos.
+
+Historial: v0.1 análisis inicial · v0.2 tokens medidos del logo, flujo Codespaces+Actions · **v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, carpeta `comun/`, reglas del lint.**
 
 ---
 
 ## 0. Principios
 
-1. Hacer visible lo invisible: cada episodio explica un fenómeno cotidiano bajando de escala (objeto → capa → detalle).
+1. Hacer visible lo invisible: bajar de escala (objeto → capa → detalle).
 2. La imagen explica, la voz guía, el subtítulo marca el ritmo.
-3. Un solo concepto nuevo por tramo.
-4. El final siempre pide una acción concreta sobre una persona concreta.
-5. Se copian **patrones**, nunca elementos: ni frases, ni personajes, ni gráficos, ni cuentas del original.
+3. Un concepto nuevo por tramo.
+4. El final pide una acción concreta sobre una persona concreta.
+5. Se copian **patrones**, nunca elementos del video de referencia (frases, personajes, gráficos, cuentas).
+6. Lo aprendido vive en archivos (`regla.md`, `comun/`), no en la memoria del chat.
 
 ---
 
@@ -23,185 +26,164 @@ Versión: v0.2 · Los valores `TBD` se completan al verificarlos.
 |---|---|
 | Resolución | 1080 × 1920 (9:16) |
 | FPS | 30 |
-| Duración objetivo | 45–75 s (máx. 90 s) |
-| Codec | H.264, 8–12 Mbps, AAC 44,1 kHz |
-| Motor | HyperFrames (HTML + CSS + animación seekable → MP4) |
-
-Mejoras sobre la referencia (720 × 1280, ~1,2 Mbps): subir resolución y bitrate para evitar bandas en degradados oscuros; añadir un ruido muy sutil al fondo si aparecen.
+| Duración | 45–75 s (máx. 90 s) |
+| Codec | H.264, 8–12 Mbps, AAC |
+| Motor | HyperFrames (HTML + CSS + GSAP seekable → MP4) |
 
 ---
 
-## 2. Tokens de marca (colores medidos en el logo)
+## 2. Tokens de marca (medidos en el logo)
 
 | Token | Hex | Uso |
 |---|---|---|
-| `--navy` | `#192653` | Paneles, caja del logo |
-| `--bg-deep` | `#0B0F24` | Fondo general (más oscuro que `--navy`) |
+| `--navy` | `#192653` | Paneles, tarjetas |
+| `--bg` | `#0B0F24` | Fondo general y módulos oscuros |
 | `--blue` | `#4B5BFF` | Recuadros de palabra clave, nodos, bordes |
-| `--amber` | `#FFB703` | Energía, carga, palabra de énfasis |
-| `--text` | `#FFFFFF` | Subtítulo activo |
-| `--text-dim` | `#8A93B8` | Subtítulo inactivo |
-| `--rgb-accents` | rojo / verde / azul | Solo para elementos de pantalla o subpíxeles |
+| `--amber` | `#FFB703` | Energía, datos, etiquetas |
+| `--dim` | `#8A93B8` | Subtítulo inactivo |
+| `--bad` | `#FF5A5F` | Errores y estados «no funciona» (✕) |
 
-Tipografía: sans geométrica, pesos 400 / 600 / 800. Cursiva bold solo para una palabra de énfasis por escena.
-Fondo: casi negro con rejilla de plano técnico a baja opacidad y partículas flotantes lentas.
-
----
-
-## 3. Ritmo
-
-- **Gancho (0–3 s):** una paradoja visual + una frase. Sin presentación ni logo previo.
-- **Micropausa de 0,4 s** al cerrar el gancho, seguida de un empuje de cámara.
-- **Señal visual** (zoom, etiqueta, número, cambio de escena) como mucho cada 6–8 s.
-- **Patrón ráfaga → pausa:** transición rápida y luego 2–4 s casi estáticos donde mandan los subtítulos.
-- **Cortes duros:** pocos (~6–8 por minuto). La velocidad viene del movimiento de cámara y los morphs.
-- **Palabras por minuto:** `TBD`. Los valores de partida de la tabla de abajo salen de un resumen, no de una locución real, así que son solo una guía para el guion propio.
-
-| Tramo | ppm guía | Motivo |
-|---|---|---|
-| Gancho | 140–150 | Densidad alta para enganchar |
-| Mecanismo | 90–110 | Más tiempo visual para entender |
-| Casos límite | 110–130 | Ritmo algo más ágil |
-| CTA | ≤ 10 palabras en 5 s | Se tiene que poder leer |
+Tipografía: sans geométrica (Montserrat con fallback), pesos 400/600/800.
+Fondo: radial oscuro + rejilla de plano técnico + partículas flotantes lentas.
 
 ---
 
-## 4. Escenas y cámara
+## 3. Cámara virtual (Fase 1, validada)
 
-**Escalera de zoom** (de general a particular):
-1. Objeto o situación cotidiana
-2. Corte transversal / capa interna
-3. Componente o detalle, con números
+Todo el contenido vive dentro de un «mundo» (`#world`) y se anima la cámara, no los objetos.
 
-Reglas:
-- Cada nivel dura 4–6 s.
-- La transición entre niveles es un movimiento continuo de cámara, no un corte seco.
-- Una etiqueta por concepto, con línea guía y mayúsculas pequeñas. **Máximo 3 a la vez.**
-- Tamaño mínimo de etiqueta legible en móvil: 28 px sobre lienzo de 1080 de ancho.
-- Los números animados aparecen solo cuando la voz los menciona.
-- Un anillo o gesto de toque puede servir de anclaje visual en momentos de transición.
-
-**Plantilla por tramos (% de duración):**
-
-| Tramo | % | Contenido | Función |
-|---|---|---|---|
-| Gancho | 0–5 | Paradoja visual | Retener |
-| Ancla | 5–15 | Situación cotidiana | Conectar |
-| Mecanismo | 15–60 | 3 niveles de zoom con números | Explicar |
-| Casos límite | 60–85 | 2 ejemplos curiosos | Sorprender |
-| Dato | 85–92 | Cifra con fuente visible | Dar credibilidad |
-| CTA | 92–100 | Acción concreta | Compartir |
+- `focus(px,py,S)` lleva un punto del mundo al centro con zoom `S`.
+- `cam(inicio,duración,estado,ease)` mueve mundo, rejilla y polvo con **paralaje** (rejilla 25 %, polvo 50 %, con tope de desplazamiento).
+- `blur()` añade un pulso de desenfoque en los movimientos rápidos.
+- Escalera de zoom: objeto completo → capa interna → detalle (zooms de 2,2–2,3×).
+- Transiciones por **movimiento continuo**, no por corte: pull-back, empuje, giro, y **zoom-through** (la cámara se mete en un módulo hasta llenar la pantalla y de ahí nace la escena siguiente; destino ≈ 64×).
+- Ritmo ráfaga → pausa: movimiento de ~1,2–1,4 s y luego una deriva lenta (`ease:'none'`) mientras habla la voz.
+- Las escenas se coreografían con **fracciones de la escena** `T(i,f)` y **tiempos de cláusula** `C(k,f)`, nunca con segundos fijos: así se adaptan a cualquier audio.
 
 ---
 
-## 5. Animación y efectos
+## 4. Subtítulos (Fase 1, validada)
 
-- Cámara virtual con zoom continuo y desenfoque ligero en los extremos.
-- Líneas o arcos de energía en `--amber`, con brillo suave (glow), no más de uno protagonista por escena.
-- Contadores numéricos que cambian en vivo.
-- Mockups de interfaz (teléfono, hoja de compartir) para el CTA.
-- Partículas y burbujas lentas de fondo.
-- Fuente del dato visible en pantalla al mostrar una cifra.
-- Evitar: elementos decorativos sin función, más de un efecto de transición por escena.
-
----
-
-## 6. Subtítulos
-
-- Estilo karaoke: palabra activa en `--text` y negrita, resto en `--text-dim`.
-- Palabra clave dentro de recuadro `--blue` con nodos en las esquinas (guiño al logo).
-- Fragmentos de 1–3 palabras, máximo 2 líneas.
-- Posición: centrado, a ~18 % desde arriba; zona inferior (25 %) libre para la interfaz de la plataforma.
-- Entrada 0,1 s antes de la palabra que activa.
-- **Legibilidad:** si el fondo es claro (piel, luz), añadir sombra suave o fondo semitransparente tras el texto.
-- Emoji inline solo en palabras clave, máximo 1 por escena.
+- **Franja superior reservada** (y ≈ 130–420). El contenido visual se desvanece con una máscara (`mask-image`) antes de llegar a esa zona: **el QR/zoom nunca pasa por detrás del texto.**
+- Karaoke: palabra activa blanca en negrita, resto `--dim`. Grupos de ≤ 3 palabras, sin cruzar el final de una cláusula.
+- **Recuadros azules con nodos:** una palabra clave por cláusula como mínimo (máx. 2), con la regla combinada:
+  1. lista fija (`palabras_clave.txt` del episodio + la común);
+  2. si no hay, la palabra de contenido más larga (≥ 5 letras, no conector);
+  3. cláusulas solo de conectores («Por eso,», «Sin embargo,») no llevan recuadro.
+- Etiquetas inferiores con **fondo propio** (píldora oscura) para que no se mezclen con el contenido.
+- Tiempos de palabra: el inicio de cada cláusula es **medido** en las pausas del audio; el de cada palabra, **estimado por sílabas** (puede desviarse unas décimas).
+- Zona inferior (25 %) libre para la interfaz de la plataforma.
 
 ---
 
-## 7. Audio
+## 5. Ritmo y guion
 
-- Loudness integrado: **−14 LUFS**; LRA ≤ 4 LU.
-- True peak: **≤ −1 dBTP** (la referencia llega a +0,6 dBFS; no se replica).
-- Pausas entre ideas: 0,3–0,6 s. Pausa de 0,5 s antes del CTA.
-- Voz: grabada o TTS, siempre limpia y comprimida de forma ligera.
-- Música: `TBD` (género, nivel relativo a la voz, entrada y salida).
-- Efectos de sonido: `TBD` (lista y momentos).
+- Gancho en los primeros 3 s con una pregunta o paradoja visual.
+- Plantilla por tramos: gancho · respuesta · mecanismo (3 zooms) · casos límite · resultado · dato · cierre · CTA.
+- Palabras por minuto: el audio del Ep. 1 salió a ~177 ppm (rápido); el cierre llegó a ~235. **Meta: 130–160 ppm; CTA ≤ 10 palabras y con pausa previa de ≥ 0,5 s.**
+- Cada episodio: `guion.md` en tabla (tiempo · narración · escena y edición · función · ppm).
+- Mantener un solo registro de voz (tú o vos): no mezclar «tenés» con «Sígueme».
+- Cifras técnicas con fuente visible y verificada antes de publicar.
 
 ---
 
-## 8. Estructura del proyecto (HyperFrames)
+## 6. Audio
+
+- Voz limpia y sin música de fondo. Objetivo: **−14 LUFS**, pico **≤ −1 dBFS** (con voz muy comprimida el pico limita: −14,7 LUFS es aceptable).
+- Normalizar en dos pasadas (`loudnorm` con `linear=true`) sin cambiar la duración.
+- Voz: propia, o TTS gratuito local (**Kokoro**, voz `em_alex`; suena mucho mejor que Piper).
+- Música y efectos: `TBD` (Fase 3).
+
+---
+
+## 7. Estructura del repo (git)
 
 ```
 Reels-Insta/
 ├── regla.md
-├── episodios/
-│   └── ep01-tema/
-│       ├── index.html        # composición
-│       ├── guion.md          # tabla: tiempo | narración | escena | función
-│       ├── voz.wav
-│       └── captions.json     # palabras con tiempos (Whisper)
-├── comun/
-│   ├── tokens.css            # variables de la sección 2
-│   ├── captions.js           # subtítulos karaoke
-│   └── labels.js             # etiquetas con línea guía
-└── .github/workflows/render.yml
+├── .github/workflows/render.yml
+├── comun/                       # se reutiliza en todos los episodios
+│   ├── tokens.css  camara.js  subtitulos.js  etiquetas.js
+│   ├── palabras.py  palabras_clave.txt
+│   ├── alinear.py   construir.py
+│   └── README.md
+└── episodios/epNN-tema/
+    ├── guion.txt  guion.md  voz.wav  tiempos.json  palabras_clave.txt
+    ├── escena.css  escena.mundo.html  escena.clips.html  escena.js   # lo propio del tema
+    └── index.html               # GENERADO por construir.py (no se edita a mano)
 ```
 
-Reglas técnicas:
-- Las animaciones deben ser **seekables** (función del tiempo, sin depender de un reloj real), para que el render sea determinista.
-- Todo el estilo sale de `tokens.css`; nada de colores sueltos.
-- Cada episodio parte del mismo esqueleto de tramos (sección 4).
+Cambiar la cámara o los subtítulos = editar `comun/` una vez y reconstruir cada episodio.
 
 ---
 
-## 9. Flujo Codespaces + Actions
+## 8. Flujo de un episodio
 
-1. **Codespaces:** diseñar, previsualizar y ajustar la composición.
-2. `npx hyperframes lint` antes de cada commit.
-3. **Actions:** `workflow_dispatch` para el render final; el MP4 se sube como artefacto.
-4. El MP4 final no se guarda en el repo (evita inflar el historial).
-5. Cada episodio vive en su propia rama o carpeta.
+1. Copiar `ep01-qr` a `epNN-tema` como base.
+2. `guion.txt` (un párrafo por línea) + `voz.wav`.
+3. `python3 comun/alinear.py episodios/epNN-tema`
+4. Editar `escena.*` y `palabras_clave.txt`.
+5. `python3 comun/construir.py episodios/epNN-tema`
+6. `npx hyperframes lint` → `preview` → commit y push.
+7. GitHub → Actions → `render-video` → descargar el MP4.
+
+Git: `git add` desde la raíz del repo; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp4`, `.hyperframes/` (están en `.gitignore`).
+
+---
+
+## 9. Reglas aprendidas del lint de HyperFrames
+
+- No animar `autoAlpha`/`opacity`/`visibility` en elementos con clase `clip`: anima un hijo.
+- No animar `left`/`top`/`width`/`height`: usar `x`, `y`, `scale`.
+- Todo `<audio>` y elemento de la línea de tiempo lleva `id` (sin `id`, el audio sale mudo).
+- Animaciones seekable: `tl.set`/`tl.to` con posición absoluta; nunca encadenar `.to()` sin posición.
+- No solapar dos animaciones de la misma propiedad sobre el mismo elemento.
+- Las advertencias `nested_structure_needs_subcomposition` no bloquean el render (pendiente de resolver).
+- Si el preview muestra un video viejo: borrar `episodios/epNN/.hyperframes` (caché) y reabrir.
 
 ---
 
 ## 10. Métricas por episodio
 
-Registrar a las 24 h y a los 7 días.
-
-| Métrica | Dónde leerla | Meta inicial |
+| Métrica | Dónde leerla | Meta |
 |---|---|---|
 | Retención a 3 s | Gráfico de retención | `TBD` |
 | Retención media | Gráfico de retención | `TBD` |
 | Finalización | % que llega al final | `TBD` |
-| Compartidos | Interacciones | `TBD` |
-| Guardados | Interacciones | `TBD` |
-| Comentarios | Interacciones | `TBD` |
+| Compartidos / guardados / comentarios | Interacciones | `TBD` |
 
 ---
 
 ## 11. Checklist de producción
 
-- [ ] Guion en tabla con tiempo, narración, escena y función
-- [ ] Gancho de 3 s con paradoja clara
-- [ ] ppm dentro de rango por tramo
-- [ ] Señal visual cada 6–8 s
-- [ ] Máximo 3 etiquetas simultáneas, legibles en móvil
-- [ ] Subtítulos sincronizados, legibles y en zona segura
-- [ ] Cifras con fuente visible
-- [ ] CTA ≤ 10 palabras
-- [ ] −14 LUFS y true peak ≤ −1 dBTP
-- [ ] `lint` sin errores
-- [ ] Preview en Codespaces
-- [ ] Render final con Actions, en 1080 × 1920
-- [ ] Revisar que no se copia ningún elemento del original
-- [ ] Registrar métricas
+- [ ] Guion en tabla, ppm en rango, CTA corto
+- [ ] Gancho de 3 s con pregunta o paradoja
+- [ ] Voz limpia, −14 LUFS, pico ≤ −1 dBFS
+- [ ] `alinear.py` con ≥ 90 % de cláusulas ancladas a una pausa real
+- [ ] Una palabra clave con recuadro por cláusula
+- [ ] Ningún elemento entra en la franja de subtítulos
+- [ ] Cifras con fuente verificada
+- [ ] `lint` sin errores · preview revisado
+- [ ] Render con Actions · métricas registradas
 
 ---
 
-## 12. Pendientes
+## 12. Hoja de ruta
 
-- [ ] Describir música y efectos de la referencia (género, volumen, momentos)
-- [ ] Completar ppm reales con la transcripción de Whisper
-- [ ] Definir el primer tema de episodio
-- [ ] Elegir voz: grabada o TTS
-- [ ] Obtener métricas del primer episodio
+| Fase | Contenido | Estado |
+|---|---|---|
+| 1 | Cámara virtual, transiciones, subtítulos sincronizados, `comun/` | ✅ Validada (Ep. 1) |
+| 2 | Perspectiva 3D con CSS, brillo y profundidad de campo, etiquetas que se dibujan, metáforas del tema | Siguiente |
+| 3 | Música de fondo y efectos de sonido | `TBD` (definir estilo) |
+| 4 | 3D real (three.js o clips externos) | Probar primero en una escena aislada |
+
+---
+
+## 13. Pendientes
+
+- [ ] Adaptar el TTS (Kokoro) para leer `guion.txt` y generar `voz.wav` dentro de `comun/`
+- [ ] Resolver las advertencias de subcomposición del lint
+- [ ] Verificar los porcentajes de corrección de errores (L 7 / M 15 / Q 25 / H 30 %) en la norma ISO/IEC 18004
+- [ ] Definir estilo de música y efectos (Fase 3)
+- [ ] Mejorar la sincronía palabra a palabra (alineación forzada)
+- [ ] Registrar las métricas del Ep. 1

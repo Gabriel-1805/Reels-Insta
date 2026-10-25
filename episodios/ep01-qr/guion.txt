@@ -1,0 +1,10 @@
+Este código QR puede tener una parte dañada y aun así funcionar. ¿Cómo puede tu celular leer información que parece faltar?
+La respuesta está en una tecnología llamada corrección de errores.
+Para entenderla, primero tenés que saber que un QR almacena información mediante pequeños módulos blancos y negros organizados en una cuadrícula.
+Cuando apuntás con la cámara, el celular identifica los patrones de las esquinas y analiza la distribución de esos módulos para reconstruir los datos.
+Pero el código también contiene información adicional que permite recuperar parte de los datos que no se pudieron leer.
+Por eso, si está rayado, sucio o tiene una pequeña zona tapada, todavía puede funcionar. Sin embargo, no significa que sea indestructible: la capacidad de recuperación depende del nivel de corrección utilizado y de qué parte esté dañada.
+Una vez que el teléfono consigue interpretar los datos, puede descubrir un mensaje, información de contacto o una dirección web.
+Lo sorprendente es que todo esto sucede en segundos, sin que tengas que entender qué significa cada cuadrado.
+No es magia. Es información codificada con un sistema preparado para detectar y corregir ciertos errores.
+Sígueme y envíaselo a ese amigo que piensa que un QR deja de funcionar apenas se raya.

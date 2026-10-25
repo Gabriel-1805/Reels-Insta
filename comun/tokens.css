@@ -1,0 +1,18 @@
+/* comun: colores de marca, escenario, subtítulos, etiquetas, máscara anti-choque */
+:root{--navy:#192653;--bg:#0B0F24;--blue:#4B5BFF;--amber:#FFB703;--dim:#8A93B8;--bad:#FF5A5F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#141c44,var(--bg) 70%);font-family:Montserrat,Inter,Arial,sans-serif;color:#fff}
+.abs{position:absolute}
+#bgclip{left:0;top:0;width:1080px;height:1920px}
+#qrclip{left:0;top:0;width:1080px;height:1920px;-webkit-mask-image:linear-gradient(180deg,transparent 430px,#000 530px);mask-image:linear-gradient(180deg,transparent 430px,#000 530px)}
+.grid{position:absolute;inset:-480px;background-image:linear-gradient(#ffffff0f 1px,transparent 1px),linear-gradient(90deg,#ffffff0f 1px,transparent 1px);background-size:60px 60px}
+#dust,#world{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:540px 960px}
+.dot{position:absolute;border-radius:50%;background:#9fb0ff}
+#cap{position:absolute;left:0;right:0;top:130px;height:290px}
+.chunk{position:absolute;left:0;right:0;top:0;text-align:center;font-size:72px;font-weight:600;line-height:1.3;opacity:0;visibility:hidden}
+.chunk span{color:var(--dim);display:inline-block;margin:0 10px;position:relative}
+.chunk span.key{border:4px solid var(--blue);padding:0 14px;border-radius:6px}
+.chunk span.key::before,.chunk span.key::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue)}
+.chunk span.key::before{left:-12px;top:-12px}.chunk span.key::after{right:-12px;bottom:-12px}
+#lbls div{position:absolute;left:50%;top:1340px;transform:translateX(-50%);width:max-content;max-width:980px;text-align:center;font-size:40px;font-weight:800;letter-spacing:1.5px;padding:16px 36px;border-radius:44px;background:rgba(11,15,36,.92);border:3px solid #ffffff22;opacity:0;visibility:hidden}

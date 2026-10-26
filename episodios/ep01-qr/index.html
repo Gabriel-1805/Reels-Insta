@@ -23,6 +23,31 @@ body{background:#000}
 .lbl-node{position:absolute;left:531px;top:1201px;width:18px;height:18px;border-radius:50%}
 #tilt{position:absolute;left:0;top:0;width:1080px;height:1920px}
 #fog{position:absolute;left:0;top:430px;width:1080px;height:640px;background:linear-gradient(180deg,rgba(11,15,36,.92),rgba(11,15,36,0));opacity:0;pointer-events:none}
+/* comun: escena de cierre (perfil de la cuenta + hoja de compartir). Se reutiliza en todos los episodios */
+#cierre{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#mock{position:absolute;left:90px;top:470px;width:900px;height:960px;border-radius:70px;border:6px solid #2a3566;background:linear-gradient(180deg,#0e1330,#090c1f);overflow:hidden}
+.gridm{position:absolute;inset:0;background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:50px 50px}
+#rail{position:absolute;left:800px;top:70px;width:70px}
+#rail svg{display:block;width:56px;height:56px;margin:0 auto 34px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#perfil{position:absolute;left:40px;top:740px;width:820px;height:110px}
+#avlogo{position:absolute;left:0;top:5px;width:100px;height:100px;border-radius:50%;background-color:#fff;background-size:cover;background-position:center;border:3px solid #4B5BFF}
+#user{position:absolute;left:122px;top:30px;font-size:34px;font-weight:800;letter-spacing:.3px}
+#seguir{position:absolute;left:520px;top:24px;width:170px;height:56px;border-radius:14px;border:3px solid #fff;font-size:28px;font-weight:800}
+#seguir span,#enviar span{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+#sig2,#env2{opacity:0}
+#cap2{position:absolute;left:40px;top:860px;width:700px;font-size:28px;line-height:1.3;color:#cfd5ee}
+#hoja{position:absolute;left:0;top:330px;width:900px;height:630px;border-radius:50px 50px 0 0;background:#1d2238;border-top:3px solid #ffffff1f}
+#hoja .asa{position:absolute;left:390px;top:16px;width:120px;height:8px;border-radius:4px;background:#555a75}
+#busca{position:absolute;left:36px;top:48px;width:828px;height:64px;border-radius:16px;background:#2b3148;color:#8f95b3;font-size:28px;padding:15px 24px 0 78px}
+#busca svg{position:absolute;left:26px;top:16px;width:32px;height:32px;fill:none;stroke:#cfd5ee;stroke-width:2.4;stroke-linecap:round}
+.amigo{position:absolute;top:150px;width:200px;text-align:center}
+.amigo .circ{position:relative;width:140px;height:140px;margin:0 auto;border-radius:50%;overflow:hidden;background:#2b3148}
+.amigo b{display:block;margin-top:14px;font-size:28px;font-weight:600}
+#chk{position:absolute;left:128px;top:100px;width:44px;height:44px;border-radius:50%;background:#4B5BFF;border:4px solid #1d2238;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;opacity:0}
+#msg{position:absolute;left:36px;top:370px;width:828px;height:70px;border-bottom:2px solid #353b57;color:#8f95b3;font-size:28px;padding:18px 0 0 12px}
+#enviar{position:absolute;left:36px;top:470px;width:828px;height:96px;border-radius:22px;background:#4B5BFF;font-size:36px;font-weight:800}
+.rg{position:absolute;width:130px;height:130px;border-radius:50%;border:6px solid #FFB703;opacity:0}
+#ringS{left:580px;top:727px}#ringI{left:770px;top:213px}#ringA{left:47px;top:485px}#ringE{left:385px;top:783px}
 /* propio del episodio */
 #qrwrap{left:127px;top:500px;width:825px;height:825px;background:#fff;border-radius:36px;clip-path:inset(0px)}
 #qrsvg{position:absolute;left:66px;top:66px}
@@ -30,14 +55,6 @@ body{background:#000}
 .patch{left:317px;top:317px;width:190px;height:190px;background:var(--navy);border:6px dashed var(--amber);border-radius:20px;opacity:0}
 #beam{left:0;top:0;width:825px;height:10px;background:var(--amber);box-shadow:0 0 30px 8px #FFB70388;opacity:0}
 .card{position:absolute;top:1100px;width:300px;height:220px;border-radius:28px;background:var(--navy);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;opacity:0}
-#sheet{position:absolute;left:90px;top:760px;width:900px;height:560px;background:#141a33;border-radius:40px;border:3px solid #ffffff22}
-#sheet .h{position:absolute;left:0;right:0;top:36px;text-align:center;font-size:40px;font-weight:600;color:var(--dim)}
-.av{position:absolute;top:150px;width:150px;height:150px;border-radius:50%;background:var(--navy);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:800}
-#ring{position:absolute;left:105px;top:105px;width:240px;height:240px;border-radius:50%;border:6px solid var(--amber);opacity:0}
-#sent{position:absolute;left:150px;right:150px;top:400px;height:100px;border-radius:50px;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;opacity:0}
-#fol{position:absolute;left:340px;top:560px;width:400px;height:96px;border-radius:48px;background:var(--amber);color:#0B0F24;font-size:44px;font-weight:800}
-#fol span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-#fol2{opacity:0}
 #bk{left:0;top:0;width:825px;height:825px}
 #bk .b{position:absolute;width:46px;height:46px;border-radius:9px;background:#4B5BFF;box-shadow:0 0 18px #4B5BFF99;opacity:0}
 #mesa{left:-300px;top:1325px;width:1680px;height:900px;background:repeating-linear-gradient(90deg,#ffffff12 0 2px,transparent 2px 100px),linear-gradient(180deg,#1f2a5e 0%,#111838 55%,rgba(11,15,36,0) 100%);transform:perspective(900px) rotateX(58deg);transform-origin:50% 0%;opacity:.9}
@@ -59,32 +76,46 @@ body{background:#000}
 .vfc.bl{left:-14px;bottom:-14px;border-right:0;border-top:0;border-bottom-left-radius:10px}
 .vfc.br{right:-14px;bottom:-14px;border-left:0;border-top:0;border-bottom-right-radius:10px}
 </style></head><body>
-<div id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
-  <div id="bgclip" class="abs clip" data-start="0" data-duration="70.0" data-track-index="0"><div id="bg-grid" class="grid"></div><div id="dust"></div></div>
-  <div id="qrclip" class="abs clip" data-start="0" data-duration="65.0" data-track-index="1"><div id="world"><div id="tilt"><div id="mesa" class="abs"></div><div id="sombra" class="abs"></div><div id="soporte" class="abs"></div>
-    <div id="qrwrap" class="abs">
-      <svg id="qrsvg" width="693" height="693" viewBox="0 0 693 693"></svg>
-      <div id="p1" class="abs patch"></div><div id="beam" class="abs"></div>
+<div data-hf-id="hf-7n1z" id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
+  <div data-hf-id="hf-117o" id="bgclip" class="abs clip" data-start="0" data-duration="70.0" data-track-index="0"><div data-hf-id="hf-7x5s" id="bg-grid" class="grid"></div><div data-hf-id="hf-r1g1" id="dust"></div></div>
+  <div data-hf-id="hf-vkyj" id="qrclip" class="abs clip" data-start="0" data-duration="65.0" data-track-index="1"><div data-hf-id="hf-j427" id="world"><div data-hf-id="hf-plaw" id="tilt"><div data-hf-id="hf-lflk" id="mesa" class="abs"></div><div data-hf-id="hf-k0q2" id="sombra" class="abs"></div><div data-hf-id="hf-qqtu" id="soporte" class="abs"></div>
+    <div data-hf-id="hf-3ztn" id="qrwrap" class="abs">
+      <svg data-hf-id="hf-tzsp" id="qrsvg" width="693" height="693" viewBox="0 0 693 693"></svg>
+      <div data-hf-id="hf-oa7d" id="p1" class="abs patch"></div><div data-hf-id="hf-r4dr" id="beam" class="abs"></div>
     </div>
-    <svg id="cono" class="abs" width="1080" height="1920" viewBox="0 0 1080 1920"><defs><linearGradient id="gcono" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFB703" stop-opacity=".65"/><stop offset="1" stop-color="#FFB703" stop-opacity="0"/></linearGradient></defs><polygon points="640,1256 250,650 870,650" fill="url(#gcono)"/></svg>
-    <div id="bits" class="abs"></div>
-    <div id="cel" class="abs">
-      <div class="notch"></div>
-      <div id="vf"><div id="vfqr"></div><i class="vfc tl"></i><i class="vfc tr"></i><i class="vfc bl"></i><i class="vfc br"></i></div>
-      <div id="dec">✓ DECODIFICADO</div>
-      <div id="res"><div class="row"><i></i>MENSAJE</div><div class="row"><i></i>CONTACTO</div><div class="row"><i></i>WEB</div></div>
+    <svg data-hf-id="hf-tfms" id="cono" class="abs" width="1080" height="1920" viewBox="0 0 1080 1920"><defs data-hf-id="hf-mh0t"><linearGradient data-hf-id="hf-ayfm" id="gcono" x1="0" y1="1" x2="0" y2="0"><stop data-hf-id="hf-8wou" offset="0" stop-color="#FFB703" stop-opacity=".65"/><stop data-hf-id="hf-cn7u" offset="1" stop-color="#FFB703" stop-opacity="0"/></linearGradient></defs><polygon data-hf-id="hf-4mnl" points="640,1256 250,650 870,650" fill="url(#gcono)"/></svg>
+    <div data-hf-id="hf-glvy" id="bits" class="abs"></div>
+    <div data-hf-id="hf-famm" id="cel" class="abs">
+      <div data-hf-id="hf-8kjy" class="notch"></div>
+      <div data-hf-id="hf-yylx" id="vf"><div data-hf-id="hf-sxiw" id="vfqr"></div><i data-hf-id="hf-j5kp" class="vfc tl"></i><i data-hf-id="hf-oqlj" class="vfc tr"></i><i data-hf-id="hf-pivj" class="vfc bl"></i><i data-hf-id="hf-2t1t" class="vfc br"></i></div>
+      <div data-hf-id="hf-czsy" id="dec">✓ DECODIFICADO</div>
+      <div data-hf-id="hf-41j1" id="res"><div data-hf-id="hf-tvzp" class="row"><i data-hf-id="hf-wt6k"></i>MENSAJE</div><div data-hf-id="hf-4yzh" class="row"><i data-hf-id="hf-zeb8"></i>CONTACTO</div><div data-hf-id="hf-6yje" class="row"><i data-hf-id="hf-y7e5"></i>WEB</div></div>
     </div>
-</div></div><div id="fog"></div></div>
-  <div id="lbls" class="clip" data-start="0" data-duration="65.0" data-track-index="2"></div>
-  <div id="cta" class="clip" data-start="65.0" data-duration="5" data-track-index="3">
-    <div id="fol"><span id="fol1">＋ Seguir</span><span id="fol2">✓ Siguiendo</span></div>
-    <div id="sheet"><div class="h">Enviar a</div>
-      <div class="av" style="left:75px">A</div><div class="av" style="left:285px">B</div><div class="av" style="left:495px">C</div><div class="av" style="left:705px">D</div>
-      <div id="ring"></div><div id="sent">✓ Enviado</div></div>
+</div></div><div data-hf-id="hf-yp7v" id="fog"></div></div>
+  <div data-hf-id="hf-6x7q" id="lbls" class="clip" data-start="0" data-duration="65.0" data-track-index="2"></div>
+<!-- clips propios del episodio (el cierre es común: comun/cierre.html) -->
+
+  <div data-hf-id="hf-ks23" id="cierre" class="clip" data-start="65.0" data-duration="5.0" data-track-index="3">
+    <div data-hf-id="hf-n2eb" id="mock"><div data-hf-id="hf-n59p" class="gridm"></div>
+      <div data-hf-id="hf-gvf1" id="rail">
+        <svg data-hf-id="hf-ulu9" viewBox="0 0 24 24"><path data-hf-id="hf-olm6" d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        <svg data-hf-id="hf-1tol" viewBox="0 0 24 24"><path data-hf-id="hf-g4au" d="M4 5h16v11H9l-5 4z"/></svg>
+        <svg data-hf-id="hf-1j41" id="ico3" viewBox="0 0 24 24"><path data-hf-id="hf-t1fi" d="M3 11l18-8-8 18-2-8z"/></svg>
+      </div>
+      <div data-hf-id="hf-xr5b" id="perfil"><div data-hf-id="hf-drx5" id="avlogo" style="background-image:url(data:image/png;base64,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)"></div><div data-hf-id="hf-we0q" id="user">asifunciona.reel</div>
+        <div data-hf-id="hf-c2bw" id="seguir"><span data-hf-id="hf-mghp" id="sig1">Seguir</span><span data-hf-id="hf-bpcu" id="sig2">Siguiendo</span></div></div>
+      <div data-hf-id="hf-m6n4" id="cap2">Por qué un QR rayado sigue funcionando…</div>
+      <div data-hf-id="hf-lijx" id="hoja"><div data-hf-id="hf-8psh" class="asa"></div>
+        <div data-hf-id="hf-f1dx" id="busca"><svg data-hf-id="hf-30lo" viewBox="0 0 24 24"><circle data-hf-id="hf-1u1w" cx="10" cy="10" r="6"/><path data-hf-id="hf-eaat" d="M15 15l5 5"/></svg>Buscar</div>
+        <div data-hf-id="hf-cczd" id="amigos"></div>
+        <div data-hf-id="hf-ydn1" id="msg">Escribe un mensaje…</div>
+        <div data-hf-id="hf-wea2" id="enviar"><span data-hf-id="hf-ts71" id="env1">Enviar</span><span data-hf-id="hf-7yj8" id="env2">✓ Enviado</span></div></div>
+      <div data-hf-id="hf-2s6s" class="rg" id="ringS"></div><div data-hf-id="hf-hsra" class="rg" id="ringI"></div><div data-hf-id="hf-qd5q" class="rg" id="ringA"></div><div data-hf-id="hf-56re" class="rg" id="ringE"></div>
+    </div>
   </div>
 
-  <div id="cap" class="clip" data-start="0" data-duration="70.0" data-track-index="5"></div>
-  <audio id="voz" src="voz.wav" data-start="0" data-duration="69.464" data-track-index="9" data-volume="1"></audio>
+  <div data-hf-id="hf-q6lu" id="cap" class="clip" data-start="0" data-duration="70.0" data-track-index="5"></div>
+  <audio data-hf-id="hf-jn6q" id="voz" src="voz.wav" data-start="0" data-duration="69.464" data-track-index="9" data-volume="1"></audio>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script>
   const tl=gsap.timeline({paused:true});
@@ -202,9 +233,6 @@ G.forEach((g,gi)=>{
   tl.to('#beam',{opacity:1,duration:.2},C(18,.1)).to('#beam',{y:815,duration:1.5,ease:'power1.inOut'},C(18,.1)+.1)   // 7 haz de escaneo
     .to('#beam',{y:0,duration:1.5,ease:'power1.inOut'},CL[19][0]).to('#beam',{opacity:0,duration:.3},CL[19][0]+1.6);
   tl.to('#d',{fill:'#FFB703',duration:.4},C(21,.15)).to('#d rect:nth-child(3n)',{fill:'#4B5BFF',duration:.3,stagger:.02},C(21,.3));   // 8
-  tl.from('#fol',{y:-40,opacity:0,duration:.4},CTA+.1).to('#fol1',{opacity:0,duration:.2},C(22,.12)).to('#fol2',{opacity:1,duration:.2},C(22,.12))   // 9 CTA
-    .from('#sheet',{y:300,opacity:0,duration:.6},CTA+.3).from('.av',{scale:0,duration:.3,stagger:.1},CTA+.9)
-    .fromTo('#ring',{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},C(22,.42)).to('#sent',{opacity:1,duration:.3},C(22,.55));
 
   // ================= FASE 2 =================
   // perspectiva: el QR llega torcido, las esquinas lo «enganchan» y se endereza; luego sigue inclinado en 3D
@@ -249,6 +277,37 @@ G.forEach((g,gi)=>{
   tl.to('#cel',{y:900,duration:1.0,ease:'power2.in'},T(7,0));
   // el visor «engancha» el código: las cuatro esquinas de enfoque se cierran
   tl.fromTo('.vfc',{scale:1.6,opacity:0},{scale:1,opacity:1,duration:.35,ease:'back.out(2)',stagger:.06},ts+.9);
+
+// comun: cierre. «Sígueme» → aparece el perfil; «envíaselo» → hoja de compartir; «amigo» → se elige un contacto; después «Enviado».
+// Los tiempos salen de las palabras reales de CAPS (si no las encuentra, usa valores de reserva).
+(()=>{
+  const limpia=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\W/g,'').toLowerCase();
+  const cuando=(re,def)=>{const x=CAPS.find(c=>re.test(limpia(c.w)));return x?x.s:def;};
+  const tS=cuando(/^(sigueme|seguime)/,CTA+.1), tE0=cuando(/^enviaselo/,tS+1.2), tA0=cuando(/^amigo/,tE0+1.5);
+  // si la voz va muy rápida, cada paso espera a que el anterior se vea (≥ 1 s para el perfil, ≥ 0,9 s para elegir contacto)
+  const tE=Math.max(tE0,tS+1.3), tA=Math.max(tA0,tE+1.05), tSend=Math.min(tA+.9,TOT-1.0);
+  // avatares originales, alternando chico / chica
+  const AV=[['chico','#f2c9a5','#2b1b14','#4B5BFF','Mati'],['chica','#8d5a3b','#1c1c1c','#FFB703','Sofi'],['chico','#e0ac82','#6b3f1d','#2fb8a3','Nacho'],['chica','#f2c9a5','#a0522d','#e0556f','Vale']];
+  const cara=(t,piel,pelo,camisa)=>`<svg viewBox="0 0 100 100" width="140" height="140"><circle cx="50" cy="50" r="50" fill="#2b3148"/>${t==='chica'?`<path d="M20 78 Q14 26 50 20 Q86 26 80 78 Z" fill="${pelo}"/>`:''}<ellipse cx="50" cy="98" rx="34" ry="26" fill="${camisa}"/><rect x="43" y="60" width="14" height="14" rx="5" fill="${piel}"/><circle cx="50" cy="46" r="21" fill="${piel}"/>${t==='chica'?`<path d="M29 44 Q50 14 71 44 Q50 34 29 44Z" fill="${pelo}"/>`:`<path d="M28 44 Q28 22 50 22 Q72 22 72 44 Q62 34 50 36 Q38 34 28 44Z" fill="${pelo}"/>`}<circle cx="43" cy="48" r="2.6" fill="#1a1410"/><circle cx="57" cy="48" r="2.6" fill="#1a1410"/><path d="M43 56 Q50 62 57 56" stroke="#1a1410" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`;
+  const am=document.getElementById('amigos');
+  AV.forEach((a,i)=>{const d=document.createElement('div');d.className='amigo';d.style.left=(12+i*225)+'px';d.innerHTML=`<div class="circ">${cara(a[0],a[1],a[2],a[3])}</div><b>${a[4]}</b>`+(i===0?'<div id="chk">✓</div>':'');am.appendChild(d);});
+  const ring=(id,t0)=>tl.fromTo(id,{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},t0);
+  // llegada: viene del zoom-through de la escena anterior
+  tl.from('#mock',{scale:1.45,opacity:0,filter:'blur(10px)',duration:.8,ease:'power3.out'},CTA);
+  // «Sígueme»: aparece el perfil y el botón pasa a «Siguiendo»
+  tl.from('#perfil',{y:40,opacity:0,duration:.5,ease:'back.out(1.6)'},Math.max(CTA+.2,tS));
+  ring('#ringS',tS+.55);
+  tl.to('#sig1',{opacity:0,duration:.15},tS+.6).to('#sig2',{opacity:1,duration:.15},tS+.6).to('#seguir',{backgroundColor:'#3a3f5c',borderColor:'#3a3f5c',duration:.2},tS+.6);
+  // «envíaselo»: se toca el icono de compartir y sube la hoja
+  ring('#ringI',tE-.35);
+  tl.to('#ico3',{scale:1.3,stroke:'#FFB703',duration:.2},tE-.35).to('#ico3',{scale:1,duration:.2},tE-.15);
+  tl.fromTo('#hoja',{y:700},{y:0,duration:.6,ease:'power3.out'},tE-.15).from('.amigo',{scale:0,duration:.3,stagger:.08},tE+.35);
+  // «amigo»: se elige el primer contacto; luego Enviar → Enviado
+  ring('#ringA',tA);
+  tl.to('#chk',{opacity:1,duration:.25},tA+.15);
+  ring('#ringE',tSend);
+  tl.to('#env1',{opacity:0,duration:.15},tSend+.3).to('#env2',{opacity:1,duration:.15},tSend+.3).to('#enviar',{backgroundColor:'#3a3f5c',duration:.2},tSend+.3);
+})();
 
   window.__timelines=window.__timelines||{};window.__timelines['qr-ep01']=tl;
   </script>

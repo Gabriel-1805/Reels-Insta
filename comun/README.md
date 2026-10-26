@@ -9,6 +9,7 @@
 | `palabras.py` + `palabras_clave.txt` | Recuadros: lista fija (la del episodio + la común) y, si una cláusula no tiene ninguna, la palabra de contenido más larga |
 | `alinear.py` | Alinea `guion.txt` con `voz.wav` usando las pausas reales del audio → `tiempos.json` |
 | `construir.py` | Arma `index.html` del episodio juntando `comun/` + lo propio del episodio |
+| `cierre.html/css/js` + `marca.json` + `marca/logo-avatar.png` | Escena de cierre común: al decir «Sígueme» aparece el perfil de la cuenta; al decir «envíaselo» sube la hoja de compartir con avatares chico/chica alternados; «amigo» elige un contacto y termina en «Enviado». Los tiempos salen de las palabras de la voz |
 | `probar.js` | Banco de pruebas de la línea de tiempo (errores, cámara, animaciones que se pisan, determinismo). No ve imágenes |
 | `patrones.md` | Recetas visuales validadas y dónde está su código |
 
@@ -40,3 +41,10 @@ npm install --no-save gsap jsdom        # una vez
 node comun/probar.js episodios/ep01-qr/index.html
 ```
 Debe decir `animaciones que se pisan: 0` y `determinista: true`. Después, siempre, mirar el preview.
+
+## Cierre común
+- Cambiar usuario de la cuenta: `comun/marca.json`. Cambiar el logo: reemplazar `comun/marca/logo-avatar.png` (cuadrado, se incrusta solo).
+- Título que aparece bajo el perfil: `episodios/epNN/cierre.json` → `{"titulo":"..."}`.
+- El guion de cada episodio debe terminar con la frase fija: «Sígueme y envíaselo a ese amigo que…».
+- Si la voz va muy rápida, el cierre espera a que cada paso se vea (perfil ≥ 1,3 s antes de la hoja; contacto ≥ 1 s después).
+- Nombres y caras de los avatares: originales (Mati, Sofi, Nacho, Vale), alternando chico y chica; editar la lista `AV` en `cierre.js`.

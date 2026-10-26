@@ -27,3 +27,6 @@ Cada receta dice qué cuenta, dónde está el código y qué cuidar. Lo genéric
 3. Sitúa cada evento con `T(escena,fracción)` o `C(cláusula,fracción)`, nunca con segundos fijos.
 4. `python3 comun/construir.py episodios/epNN` y `node comun/probar.js episodios/epNN/index.html`.
 5. Mira el preview: la prueba no ve imágenes.
+
+## Cierre común (`comun/cierre.*`)
+Marco de celular con iconos propios, perfil de la cuenta (logo + usuario + Seguir→Siguiendo) y hoja de compartir con avatares originales chico/chica alternados. Se dispara con las palabras de la voz (`Sígueme`, `envíaselo`, `amigo`). No usa logos ni interfaz de terceros.

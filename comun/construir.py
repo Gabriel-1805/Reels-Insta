@@ -2,7 +2,7 @@
 """Arma episodios/<ep>/index.html a partir de comun/ + los archivos propios del episodio.
 Uso: python3 comun/construir.py episodios/ep01-qr
 Necesita en la carpeta del episodio: tiempos.json (alinear.py), escena.css, escena.mundo.html, escena.clips.html, escena.js, palabras_clave.txt"""
-import sys, json, math, re
+import sys, json, math, re, base64, html as H
 from pathlib import Path
 raiz=Path(__file__).parent; ep=Path(sys.argv[1]); sys.path.insert(0,str(raiz))
 from palabras import marcar, limpia
@@ -14,15 +14,20 @@ CTA=round(ps[-1],1); TOT=float(math.ceil(T['dur']+0.5))
 SC=[[ps[i],ps[i+1]] for i in range(len(ps)-2)]+[[ps[-2],CTA],[CTA,TOT]]
 claves={limpia(l) for f in (raiz/'palabras_clave.txt',ep/'palabras_clave.txt') if f.exists() for l in rd(f).splitlines() if l.strip() and not l.startswith('#')}
 res=marcar(caps,claves)
+marca=json.loads(rd(raiz/'marca.json')); cj=json.loads(rd(ep/'cierre.json')) if (ep/'cierre.json').exists() else {}
+logo='data:image/png;base64,'+base64.b64encode((raiz/'marca'/'logo-avatar.png').read_bytes()).decode()
+CIERRE_HTML=(rd(raiz/'cierre.html').replace('__USUARIO__',H.escape(marca['usuario'])).replace('__TITULO__',H.escape(cj.get('titulo','')))
+             .replace('__LOGO__',logo).replace('__CDUR__',str(round(TOT-CTA,2))))
 html=f"""<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><title>Así funciona</title>
 <style>
-{rd(raiz/'tokens.css')}{rd(ep/'escena.css')}</style></head><body>
+{rd(raiz/'tokens.css')}{rd(raiz/'cierre.css')}{rd(ep/'escena.css')}</style></head><body>
 <div id="stage" data-composition-id="qr-ep01" data-start="0" data-width="1080" data-height="1920">
   <div id="bgclip" class="abs clip" data-start="0" data-duration="{TOT}" data-track-index="0"><div id="bg-grid" class="grid"></div><div id="dust"></div></div>
   <div id="qrclip" class="abs clip" data-start="0" data-duration="{CTA}" data-track-index="1"><div id="world"><div id="tilt">{rd(ep/'escena.mundo.html')}</div></div><div id="fog"></div></div>
   <div id="lbls" class="clip" data-start="0" data-duration="{CTA}" data-track-index="2"></div>
 {rd(ep/'escena.clips.html')}
+{CIERRE_HTML}
   <div id="cap" class="clip" data-start="0" data-duration="{TOT}" data-track-index="5"></div>
   <audio id="voz" src="voz.wav" data-start="0" data-duration="{T['dur']}" data-track-index="9" data-volume="1"></audio>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -36,6 +41,7 @@ html=f"""<!doctype html>
 {rd(raiz/'etiquetas.js')}
 {rd(raiz/'subtitulos.js')}
 {rd(ep/'escena.js')}
+{rd(raiz/'cierre.js')}
   window.__timelines=window.__timelines||{{}};window.__timelines['qr-ep01']=tl;
   </script>
 </div></body></html>

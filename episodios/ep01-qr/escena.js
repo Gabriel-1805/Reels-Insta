@@ -56,9 +56,6 @@
   tl.to('#beam',{opacity:1,duration:.2},C(18,.1)).to('#beam',{y:815,duration:1.5,ease:'power1.inOut'},C(18,.1)+.1)   // 7 haz de escaneo
     .to('#beam',{y:0,duration:1.5,ease:'power1.inOut'},CL[19][0]).to('#beam',{opacity:0,duration:.3},CL[19][0]+1.6);
   tl.to('#d',{fill:'#FFB703',duration:.4},C(21,.15)).to('#d rect:nth-child(3n)',{fill:'#4B5BFF',duration:.3,stagger:.02},C(21,.3));   // 8
-  tl.from('#fol',{y:-40,opacity:0,duration:.4},CTA+.1).to('#fol1',{opacity:0,duration:.2},C(22,.12)).to('#fol2',{opacity:1,duration:.2},C(22,.12))   // 9 CTA
-    .from('#sheet',{y:300,opacity:0,duration:.6},CTA+.3).from('.av',{scale:0,duration:.3,stagger:.1},CTA+.9)
-    .fromTo('#ring',{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},C(22,.42)).to('#sent',{opacity:1,duration:.3},C(22,.55));
 
   // ================= FASE 2 =================
   // perspectiva: el QR llega torcido, las esquinas lo «enganchan» y se endereza; luego sigue inclinado en 3D

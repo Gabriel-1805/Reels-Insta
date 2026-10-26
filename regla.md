@@ -3,9 +3,9 @@
 Especificación viva para producir episodios de divulgación en formato vertical, renderizados con HyperFrames.
 Los patrones salen de un análisis de un video de referencia. **Todo el contenido (guion, textos, gráficos) es original.**
 
-Versión: **v0.4.1** · Fases 1 y 2 y el cierre común validados en el Episodio 1 · Los valores `TBD` se completan al verificarlos.
+Versión: **v0.5** · Fases 1, 2 y 3 y el cierre común validados en el Episodio 1 · Los valores `TBD` se completan al verificarlos.
 
-Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas · **v0.4.1 cierre fijo común con perfil de la cuenta y hoja de compartir.**
+Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas · v0.4.1 cierre fijo común con perfil de la cuenta y hoja de compartir · **v0.5 sonido: solo voz y efectos (sin música), whooshes graves, sonidos del QR electrónicos, mezcla automática.**
 
 ---
 
@@ -113,11 +113,22 @@ Todo el contenido vive dentro de un «mundo» (`#world`) y se anima la cámara, 
 
 ---
 
-## 7. Audio
+## 7. Audio y sonido (Fase 3, validada)
 
-- Voz limpia y sin música de fondo. Objetivo **−14 LUFS**, pico **≤ −1 dBFS** (con voz muy comprimida el pico limita: −14,7 LUFS es aceptable). Normalizar en dos pasadas (`loudnorm linear=true`) sin cambiar la duración.
+**Decisión del proyecto: solo voz y efectos, sin música de fondo.**
+
+- Voz limpia y sin música. Objetivo **−14 LUFS**, pico **≤ −1,5 dBTP** (con voz muy comprimida, −14,7 LUFS es aceptable).
 - Voz: propia, o TTS gratuito local (**Kokoro**, voz `em_alex`).
-- Música y efectos: `TBD` (Fase 3).
+- Todo el sonido se mezcla fuera del navegador en un solo `audio.wav` (voz + efectos). `index.html` usa `audio.wav` si existe, si no `voz.wav`. **Subir `audio.wav` al repo** para que Actions lo use.
+- **Los efectos salen de la línea de tiempo:** `sfx(t,'nombre',vol,dur)`; `cam()`, `tilt()`, `etiquetas()` y el cierre registran los suyos. Así el sonido sigue a la imagen y a las palabras de la voz, no a segundos fijos.
+- **Efectos originales sintetizados con numpy** (`comun/sonido/efectos.py`): sin muestras de terceros, sin problemas de licencia.
+- **Whooshes graves y suaves:** centro ≈ 150–430 Hz, ataque lento, cuerpo en graves; nunca agudos (el barrido del zoom-through debe ser el más grave, no el más brillante).
+- **Sonidos del QR/tecnología electrónicos:** onda cuadrada + reducción de resolución (clics de etiquetas, lock de esquinas, haz de escaneo, bits, confirmaciones). Los físicos (rayón, mancha, golpes) siguen siendo orgánicos.
+- Niveles respecto a la voz en `GANANCIA` (dB); los efectos bajan 3 dB mientras habla la voz.
+- **Máximo ~6 señales por segundo** (el informe de `mezclar.py` lo avisa). Los grupos largos (muchos «pop» o «tick» seguidos) se aclaran: uno de cada dos o tres.
+- Comando: `python3 comun/sonido/hacer_sonido.py episodios/epNN` (una vez antes: `npm install --no-save gsap jsdom`).
+- **Sin música es una decisión, no una carencia:** si algún día se añade, debe quedar ≈ 14 dB bajo la voz y bajar 8 dB más mientras se habla.
+- La prueba mide niveles y tiempos, **no oye**: escuchar siempre el preview.
 
 ---
 
@@ -129,9 +140,11 @@ Reels-Insta/
 ├── .github/workflows/render.yml
 ├── comun/   tokens.css camara.js subtitulos.js etiquetas.js palabras.py palabras_clave.txt
 │            cierre.html cierre.css cierre.js marca.json marca/logo-avatar.png
+│            sonido.js sonido/{efectos.py,mezclar.py,extraer.js,hacer_sonido.py,efectos/*.wav}
 │            alinear.py construir.py probar.js README.md patrones.md
 └── episodios/epNN-tema/
     ├── guion.txt guion.md voz.wav tiempos.json palabras_clave.txt cierre.json
+    ├── audio.wav cues.json     # GENERADOS por hacer_sonido.py (voz + efectos)
     ├── escena.css escena.mundo.html escena.clips.html escena.js   # lo propio del tema
     └── index.html            # GENERADO por construir.py (no se edita a mano)
 ```
@@ -145,6 +158,7 @@ Reels-Insta/
 3. `python3 comun/alinear.py episodios/epNN-tema`
 4. Editar `escena.*` y `palabras_clave.txt` (recetas en `comun/patrones.md`).
 5. `python3 comun/construir.py episodios/epNN-tema`
+5b. `python3 comun/sonido/hacer_sonido.py episodios/epNN-tema` (añade `sfx(...)` a `escena.js` para lo propio del tema)
 6. `node comun/probar.js episodios/epNN-tema/index.html` (0 solapes, determinista)
 7. `npx hyperframes lint` → `preview` → commit/push.
 8. Actions → `render-video` → descargar el MP4.
@@ -183,7 +197,8 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 - [ ] Guion en tabla, ppm en rango, CTA corto, un solo registro de voz
 - [ ] Gancho de 3 s con pregunta o paradoja
 - [ ] El guion termina con «Sígueme y envíaselo a ese amigo que…» y hay pausa antes de «Sígueme»
-- [ ] Voz limpia, ≈ −14 LUFS, pico ≤ −1 dBFS
+- [ ] Voz limpia, ≈ −14 LUFS, pico ≤ −1,5 dBTP
+- [ ] Sonido: ≤ 6 señales por segundo, whooshes graves, sonidos del QR/tecnología electrónicos, escuchado en el preview
 - [ ] `alinear.py` con ≥ 90 % de cláusulas ancladas
 - [ ] Una palabra clave con recuadro por cláusula
 - [ ] Nada entra en la franja de subtítulos
@@ -199,14 +214,15 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 |---|---|---|
 | 1 | Cámara virtual, transiciones, subtítulos sincronizados, `comun/` | ✅ Validada (Ep. 1) |
 | 2 | Perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular, zoom a la pantalla | ✅ Validada (Ep. 1) |
-| 3 | Música de fondo y efectos de sonido | Siguiente (definir estilo) |
-| 4 | 3D real (three.js o clips externos) | Probar primero en una escena aislada |
+| 3 | Efectos de sonido (sin música): whooshes graves, sonidos electrónicos, mezcla automática | ✅ Validada (Ep. 1) |
+| 4 | 3D real (three.js o clips externos) | Siguiente: probar primero en una escena aislada |
 
 ---
 
 ## 14. Pendientes
 
-- [ ] Fase 3: estilo de música y efectos (whoosh en zooms, «tic» en números); revisar licencias
+- [ ] Fase 4: probar si three.js renderiza bien dentro de HyperFrames (escena piloto)
+- [ ] Episodio 2: comprobar que `comun/` (cámara, subtítulos, cierre, sonido) se reutiliza sin tocarla
 - [ ] Revisar con otros episodios que el cierre se ve bien en el preview (zona inferior de la plataforma)
 - [ ] Adaptar el TTS (Kokoro) para leer `guion.txt` y generar `voz.wav` dentro de `comun/`
 - [ ] Resolver las advertencias de subcomposición del lint

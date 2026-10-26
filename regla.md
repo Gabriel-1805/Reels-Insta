@@ -3,9 +3,9 @@
 Especificación viva para producir episodios de divulgación en formato vertical, renderizados con HyperFrames.
 Los patrones salen de un análisis de un video de referencia. **Todo el contenido (guion, textos, gráficos) es original.**
 
-Versión: **v0.4** · Fases 1 y 2 validadas en el Episodio 1 · Los valores `TBD` se completan al verificarlos.
+Versión: **v0.4.1** · Fases 1 y 2 y el cierre común validados en el Episodio 1 · Los valores `TBD` se completan al verificarlos.
 
-Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · **v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas.**
+Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas · **v0.4.1 cierre fijo común con perfil de la cuenta y hoja de compartir.**
 
 ---
 
@@ -87,6 +87,22 @@ Todo el contenido vive dentro de un «mundo» (`#world`) y se anima la cámara, 
 
 ---
 
+## 5.1 Cierre fijo (común a todos los videos, validado)
+
+- **Todos los episodios terminan con la misma frase:** «Sígueme y envíaselo a ese amigo que…» (se completa con el tema del episodio).
+- **Registro de voz: tuteo** («Sígueme», «envíaselo»). Los subtítulos deben coincidir con lo que se escucha, aunque quien guiona use voseo.
+- La escena vive en `comun/cierre.*` y se dispara con las **palabras reales de la voz**:
+  - «Sígueme» → aparece el perfil de la cuenta (logo, usuario) y el botón Seguir pasa a Siguiendo.
+  - «envíaselo» → se toca el icono de compartir y sube la hoja de compartir.
+  - «amigo» → se elige un contacto; después Enviar → «✓ Enviado».
+- **Avatares de la hoja:** ilustraciones originales, **alternando chico y chica** (Mati, Sofi, Nacho, Vale). Sin caras ni nombres de terceros.
+- **Interfaz propia:** marco de celular e iconos dibujados por nosotros; no se reproduce el logo ni la interfaz de Instagram.
+- Cuenta: `comun/marca.json` (usuario) y `comun/marca/logo-avatar.png` (logo sobre `--bg`). Título bajo el perfil: `cierre.json` de cada episodio.
+- Si la voz va muy rápida, el cierre espera a que cada paso se vea (perfil ≥ 1,3 s antes de la hoja). **Al grabar, dejar una pausa de ≥ 0,5 s antes de «Sígueme» y frases cortas.**
+- Cuenta del proyecto: **asifunciona.reel**.
+
+---
+
 ## 6. Ritmo y guion
 
 - Gancho en los primeros 3 s con una pregunta o paradoja visual.
@@ -112,9 +128,10 @@ Reels-Insta/
 ├── regla.md
 ├── .github/workflows/render.yml
 ├── comun/   tokens.css camara.js subtitulos.js etiquetas.js palabras.py palabras_clave.txt
+│            cierre.html cierre.css cierre.js marca.json marca/logo-avatar.png
 │            alinear.py construir.py probar.js README.md patrones.md
 └── episodios/epNN-tema/
-    ├── guion.txt guion.md voz.wav tiempos.json palabras_clave.txt
+    ├── guion.txt guion.md voz.wav tiempos.json palabras_clave.txt cierre.json
     ├── escena.css escena.mundo.html escena.clips.html escena.js   # lo propio del tema
     └── index.html            # GENERADO por construir.py (no se edita a mano)
 ```
@@ -165,6 +182,7 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 
 - [ ] Guion en tabla, ppm en rango, CTA corto, un solo registro de voz
 - [ ] Gancho de 3 s con pregunta o paradoja
+- [ ] El guion termina con «Sígueme y envíaselo a ese amigo que…» y hay pausa antes de «Sígueme»
 - [ ] Voz limpia, ≈ −14 LUFS, pico ≤ −1 dBFS
 - [ ] `alinear.py` con ≥ 90 % de cláusulas ancladas
 - [ ] Una palabra clave con recuadro por cláusula
@@ -189,6 +207,7 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 ## 14. Pendientes
 
 - [ ] Fase 3: estilo de música y efectos (whoosh en zooms, «tic» en números); revisar licencias
+- [ ] Revisar con otros episodios que el cierre se ve bien en el preview (zona inferior de la plataforma)
 - [ ] Adaptar el TTS (Kokoro) para leer `guion.txt` y generar `voz.wav` dentro de `comun/`
 - [ ] Resolver las advertencias de subcomposición del lint
 - [ ] Verificar los porcentajes de corrección de errores (L 7 / M 15 / Q 25 / H 30 %) en ISO/IEC 18004

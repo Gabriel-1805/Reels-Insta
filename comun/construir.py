@@ -18,6 +18,7 @@ marca=json.loads(rd(raiz/'marca.json')); cj=json.loads(rd(ep/'cierre.json')) if 
 logo='data:image/png;base64,'+base64.b64encode((raiz/'marca'/'logo-avatar.png').read_bytes()).decode()
 CIERRE_HTML=(rd(raiz/'cierre.html').replace('__USUARIO__',H.escape(marca['usuario'])).replace('__TITULO__',H.escape(cj.get('titulo','')))
              .replace('__LOGO__',logo).replace('__CDUR__',str(round(TOT-CTA,2))))
+AUDIO='audio.wav' if (ep/'audio.wav').exists() else 'voz.wav'; AUDIO_DUR=TOT if AUDIO=='audio.wav' else T['dur']
 html=f"""<!doctype html>
 <html lang="es"><head><meta charset="utf-8"><title>Así funciona</title>
 <style>
@@ -29,7 +30,7 @@ html=f"""<!doctype html>
 {rd(ep/'escena.clips.html')}
 {CIERRE_HTML}
   <div id="cap" class="clip" data-start="0" data-duration="{TOT}" data-track-index="5"></div>
-  <audio id="voz" src="voz.wav" data-start="0" data-duration="{T['dur']}" data-track-index="9" data-volume="1"></audio>
+  <audio id="voz" src="{AUDIO}" data-start="0" data-duration="{AUDIO_DUR}" data-track-index="9" data-volume="1"></audio>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script>
   const tl=gsap.timeline({{paused:true}});
@@ -37,6 +38,7 @@ html=f"""<!doctype html>
   const T=(i,f)=>SC[i][0]+f*(SC[i][1]-SC[i][0]);
   const C=(k,f=0)=>CL[k][0]+f*(CL[k][1]-CL[k][0]);
   const CAPS={json.dumps(caps,ensure_ascii=False)};
+{rd(raiz/'sonido.js')}
 {rd(raiz/'camara.js')}
 {rd(raiz/'etiquetas.js')}
 {rd(raiz/'subtitulos.js')}

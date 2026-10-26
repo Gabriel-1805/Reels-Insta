@@ -100,3 +100,18 @@
   tl.to('#cel',{y:900,duration:1.0,ease:'power2.in'},T(7,0));
   // el visor «engancha» el código: las cuatro esquinas de enfoque se cierran
   tl.fromTo('.vfc',{scale:1.6,opacity:0},{scale:1,opacity:1,duration:.35,ease:'back.out(2)',stagger:.06},ts+.9);
+
+  // ================= SONIDO (señales del episodio) =================
+  sfx(.05,'pop',.8);sfx(.9,'scratch',.9);sfx(1.5,'splat',.8);
+  sfx(T(2,.12),'shimmer',.8,.58*(SC[2][1]-SC[2][0]));
+  sfx(C(5,0)-.2,'swoosh',.9,1.0);sfx(ts+.1,'beam',.9,1.3);sfx(ts+.9,'lock',.9);sfx(T(3,.22),'lock',.8);
+  for(let i=0;i<8;i+=2)sfx(tw+.2+i*.12,'tick',.4);
+  sfx(t3+1.1,'snap',1);
+  sfx(T(3,.97),'swoosh',.5,.8);
+  sfx(T(4,.05),'shimmer',.6,.8);sfx(T(4,.45),'shimmer',.5,.8);
+  sfx(CL[9][0]+.3,'scratch',.8);sfx(CL[10][0]+.1,'splat',.8);sfx(C(10,.55),'thud',.9);
+  for(let i=0;i<3;i++)sfx(CL[11][0]+.25+i*.2,'pop',.45);
+  sfx(C(14,.66),'thud',.9);
+  sfx(T(6,0),'swoosh',.9,1.1);sfx(C(15,.25),'confirm',.9);sfx(CL[16][0],'tick',1);sfx(CL[17][0],'tick',1);sfx(C(17,.55),'tick',1);
+  sfx(T(7,0),'swoosh',.5,1.0);sfx(C(18,.1)+.1,'beam',.9,1.5);sfx(CL[19][0],'beam',.9,1.5);
+  sfx(C(21,.15),'shimmer',.6,.8);

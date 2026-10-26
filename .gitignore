@@ -2,3 +2,7 @@
 voces/
 tmp/
 *.mp4
+node_modules/
+__pycache__/
+.thumbnails/
+.waveform-cache/

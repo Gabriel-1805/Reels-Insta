@@ -30,3 +30,8 @@ Cada receta dice qué cuenta, dónde está el código y qué cuidar. Lo genéric
 
 ## Cierre común (`comun/cierre.*`)
 Marco de celular con iconos propios, perfil de la cuenta (logo + usuario + Seguir→Siguiendo) y hoja de compartir con avatares originales chico/chica alternados. Se dispara con las palabras de la voz (`Sígueme`, `envíaselo`, `amigo`). No usa logos ni interfaz de terceros.
+
+## Sonido (`comun/sonido.js`, `comun/sonido/`)
+- Cada recurso visual debe llevar su `sfx(tiempo,'nombre',vol,dur)` junto al código que lo anima.
+- Mapa útil: zoom/alejamiento → `whoosh_in`/`whoosh_out` (automático en `cam()`); inclinación → `tilt` (automático); etiqueta → `tick` o `error` (automático); haz de escaneo → `beam`; algo se fija → `lock`/`snap`; algo aparece en pantalla → `pop`/`tick`; confirmación → `confirm`/`enviado`; brillo/datos → `shimmer`; golpe físico → `thud`/`tap`/`scratch`/`splat`.
+- Lecciones validadas: whooshes **graves** y suaves; tecnología **electrónica**; **sin música**; no más de ~6 señales por segundo; agrupar series (un «pop» de cada dos o tres).

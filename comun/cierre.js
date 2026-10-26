@@ -12,6 +12,9 @@
   const am=document.getElementById('amigos');
   AV.forEach((a,i)=>{const d=document.createElement('div');d.className='amigo';d.style.left=(12+i*225)+'px';d.innerHTML=`<div class="circ">${cara(a[0],a[1],a[2],a[3])}</div><b>${a[4]}</b>`+(i===0?'<div id="chk">✓</div>':'');am.appendChild(d);});
   const ring=(id,t0)=>tl.fromTo(id,{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},t0);
+  sfx(CTA,'impact',.7);sfx(Math.max(CTA+.2,tS),'pop',.8);sfx(tS+.55,'tap',.8);sfx(tS+.6,'confirm',.5);
+  sfx(tE-.35,'tap',.8);sfx(tE-.15,'swoosh',.8,.6);for(let i=0;i<4;i+=2)sfx(tE+.35+i*.08,'pop',.4);
+  sfx(tA,'tap',.8);sfx(tA+.15,'tick',1);sfx(tSend,'tap',.9);sfx(tSend+.3,'enviado',1);
   // llegada: viene del zoom-through de la escena anterior
   tl.from('#mock',{scale:1.45,opacity:0,filter:'blur(10px)',duration:.8,ease:'power3.out'},CTA);
   // «Sígueme»: aparece el perfil y el botón pasa a «Siguiendo»

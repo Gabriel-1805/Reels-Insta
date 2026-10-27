@@ -1,0 +1,25 @@
+﻿Bloque,Inicio (s),Fin (s),Duración (s),Tipo
+1,0.200,3.530,3.330,Actividad vocal detectada
+2,4.010,5.530,1.520,Actividad vocal detectada
+3,5.920,6.610,0.690,Actividad vocal detectada
+4,6.890,9.120,2.230,Actividad vocal detectada
+5,9.550,10.040,0.490,Actividad vocal detectada
+6,10.220,11.410,1.190,Actividad vocal detectada
+7,11.870,13.400,1.530,Actividad vocal detectada
+8,13.690,17.780,4.090,Actividad vocal detectada
+9,18.190,20.240,2.050,Actividad vocal detectada
+10,20.730,21.450,0.720,Actividad vocal detectada
+11,21.770,23.030,1.260,Actividad vocal detectada
+12,23.380,27.350,3.970,Actividad vocal detectada
+13,27.920,30.340,2.420,Actividad vocal detectada
+14,30.610,35.010,4.400,Actividad vocal detectada
+15,35.400,37.580,2.180,Actividad vocal detectada
+16,37.990,39.860,1.870,Actividad vocal detectada
+17,40.450,43.440,2.990,Actividad vocal detectada
+18,44.040,45.590,1.550,Actividad vocal detectada
+19,46.080,47.310,1.230,Actividad vocal detectada
+20,47.820,51.300,3.480,Actividad vocal detectada
+21,51.480,51.710,0.230,Actividad vocal detectada
+
+Duración total (s),51.930
+Nota,Los bloques acústicos no son transcripción literal; verificar palabras contra el WAV.

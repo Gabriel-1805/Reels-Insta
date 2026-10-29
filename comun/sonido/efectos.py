@@ -84,13 +84,52 @@ def shimmer(d=.8):
         b=_bip(rng.choice([1200,1800,2400,3000,3600]),.04,.015)*rng.uniform(.3,1); i=int(rng.uniform(0,max(.01,d-.08))*SR); x[i:i+len(b)]+=b
     return _norm(x[:n]*np.minimum(1,(d-np.arange(n)/SR)/.1))
 
+_BOST={ # f0 inicio→fin (Hz), formantes de la vocal «a» (F1,F2,F3), aire en la voz, duración por defecto
+ 'm':dict(f0=(125,72),F=(700,1100,2500),aire=.30,d=2.3),     # chico: grave
+ 'f':dict(f0=(250,160),F=(850,1300,2900),aire=.25,d=2.0),    # chica: más aguda y suave
+ 'c':dict(f0=(185,100),F=(560,980,2300),aire=.60,d=1.8),     # chimpancé: ronco
+ 'd':dict(f0=(660,360),F=(900,1900,3200),aire=.20,d=1.6)}    # perro: gemido agudo
+def _ss(x,a,b): u=np.clip((x-a)/(b-a),0,1); return u*u*(3-2*u)
+def _flujo(p,Tp=.42,Tn=.16):
+    """Flujo glotal (Rosenberg): su derivada es la excitación natural de la voz, con la caída espectral de una voz real."""
+    return np.where(p<Tp,.5*(1-np.cos(np.pi*p/Tp)),np.where(p<Tp+Tn,np.cos(np.pi*(p-Tp)/(2*Tn)),0.0))
+def bostezo(d=None,gen='m'):
+    """Bostezo vocal: inhalación breve y poco ruidosa, «aaah» con tono que sube un poco y baja despacio (con aire sincronizado
+    con la glotis y formantes de /a/) y exhalación. Sin barridos de ruido: lo que se oye es voz, no viento."""
+    P=_BOST[gen]; d=d or P['d']; n=int(d*SR); t=np.arange(n)/SR; u=t/d; rng=np.random.default_rng(41)
+    v0=np.clip((u-.28)/.6,0,1)
+    f0=P['f0'][0]*(P['f0'][1]/P['f0'][0])**v0*(1+.07*np.sin(np.pi*np.clip(v0*4,0,1)))
+    f0=f0*(1+.010*np.sin(2*np.pi*5.0*t)+.006*np.sin(2*np.pi*2.3*t)+.006*np.cumsum(rng.standard_normal(n))/np.sqrt(n))
+    ph=(np.cumsum(f0)/SR)%1; fl=_flujo(ph)
+    exc=np.diff(fl,prepend=0.0); exc=exc/(np.abs(exc).max()+1e-9)
+    aire=_noise(d,43)*(.25+.75*(1-fl)); aire=aire/(np.abs(aire).max()+1e-9)
+    src=exc+P['aire']*.6*aire
+    k=_ss(u,.3,.9); F1,F2,F3=P['F']
+    banco=[np.full(n,float(f)) for f in (F1,F2,F3,F3*1.35)]; banco[0]=banco[0]*(1-.08*k); banco[1]=banco[1]*(1-.06*k)
+    voz=sum(g*_svf(src,fi,q) for g,fi,q in zip((1,.7,.45,.25),banco,(5.5,9,13,13)))
+    env=_ss(u,.26,.38)*(1-_ss(u,.62,.86))*(1+.25*np.sin(np.pi*np.clip((u-.3)/.2,0,1)))
+    voz=voz/(np.abs(voz).max()+1e-9)*env
+    ins=_svf(_noise(d,44),np.full(n,float(F1)),2.2)+.6*_svf(_noise(d,45),np.full(n,float(F2)),3.0)   # aire con color de vocal, SIN barrido
+    ins=ins/(np.abs(ins).max()+1e-9)*_ss(u,0,.2)*(1-_ss(u,.24,.34))*.28
+    ex=_svf(_noise(d,46),np.full(n,float(F1)),1.6); ex=ex/(np.abs(ex).max()+1e-9)*_ss(u,.7,.8)*(1-_ss(u,.88,1.0))*.22
+    return _norm(voz+ins+ex)
+def _muestra(nombre):
+    """Si existe comun/sonido/muestras/<nombre>.wav (grabado por ti o con licencia libre), se usa EN LUGAR del efecto sintetizado."""
+    f=Path(__file__).parent/'muestras'/f'{nombre}.wav'
+    if not f.exists(): return None
+    import subprocess
+    raw=subprocess.run(['ffmpeg','-v','error','-i',str(f),'-ac','1','-ar',str(SR),'-f','f32le','-'],capture_output=True,check=True).stdout
+    x=np.frombuffer(raw,dtype=np.float32).astype(float); a=np.where(np.abs(x)>np.abs(x).max()*.003)[0]
+    return _norm(x[a[0]:a[-1]+1]) if len(a) else None
 def crear(nombre,d=None):
-    f={'whoosh_in':lambda:whoosh(d or 1.0,True),'whoosh_out':lambda:whoosh(d or 1.0,False),'whoosh_through':lambda:whoosh_through(d or 1.4),
+    m=_muestra(nombre)
+    if m is not None: return m
+    f={'whoosh_in':lambda:whoosh(d or 1.0,True),'whoosh_out':lambda:whoosh(d or 1.0,False),'whoosh_through':lambda:whoosh_through(d or 1.4),'bostezo_m':lambda:bostezo(d,'m'),'bostezo_f':lambda:bostezo(d,'f'),'bostezo_c':lambda:bostezo(d,'c'),'bostezo_d':lambda:bostezo(d,'d'),
        'tilt':lambda:tilt(d or 1.0),'swoosh':lambda:swoosh(d or .8),'beam':lambda:beam(d or 1.3),'shimmer':lambda:shimmer(d or .8),
        'tick':tick,'pop':pop,'tap':tap,'confirm':confirm,'enviado':enviado,'impact':impact,'scratch':scratch,'splat':splat,'thud':thud,'snap':snap,'lock':lock,'error':error}
     return f[nombre]()
 # nivel de cada efecto respecto a la voz (dB): lo que se oye de fondo y lo que destaca
-GANANCIA={'whoosh_in':-12,'whoosh_out':-13,'whoosh_through':-10,'tilt':-17,'tick':-18,'error':-15,'pop':-17,'tap':-14,'confirm':-14,'enviado':-12,
+GANANCIA={'bostezo_m':-13,'bostezo_f':-13,'bostezo_c':-14,'bostezo_d':-15,'whoosh_in':-12,'whoosh_out':-13,'whoosh_through':-10,'tilt':-17,'tick':-18,'error':-15,'pop':-17,'tap':-14,'confirm':-14,'enviado':-12,
           'swoosh':-15,'impact':-11,'scratch':-15,'splat':-16,'shimmer':-19,'lock':-16,'snap':-15,'beam':-19,'thud':-13}
 def guardar(x,ruta):
     w=wave.open(str(ruta),'wb'); w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes((np.clip(x/ (np.abs(x).max()+1e-9)*.9,-1,1)*32767).astype(np.int16).tobytes()); w.close()

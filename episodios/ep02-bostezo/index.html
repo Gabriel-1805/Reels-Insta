@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Así funciona</title>
+<style>
+/* comun: colores de marca, escenario, subtítulos, etiquetas, máscara anti-choque */
+:root{--navy:#192653;--bg:#0B0F24;--blue:#4B5BFF;--amber:#FFB703;--dim:#8A93B8;--bad:#FF5A5F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#141c44,var(--bg) 70%);font-family:Montserrat,Inter,Arial,sans-serif;color:#fff}
+.abs{position:absolute}
+#bgclip{left:0;top:0;width:1080px;height:1920px}
+#qrclip{left:0;top:0;width:1080px;height:1920px;-webkit-mask-image:linear-gradient(180deg,transparent 430px,#000 530px);mask-image:linear-gradient(180deg,transparent 430px,#000 530px)}
+.grid{position:absolute;inset:-480px;background-image:linear-gradient(#ffffff0f 1px,transparent 1px),linear-gradient(90deg,#ffffff0f 1px,transparent 1px);background-size:60px 60px}
+#dust,#world{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:540px 960px}
+.dot{position:absolute;border-radius:50%;background:#9fb0ff}
+#cap{position:absolute;left:0;right:0;top:130px;height:290px}
+.chunk{position:absolute;left:0;right:0;top:0;text-align:center;font-size:72px;font-weight:600;line-height:1.3;opacity:0;visibility:hidden}
+.chunk span{color:var(--dim);display:inline-block;margin:0 10px;position:relative}
+.chunk span.key{border:4px solid var(--blue);padding:0 14px;border-radius:6px}
+.chunk span.key::before,.chunk span.key::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue)}
+.chunk span.key::before{left:-12px;top:-12px}.chunk span.key::after{right:-12px;bottom:-12px}
+#lbls .lb{position:absolute;left:50%;top:1340px;transform:translateX(-50%);width:max-content;max-width:980px;text-align:center;font-size:40px;font-weight:800;letter-spacing:1.5px;padding:16px 36px;border-radius:44px;background:rgba(11,15,36,.92);border:3px solid #ffffff22;opacity:0;visibility:hidden}
+.lbl-line{position:absolute;left:538px;top:1210px;width:4px;height:130px;transform-origin:50% 100%}
+.lbl-node{position:absolute;left:531px;top:1201px;width:18px;height:18px;border-radius:50%}
+#tilt{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#fog{position:absolute;left:0;top:430px;width:1080px;height:640px;background:linear-gradient(180deg,rgba(11,15,36,.92),rgba(11,15,36,0));opacity:0;pointer-events:none}
+/* comun: escena de cierre (perfil de la cuenta + hoja de compartir). Se reutiliza en todos los episodios */
+#cierre{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#mock{position:absolute;left:90px;top:470px;width:900px;height:960px;border-radius:70px;border:6px solid #2a3566;background:linear-gradient(180deg,#0e1330,#090c1f);overflow:hidden}
+.gridm{position:absolute;inset:0;background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:50px 50px}
+#rail{position:absolute;left:800px;top:70px;width:70px}
+#rail svg{display:block;width:56px;height:56px;margin:0 auto 34px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#perfil{position:absolute;left:40px;top:740px;width:820px;height:110px}
+#avlogo{position:absolute;left:0;top:5px;width:100px;height:100px;border-radius:50%;background-color:#fff;background-size:cover;background-position:center;border:3px solid #4B5BFF}
+#user{position:absolute;left:122px;top:30px;font-size:34px;font-weight:800;letter-spacing:.3px}
+#seguir{position:absolute;left:520px;top:24px;width:170px;height:56px;border-radius:14px;border:3px solid #fff;font-size:28px;font-weight:800}
+#seguir span,#enviar span{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+#sig2,#env2{opacity:0}
+#cap2{position:absolute;left:40px;top:860px;width:700px;font-size:28px;line-height:1.3;color:#cfd5ee}
+#hoja{position:absolute;left:0;top:330px;width:900px;height:630px;border-radius:50px 50px 0 0;background:#1d2238;border-top:3px solid #ffffff1f}
+#hoja .asa{position:absolute;left:390px;top:16px;width:120px;height:8px;border-radius:4px;background:#555a75}
+#busca{position:absolute;left:36px;top:48px;width:828px;height:64px;border-radius:16px;background:#2b3148;color:#8f95b3;font-size:28px;padding:15px 24px 0 78px}
+#busca svg{position:absolute;left:26px;top:16px;width:32px;height:32px;fill:none;stroke:#cfd5ee;stroke-width:2.4;stroke-linecap:round}
+.amigo{position:absolute;top:150px;width:200px;text-align:center}
+.amigo .circ{position:relative;width:140px;height:140px;margin:0 auto;border-radius:50%;overflow:hidden;background:#2b3148}
+.amigo b{display:block;margin-top:14px;font-size:28px;font-weight:600}
+#chk{position:absolute;left:128px;top:100px;width:44px;height:44px;border-radius:50%;background:#4B5BFF;border:4px solid #1d2238;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;opacity:0}
+#msg{position:absolute;left:36px;top:370px;width:828px;height:70px;border-bottom:2px solid #353b57;color:#8f95b3;font-size:28px;padding:18px 0 0 12px}
+#enviar{position:absolute;left:36px;top:470px;width:828px;height:96px;border-radius:22px;background:#4B5BFF;font-size:36px;font-weight:800}
+.rg{position:absolute;width:130px;height:130px;border-radius:50%;border:6px solid #FFB703;opacity:0}
+#ringS{left:580px;top:727px}#ringI{left:770px;top:213px}#ringA{left:47px;top:485px}#ringE{left:385px;top:783px}
+/* propio del episodio: personajes y objetos se crean desde escena.js */
+.nodo{fill:#4B5BFF}.enlace{stroke:#3d4a95;stroke-width:3;fill:none}.cerebro-f{fill:#141c44;stroke:#4B5BFF;stroke-width:5}
+</style></head><body>
+<div data-hf-id="hf-9kgn" id="stage" data-composition-id="ep02-bostezo" data-start="0" data-width="1080" data-height="1920">
+  <div data-hf-id="hf-ic6h" id="bgclip" class="abs clip" data-start="0" data-duration="53.0" data-track-index="0"><div data-hf-id="hf-7x5s" id="bg-grid" class="grid"></div><div data-hf-id="hf-r1g1" id="dust"></div></div>
+  <div data-hf-id="hf-ys6n" id="qrclip" class="abs clip" data-start="0" data-duration="47.8" data-track-index="1"><div data-hf-id="hf-j427" id="world"><div data-hf-id="hf-plaw" id="tilt"><div data-hf-id="hf-u0u9" id="esc" class="abs"></div>
+</div></div><div data-hf-id="hf-yp7v" id="fog"></div></div>
+  <div data-hf-id="hf-rwjm" id="lbls" class="clip" data-start="0" data-duration="47.8" data-track-index="2"></div>
+<!-- clips propios del episodio (el cierre es común: comun/cierre.html) -->
+
+  <div data-hf-id="hf-pc79" id="cierre" class="clip" data-start="47.8" data-duration="5.2" data-track-index="3">
+    <div data-hf-id="hf-n2eb" id="mock"><div data-hf-id="hf-n59p" class="gridm"></div>
+      <div data-hf-id="hf-gvf1" id="rail">
+        <svg data-hf-id="hf-ulu9" viewBox="0 0 24 24"><path data-hf-id="hf-olm6" d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        <svg data-hf-id="hf-1tol" viewBox="0 0 24 24"><path data-hf-id="hf-g4au" d="M4 5h16v11H9l-5 4z"/></svg>
+        <svg data-hf-id="hf-1j41" id="ico3" viewBox="0 0 24 24"><path data-hf-id="hf-t1fi" d="M3 11l18-8-8 18-2-8z"/></svg>
+      </div>
+      <div data-hf-id="hf-xr5b" id="perfil"><div data-hf-id="hf-drx5" id="avlogo" style="background-image:url(data:image/png;base64,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)"></div><div data-hf-id="hf-we0q" id="user">asifunciona.reel</div>
+        <div data-hf-id="hf-c2bw" id="seguir"><span data-hf-id="hf-mghp" id="sig1">Seguir</span><span data-hf-id="hf-bpcu" id="sig2">Siguiendo</span></div></div>
+      <div data-hf-id="hf-f46q" id="cap2">Por qué el bostezo se contagia…</div>
+      <div data-hf-id="hf-lijx" id="hoja"><div data-hf-id="hf-8psh" class="asa"></div>
+        <div data-hf-id="hf-f1dx" id="busca"><svg data-hf-id="hf-30lo" viewBox="0 0 24 24"><circle data-hf-id="hf-1u1w" cx="10" cy="10" r="6"/><path data-hf-id="hf-eaat" d="M15 15l5 5"/></svg>Buscar</div>
+        <div data-hf-id="hf-cczd" id="amigos"></div>
+        <div data-hf-id="hf-ydn1" id="msg">Escribe un mensaje…</div>
+        <div data-hf-id="hf-wea2" id="enviar"><span data-hf-id="hf-ts71" id="env1">Enviar</span><span data-hf-id="hf-7yj8" id="env2">✓ Enviado</span></div></div>
+      <div data-hf-id="hf-2s6s" class="rg" id="ringS"></div><div data-hf-id="hf-hsra" class="rg" id="ringI"></div><div data-hf-id="hf-qd5q" class="rg" id="ringA"></div><div data-hf-id="hf-56re" class="rg" id="ringE"></div>
+    </div>
+  </div>
+
+  <div data-hf-id="hf-b6q9" id="cap" class="clip" data-start="0" data-duration="53.0" data-track-index="5"></div>
+  <audio data-hf-id="hf-f98i" id="voz" src="audio.wav" data-start="0" data-duration="53.0" data-track-index="9" data-volume="1"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+  const tl=gsap.timeline({paused:true});
+  const SC=[[0.0, 11.87], [11.87, 18.09], [18.09, 23.39], [23.39, 30.62], [30.62, 37.99], [37.99, 44.04], [44.04, 47.8], [47.8, 53.0]],CL=[[0.21, 3.53], [4.02, 9.11], [9.55, 11.4], [11.87, 13.39], [13.61, 17.78], [18.09, 20.26], [20.73, 23.03], [23.39, 27.38], [27.91, 30.34], [30.62, 35.05], [35.2, 37.59], [37.99, 39.99], [40.38, 43.63], [44.04, 45.59], [45.89, 46.19], [46.19, 47.31], [47.82, 51.72]],CTA=47.8,TOT=53.0;
+  const T=(i,f)=>SC[i][0]+f*(SC[i][1]-SC[i][0]);
+  const C=(k,f=0)=>CL[k][0]+f*(CL[k][1]-CL[k][0]);
+  const CAPS=[{"w": "Y", "s": 0.21, "e": 0.35}, {"w": "si", "s": 0.35, "e": 0.48}, {"w": "te", "s": 0.48, "e": 0.62}, {"w": "dijera", "s": 0.62, "e": 1.04}, {"w": "que", "s": 1.04, "e": 1.18}, {"w": "puedes", "s": 1.18, "e": 1.45}, {"w": "empezar", "s": 1.45, "e": 1.87}, {"w": "a", "s": 1.87, "e": 2.01}, {"w": "[bostezar]", "s": 2.01, "e": 2.42}, {"w": "solo", "s": 2.42, "e": 2.7}, {"w": "por", "s": 2.7, "e": 2.84}, {"w": "ver", "s": 2.84, "e": 2.97}, {"w": "este", "s": 2.97, "e": 3.25}, {"w": "vídeo,", "s": 3.25, "e": 3.53, "f": true}, {"w": "[alguien]", "s": 4.02, "e": 4.36}, {"w": "bosteza", "s": 4.36, "e": 4.87}, {"w": "delante", "s": 4.87, "e": 5.38}, {"w": "de", "s": 5.38, "e": 5.55}, {"w": "ti", "s": 5.55, "e": 5.72}, {"w": "y", "s": 5.72, "e": 5.89}, {"w": "de", "s": 5.89, "e": 6.06}, {"w": "repente", "s": 6.06, "e": 6.56}, {"w": "sientes", "s": 6.56, "e": 6.9}, {"w": "unas", "s": 6.9, "e": 7.24}, {"w": "ganas", "s": 7.24, "e": 7.58}, {"w": "enormes", "s": 7.58, "e": 8.09}, {"w": "de", "s": 8.09, "e": 8.26}, {"w": "hacerlo", "s": 8.26, "e": 8.77}, {"w": "también.", "s": 8.77, "e": 9.11, "f": true}, {"w": "Pero", "s": 9.55, "e": 9.8}, {"w": "¿qué", "s": 9.8, "e": 9.92}, {"w": "está", "s": 9.92, "e": 10.17}, {"w": "pasando", "s": 10.17, "e": 10.54}, {"w": "dentro", "s": 10.54, "e": 10.79}, {"w": "de", "s": 10.79, "e": 10.91}, {"w": "tu", "s": 10.91, "e": 11.03}, {"w": "[cerebro?]", "s": 11.03, "e": 11.4, "f": true}, {"w": "Cuando", "s": 11.87, "e": 12.12}, {"w": "ves", "s": 12.12, "e": 12.25}, {"w": "a", "s": 12.25, "e": 12.38}, {"w": "otra", "s": 12.38, "e": 12.63}, {"w": "persona", "s": 12.63, "e": 13.01}, {"w": "[bostezar,]", "s": 13.01, "e": 13.39, "f": true}, {"w": "tu", "s": 13.61, "e": 13.76}, {"w": "[cerebro]", "s": 13.76, "e": 14.19}, {"w": "procesa", "s": 14.19, "e": 14.62}, {"w": "ese", "s": 14.62, "e": 14.91}, {"w": "gesto", "s": 14.91, "e": 15.19}, {"w": "y", "s": 15.19, "e": 15.34}, {"w": "puede", "s": 15.34, "e": 15.62}, {"w": "desencadenar", "s": 15.62, "e": 16.34}, {"w": "una", "s": 16.34, "e": 16.63}, {"w": "respuesta", "s": 16.63, "e": 17.06}, {"w": "similar", "s": 17.06, "e": 17.49}, {"w": "en", "s": 17.49, "e": 17.64}, {"w": "ti.", "s": 17.64, "e": 17.78, "f": true}, {"w": "Es", "s": 18.09, "e": 18.22}, {"w": "lo", "s": 18.22, "e": 18.36}, {"w": "que", "s": 18.36, "e": 18.49}, {"w": "conocemos", "s": 18.49, "e": 19.04}, {"w": "como", "s": 19.04, "e": 19.31}, {"w": "[bostezo]", "s": 19.31, "e": 19.71}, {"w": "[contagioso.]", "s": 19.71, "e": 20.26, "f": true}, {"w": "Y", "s": 20.73, "e": 20.86}, {"w": "lo", "s": 20.86, "e": 20.99}, {"w": "más", "s": 20.99, "e": 21.11}, {"w": "curioso", "s": 21.11, "e": 21.5}, {"w": "es", "s": 21.5, "e": 21.62}, {"w": "que", "s": 21.62, "e": 21.75}, {"w": "no", "s": 21.75, "e": 21.88}, {"w": "[necesitas]", "s": 21.88, "e": 22.39}, {"w": "estar", "s": 22.39, "e": 22.65}, {"w": "cansado.", "s": 22.65, "e": 23.03, "f": true}, {"w": "Basta", "s": 23.39, "e": 23.66}, {"w": "con", "s": 23.66, "e": 23.8}, {"w": "ver", "s": 23.8, "e": 23.94}, {"w": "o", "s": 23.94, "e": 24.07}, {"w": "incluso", "s": 24.07, "e": 24.49}, {"w": "escuchar", "s": 24.49, "e": 24.9}, {"w": "un", "s": 24.9, "e": 25.04}, {"w": "[bostezo]", "s": 25.04, "e": 25.45}, {"w": "para", "s": 25.45, "e": 25.73}, {"w": "que", "s": 25.73, "e": 25.86}, {"w": "aparezcan", "s": 25.86, "e": 26.41}, {"w": "las", "s": 26.41, "e": 26.55}, {"w": "ganas", "s": 26.55, "e": 26.83}, {"w": "de", "s": 26.83, "e": 26.96}, {"w": "hacerlo.", "s": 26.96, "e": 27.38, "f": true}, {"w": "Los", "s": 27.91, "e": 28.08}, {"w": "[científicos]", "s": 28.08, "e": 28.78}, {"w": "todavía", "s": 28.78, "e": 29.3}, {"w": "investigan", "s": 29.3, "e": 29.99}, {"w": "por", "s": 29.99, "e": 30.17}, {"w": "qué.", "s": 30.17, "e": 30.34, "f": true}, {"w": "Los", "s": 30.62, "e": 30.76}, {"w": "mecanismos", "s": 30.76, "e": 31.33}, {"w": "de", "s": 31.33, "e": 31.47}, {"w": "[imitación]", "s": 31.47, "e": 32.05}, {"w": "y", "s": 32.05, "e": 32.19}, {"w": "los", "s": 32.19, "e": 32.33}, {"w": "procesos", "s": 32.33, "e": 32.76}, {"w": "relacionados", "s": 32.76, "e": 33.48}, {"w": "con", "s": 33.48, "e": 33.62}, {"w": "la", "s": 33.62, "e": 33.76}, {"w": "percepción", "s": 33.76, "e": 34.19}, {"w": "social", "s": 34.19, "e": 34.48}, {"w": "podrían", "s": 34.48, "e": 34.76}, {"w": "influir,", "s": 34.76, "e": 35.05, "f": true}, {"w": "pero", "s": 35.2, "e": 35.47}, {"w": "aún", "s": 35.47, "e": 35.6}, {"w": "no", "s": 35.6, "e": 35.74}, {"w": "existe", "s": 35.74, "e": 36.13}, {"w": "una", "s": 36.13, "e": 36.4}, {"w": "[explicación]", "s": 36.4, "e": 36.93}, {"w": "definitiva.", "s": 36.93, "e": 37.59, "f": true}, {"w": "Y", "s": 37.99, "e": 38.11}, {"w": "esto", "s": 38.11, "e": 38.36}, {"w": "no", "s": 38.36, "e": 38.49}, {"w": "sucede", "s": 38.49, "e": 38.87}, {"w": "[solamente]", "s": 38.87, "e": 39.37}, {"w": "entre", "s": 39.37, "e": 39.62}, {"w": "humanos.", "s": 39.62, "e": 39.99, "f": true}, {"w": "También", "s": 40.38, "e": 40.66}, {"w": "se", "s": 40.66, "e": 40.8}, {"w": "ha", "s": 40.8, "e": 40.94}, {"w": "observado", "s": 40.94, "e": 41.51}, {"w": "en", "s": 41.51, "e": 41.65}, {"w": "animales", "s": 41.65, "e": 42.21}, {"w": "como", "s": 42.21, "e": 42.5}, {"w": "los", "s": 42.5, "e": 42.64}, {"w": "[chimpancés]", "s": 42.64, "e": 43.06}, {"w": "y", "s": 43.06, "e": 43.2}, {"w": "los", "s": 43.2, "e": 43.34}, {"w": "[perros.]", "s": 43.34, "e": 43.63, "f": true}, {"w": "Ahora", "s": 44.04, "e": 44.43}, {"w": "que", "s": 44.43, "e": 44.56}, {"w": "has", "s": 44.56, "e": 44.69}, {"w": "[llegado]", "s": 44.69, "e": 45.07}, {"w": "hasta", "s": 45.07, "e": 45.33}, {"w": "aquí,", "s": 45.33, "e": 45.59, "f": true}, {"w": "dime,", "s": 45.89, "e": 46.19, "f": true}, {"w": "¿te", "s": 46.19, "e": 46.31}, {"w": "han", "s": 46.31, "e": 46.42}, {"w": "dado", "s": 46.42, "e": 46.64}, {"w": "ganas", "s": 46.64, "e": 46.86}, {"w": "de", "s": 46.86, "e": 46.98}, {"w": "[bostezar?]", "s": 46.98, "e": 47.31, "f": true}, {"w": "Sígueme", "s": 47.82, "e": 48.25}, {"w": "y", "s": 48.25, "e": 48.4}, {"w": "envíaselo", "s": 48.4, "e": 48.97}, {"w": "a", "s": 48.97, "e": 49.12}, {"w": "ese", "s": 49.12, "e": 49.41}, {"w": "amigo", "s": 49.41, "e": 49.84}, {"w": "que", "s": 49.84, "e": 49.99}, {"w": "se", "s": 49.99, "e": 50.13}, {"w": "contagia", "s": 50.13, "e": 50.56}, {"w": "de", "s": 50.56, "e": 50.71}, {"w": "cada", "s": 50.71, "e": 51.0}, {"w": "[bostezo]", "s": 51.0, "e": 51.43}, {"w": "que", "s": 51.43, "e": 51.58}, {"w": "ve.", "s": 51.58, "e": 51.72, "f": true}];
+// comun: registro de señales de sonido. El audio se mezcla fuera del navegador (comun/sonido/mezclar.py) usando estos tiempos.
+// sfx(tiempo,'nombre',volumen,duración?) · cam() y tilt() registran sus «whoosh» solos.
+const CUES=[],CAMS=[];
+const sfx=(t,n,v=1,d)=>{CUES.push({t:+t.toFixed(3),n,v:+v.toFixed(2),...(d?{d:+d.toFixed(2)}:{})});};
+window.__cues=()=>{
+  const out=CUES.slice();let z=1;
+  CAMS.slice().sort((a,b)=>a.t-b.t).forEach(c=>{const dz=c.s-z;z=c.s;
+    if(c.s>=20)out.push({t:+c.t.toFixed(3),n:'whoosh_through',v:1,d:+c.dur.toFixed(2)});
+    else if(c.dur>=1&&Math.abs(dz)>.25)out.push({t:+c.t.toFixed(3),n:dz>0?'whoosh_in':'whoosh_out',v:+Math.min(1,.45+Math.abs(dz)/2).toFixed(2),d:+Math.min(c.dur,1.4).toFixed(2)});});
+  return {tot:TOT,cues:out.sort((a,b)=>a.t-b.t)};
+};
+
+// comun: polvo flotante + cámara virtual (focus, cam, blur) con paralaje del fondo
+(()=>{let a=11;const r=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  const dust=document.getElementById('dust');
+  for(let i=0;i<26;i++){const e=document.createElement('div');e.className='dot';const z=3+r()*5;e.style.cssText=`left:${r()*1080}px;top:${r()*1920}px;width:${z}px;height:${z}px;opacity:${.2+r()*.35}`;dust.appendChild(e);}})();
+tl.to('.dot',{y:i=>-(120+(i%5)*70),duration:TOT,ease:'none'},0);
+// focus(px,py,S): lleva el punto (px,py) del mundo al centro de la pantalla con zoom S
+const focus=(px,py,S)=>({x:-S*(px-540),y:-S*(py-960),s:S,r:0});
+const cl=(v,a)=>Math.max(-a,Math.min(a,v));
+function cam(t0,dur,st,ease='power2.inOut'){
+  const ps=Math.min(st.s,6);CAMS.push({t:t0,dur,s:st.s});
+  tl.to('#world',{x:st.x,y:st.y,scale:st.s,rotation:st.r,duration:dur,ease},t0)
+    .to('#bg-grid',{x:cl(st.x*.25,220),y:cl(st.y*.25,220),scale:1+(ps-1)*.2,duration:dur,ease},t0)
+    .to('#dust',{x:cl(st.x*.5,400),y:cl(st.y*.5,400),scale:1+(ps-1)*.4,duration:dur,ease},t0);
+}
+const blur=(t0,dur,px=7)=>tl.to('#world',{filter:`blur(${px}px)`,duration:dur/2,ease:'power1.out'},t0).to('#world',{filter:'blur(0px)',duration:dur/2,ease:'power1.in'},t0+dur/2);
+// tilt(inicio,duración,{rx,ry,rz}): inclina el mundo en 3D (perspectiva) y activa la niebla de profundidad si hay inclinación
+tl.set('#tilt',{transformPerspective:1400,rotationX:0,rotationY:0,rotationZ:0},0);
+const tilt=(t0,dur,s,ease='power2.inOut')=>(sfx(t0,'tilt',.8,dur),0)||tl.to('#tilt',{rotationX:s.rx||0,rotationY:s.ry||0,rotationZ:s.rz||0,duration:dur,ease},t0).to('#fog',{opacity:s.rx?1:0,duration:dur,ease:'none'},t0);
+// enganchar(inicio,{rx,ry,rz},dur): el mundo llega torcido y se endereza con un rebote suave (como al «fijar» las esquinas); deja la inclinación rx
+function enganchar(t0,s,dur=1.0){tilt(t0,dur,s);return tl.to('#tilt',{rotationZ:0,rotationY:0,duration:.9,ease:'back.out(1.4)'},t0+dur+.1);}
+
+// comun: etiquetas con fondo propio y línea guía que se dibuja. etiquetas([[inicio,fin,'TEXTO','bad'?], ...])
+function etiquetas(LB){
+  const lb=document.getElementById('lbls');
+  LB.forEach(([a,b,txt,c])=>{
+    const col=c==='bad'?'var(--bad)':'var(--amber)';
+    const e=document.createElement('div');e.className='lb';e.textContent=txt;e.style.color=col;
+    const l=document.createElement('div');l.className='lbl-line';l.style.background=col;
+    const n=document.createElement('div');n.className='lbl-node';n.style.background=col;
+    lb.append(l,n,e);sfx(a+.05,c==='bad'?'error':'tick',c==='bad'?.8:.8);
+    tl.fromTo(l,{scaleY:0},{scaleY:1,duration:.3,ease:'power2.out'},Math.max(0,a-.2))
+      .fromTo(n,{scale:0},{scale:1,duration:.2,ease:'back.out(2)'},a+.05)
+      .fromTo(e,{autoAlpha:0},{autoAlpha:1,duration:.25},a)
+      .to(e,{autoAlpha:0,duration:.2},b).to(l,{scaleY:0,duration:.2},b).to(n,{scale:0,duration:.15},b);
+  });
+}
+
+// comun: subtítulos karaoke. Usa CAPS = [{w,s,e,f}] (palabra, inicio, fin, fin de cláusula). Las [palabras] llevan recuadro.
+const cap=document.getElementById('cap');
+const G=[];let cur=[];
+CAPS.forEach(x=>{cur.push(x);if(cur.length===3||x.f){G.push(cur);cur=[];}});
+if(cur.length)G.push(cur);
+G.forEach((g,gi)=>{
+  const el=document.createElement('div');el.className='chunk';
+  const sp=g.map(x=>{const s=document.createElement('span');s.textContent=x.w.replace(/[\[\]]/g,'');if(/\[.*\]/.test(x.w))s.className='key';el.appendChild(s);return s;});
+  cap.appendChild(el);
+  const s0=Math.max(0,g[0].s-0.08),nx=G[gi+1];
+  const e0=Math.max(s0+.2,Math.min(g[g.length-1].e+0.25,nx?nx[0].s-0.02:1e9));
+  tl.set(el,{autoAlpha:1},s0).set(el,{autoAlpha:0},e0);
+  sp.forEach((s,j)=>tl.set(s,{color:'#fff',fontWeight:800},g[j].s));
+});
+
+// propio del episodio: el bostezo contagioso. Personajes y objetos dibujados con HTML/CSS (originales).
+const M=document.getElementById('esc');
+const D=(p,css,cls)=>{const e=document.createElement('div');e.style.cssText='position:absolute;'+css;if(cls)e.className=cls;p.appendChild(e);return e;};
+const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\W/g,'').toLowerCase();
+const tw_=(re,def)=>{const x=CAPS.find(c=>re.test(norm(c.w)));return x?x.s:def;};
+// ---- escenario ----
+D(M,'left:-400px;top:1330px;width:4600px;height:520px;background:linear-gradient(180deg,#1b2552,#0e1330 70%,rgba(11,15,36,0))');
+// ---- personas ----
+function persona(id,cx,cy,o){
+  const g=D(M,`left:${cx}px;top:${cy}px;width:0;height:0`);g.id=id;
+  const cara=D(g,'left:0;top:0;width:0;height:0');cara.id=id+'-cara';
+  if(o.largo)D(cara,`left:-205px;top:-190px;width:410px;height:560px;border-radius:205px 205px 80px 80px;background:${o.pelo}`);
+  // torso: hombros inclinados que se funden con el suelo; escote y cuello en una sola pieza
+  D(g,`left:-330px;top:236px;width:660px;height:470px;border-radius:330px 330px 0 0 / 190px 190px 0 0;background:linear-gradient(180deg,${o.camisa} 68%,${o.camisa}00)`);
+  D(g,`left:-84px;top:222px;width:168px;height:104px;border-radius:50%;background:${o.piel2}`);
+  D(g,`left:-56px;top:110px;width:112px;height:150px;border-radius:12px 12px 40px 40px;background:${o.piel2}`);
+  D(g,'left:-50px;top:140px;width:100px;height:46px;border-radius:50%;background:rgba(0,0,0,.14)');
+  D(cara,`left:-172px;top:-172px;width:344px;height:344px;border-radius:50%;background:${o.piel}`);
+  D(cara,`left:-192px;top:-20px;width:44px;height:70px;border-radius:50%;background:${o.piel2}`);D(cara,`left:148px;top:-20px;width:44px;height:70px;border-radius:50%;background:${o.piel2}`);
+  D(cara,`left:-178px;top:-190px;width:356px;height:128px;border-radius:180px 180px 60px 60px;background:${o.pelo}`);
+  D(cara,`left:-14px;top:18px;width:28px;height:34px;border-radius:50%;background:${o.piel2}`);
+  for(const x of[-104,60])D(cara,`left:${x}px;top:-52px;width:44px;height:8px;border-radius:4px;background:${o.pelo}`);
+  const parp=[];for(const x of[-100,64]){D(cara,`left:${x}px;top:-20px;width:36px;height:36px;border-radius:50%;background:#1a1410`);parp.push(D(cara,`left:${x-4}px;top:-24px;width:44px;height:44px;border-radius:50%;background:${o.piel}`));}
+  const boca=D(cara,'left:-52px;top:70px;width:104px;height:86px;border-radius:50%;background:#120a24;overflow:hidden');D(boca,'left:22px;bottom:4px;width:60px;height:34px;border-radius:50%;background:#e0556f');
+  return{g,cara,boca,parp};
+}
+function animal(id,cx,cy,t){
+  const g=D(M,`left:${cx}px;top:${cy}px;width:0;height:0`);g.id=id;const c=t==='chimp'?'#7a5238':'#d9a066',c2=t==='chimp'?'#e3b894':'#f0c892';
+  D(g,`left:-260px;top:230px;width:520px;height:420px;border-radius:260px 260px 0 0;background:${c}`);
+  if(t==='chimp'){D(g,'left:-250px;top:-110px;width:96px;height:96px;border-radius:50%;background:#6b4430');D(g,'left:154px;top:-110px;width:96px;height:96px;border-radius:50%;background:#6b4430');}
+  else{const e1=D(g,'left:-215px;top:-140px;width:96px;height:210px;border-radius:50%;background:#8b5a2b');const e2=D(g,'left:119px;top:-140px;width:96px;height:210px;border-radius:50%;background:#8b5a2b');tl.set(e1,{rotation:16},0).set(e2,{rotation:-16},0);}
+  D(g,`left:-155px;top:-160px;width:310px;height:330px;border-radius:50%;background:${c}`);
+  D(g,`left:-100px;top:10px;width:200px;height:${t==='chimp'?150:130}px;border-radius:50%;background:${c2}`);
+  if(t==='dog')D(g,'left:-30px;top:5px;width:60px;height:40px;border-radius:50%;background:#1a1410');
+  const parp=[];for(const x of[-85,49]){D(g,`left:${x}px;top:-50px;width:36px;height:36px;border-radius:50%;background:#1a1410`);parp.push(D(g,`left:${x-4}px;top:-54px;width:44px;height:44px;border-radius:50%;background:${c}`));}
+  const boca=D(g,'left:-46px;top:60px;width:92px;height:80px;border-radius:50%;background:#120a24;overflow:hidden');D(boca,'left:18px;bottom:4px;width:56px;height:30px;border-radius:50%;background:#e0556f');
+  return{g,boca,parp};
+}
+const A=persona('pa',540,820,{piel:'#f2c9a5',piel2:'#e0ac82',pelo:'#2b1b14',camisa:'#4B5BFF'});
+const B=persona('pb',1380,820,{piel:'#c68863',piel2:'#b27650',pelo:'#6b3f1d',camisa:'#FFB703',largo:true});
+const CH=animal('chimp',2300,820,'chimp'), DG=animal('dog',2900,820,'dog');
+tl.set([A.boca,B.boca,CH.boca,DG.boca],{scaleY:.12,transformOrigin:'50% 0%'},0).set([...A.parp,...B.parp,...CH.parp,...DG.parp],{scaleY:0,transformOrigin:'50% 0%'},0);
+// bostezo: la boca se abre, los ojos se cierran, se vuelve a cerrar
+const DUR_BOST={m:1.45,f:2.1}; // duración de las muestras reales (comun/sonido/muestras); c y d son sintéticos
+function bostezar(p,t0,d,gen,snd=.9){
+  d=DUR_BOST[gen]||d;
+  tl.to(p.boca,{scaleY:1,duration:d*.35,ease:'power2.out'},t0).to(p.boca,{scaleY:.12,duration:d*.3,ease:'power2.in'},t0+d*.7)
+    .to(p.parp,{scaleY:1,duration:d*.3,ease:'power1.out'},t0+d*.1).to(p.parp,{scaleY:0,duration:d*.25},t0+d*.75);
+  if(snd)sfx(t0,'bostezo_'+gen,snd,d);
+}
+// onda del bostezo: tres anillos que viajan y se desvanecen
+function onda(t0,x0,x1,y=935,vol=.5){
+  const r=[0,1,2].map(()=>D(M,`left:${x0-70}px;top:${y-70}px;width:140px;height:140px;border:7px solid #FFB703;border-radius:50%;opacity:0`));
+  tl.fromTo(r,{x:0,scale:.3,opacity:.9},{x:x1-x0,scale:2.4,opacity:0,duration:1.5,ease:'power1.out',stagger:.22,immediateRender:false},t0);sfx(t0,'swoosh',vol,1.2);
+}
+// ---- cerebro (dentro de la cabeza de «tú») ----
+const br=D(M,'left:1230px;top:700px;width:300px;height:240px;opacity:0');br.id='cerebro';
+const N=[[90,100],[130,70],[170,70],[210,100],[100,150],[140,130],[180,130],[220,150],[120,185],[160,170],[200,185],[150,100]],E=[[0,1],[1,2],[2,3],[0,4],[1,11],[2,11],[3,7],[4,5],[5,6],[6,7],[5,11],[6,11],[4,8],[8,9],[9,10],[10,7],[5,9],[6,9]];
+br.innerHTML=`<svg viewBox="0 0 300 240" width="300" height="240"><path class="cerebro-f" d="M60 120 C40 60 100 20 150 40 C200 10 270 50 250 120 C280 160 240 215 190 200 C170 230 110 230 100 200 C50 215 20 160 60 120 Z"/>${E.map(([a,b])=>`<line class="enlace" x1="${N[a][0]}" y1="${N[a][1]}" x2="${N[b][0]}" y2="${N[b][1]}"/>`).join('')}${N.map(([x,y])=>`<circle class="nodo" cx="${x}" cy="${y}" r="9"/>`).join('')}</svg>`;
+// ---- iconos y objetos ----
+const bat=D(M,'left:1300px;top:470px;width:160px;height:80px;border:7px solid #FFB703;border-radius:16px;opacity:0');D(bat,'left:6px;top:6px;width:134px;height:56px;border-radius:8px;background:#FFB703');D(bat,'left:158px;top:18px;width:12px;height:32px;border-radius:4px;background:#FFB703');
+const ojo=D(M,'left:1130px;top:470px;width:120px;height:70px;border-radius:50%;background:#fff;opacity:0');D(ojo,'left:40px;top:10px;width:50px;height:50px;border-radius:50%;background:#4B5BFF');D(ojo,'left:55px;top:25px;width:20px;height:20px;border-radius:50%;background:#0B0F24');
+const oido=D(M,'left:1470px;top:470px;width:120px;height:90px;opacity:0');for(let i=0;i<3;i++)D(oido,`left:${i*26}px;top:${i*10}px;width:${50+i*26}px;height:${70-i*20}px;border:7px solid #FFB703;border-left:0;border-radius:0 100% 100% 0;`);
+// sala de los científicos: una «ventana» entre los dos personajes, a la que entra la cámara
+const por=D(M,'left:750px;top:410px;width:420px;height:300px;border-radius:26px;overflow:hidden;border:6px solid #4B5BFF;box-shadow:0 0 40px #4B5BFF88;opacity:0');por.id='portal';
+D(por,'left:0;top:0;width:420px;height:300px;background:linear-gradient(180deg,#26356f,#141c44)');D(por,'left:0;top:222px;width:420px;height:78px;background:linear-gradient(180deg,#0e1330,#0b0f24)');
+const piz=D(por,'left:105px;top:24px;width:210px;height:100px;border-radius:8px;background:#0f1a3a;border:3px solid #8a93b8');
+const gar=[[16,22,120],[16,46,90],[16,70,140]].map(([x,y,w])=>D(piz,`left:${x}px;top:${y}px;width:${w}px;height:5px;border-radius:3px;background:#FFB703`));
+function cientifico(cx,o){
+  D(por,`left:${cx-52}px;top:150px;width:104px;height:140px;border-radius:44px 44px 0 0;background:#e9ecf5`);D(por,`left:${cx-4}px;top:150px;width:8px;height:140px;background:#c9cde0`);
+  const h=D(por,`left:${cx}px;top:150px;width:0;height:0`);
+  D(h,`left:-14px;top:-26px;width:28px;height:34px;background:${o.piel2};border-radius:8px`);
+  D(h,`left:-38px;top:-100px;width:76px;height:80px;border-radius:50%;background:${o.piel}`);
+  D(h,`left:-42px;top:-108px;width:84px;height:${o.calvo?24:40}px;border-radius:42px 42px 14px 14px;background:${o.pelo}`);
+  if(o.moño)D(h,`left:-14px;top:-126px;width:28px;height:28px;border-radius:50%;background:${o.pelo}`);
+  const cejas=[],pup=[];
+  for(const x of[-26,6]){cejas.push(D(h,`left:${x}px;top:-72px;width:20px;height:4px;border-radius:2px;background:#1a1410`));
+    D(h,`left:${x-2}px;top:-66px;width:24px;height:24px;border-radius:50%;border:3px solid #1a1410;background:#ffffff33;box-sizing:border-box`);pup.push(D(h,`left:${x+6}px;top:-58px;width:8px;height:8px;border-radius:50%;background:#1a1410`));}
+  D(h,'left:-2px;top:-62px;width:8px;height:3px;background:#1a1410');
+  const boca=D(h,'left:-9px;top:-36px;width:18px;height:8px;border-radius:50%;background:#7a3b3b');
+  const q=D(h,'left:-14px;top:-168px;width:28px;text-align:center;font-size:44px;font-weight:800;color:#FFB703;opacity:0');q.textContent='?';
+  return{h,cejas,pup,boca,q};
+}
+const S1=cientifico(110,{piel:'#e8b894',piel2:'#d3a07c',pelo:'#9aa0b4'}),S2=cientifico(310,{piel:'#c68863',piel2:'#b27650',pelo:'#2b1b14',moño:true});
+const red=D(M,'left:715px;top:830px;width:500px;height:6px;opacity:0;background:repeating-linear-gradient(90deg,#4B5BFF 0 22px,transparent 22px 40px)');
+const pts=[0,1,2].map(i=>D(M,`left:${708+i*0}px;top:${823}px;width:20px;height:20px;border-radius:50%;background:#FFB703;opacity:0`));
+const inter=D(M,'left:900px;top:430px;width:120px;text-align:center;font-size:170px;font-weight:800;color:#FFB703;opacity:0');inter.textContent='?';
+// ================= COREOGRAFÍA =================
+const tCh=tw_(/^chimpances/,CL[12][0]+1.5), tDg=tw_(/^perros/,CL[12][0]+2.6);
+const DIVE0=CTA-1.4;
+{const f0=focus(540,930,2.3);tl.set('#world',{x:f0.x,y:f0.y,scale:2.3,rotation:0,filter:'blur(0px)'},0);}
+// S0 gancho: primer plano de la boca; luego plano general con «alguien» y «tú»
+cam(0,3.7,focus(540,930,2.5),'none');
+bostezar(A,.3,2.6,'m');onda(1.0,540,540,935,.35);
+cam(3.9,1.5,focus(960,950,.8),'power3.inOut');blur(4.0,1.0,6);
+bostezar(A,4.9,2.3,'m');onda(5.4,540,1380);
+bostezar(B,7.6,2.4,'f');
+cam(5.5,3.6,focus(960,930,.86),'none');
+// S1 «tu cerebro»: la cámara entra en la cabeza; la piel se vuelve transparente y se ve el cerebro
+cam(C(2,.4),1.3,focus(1380,860,1.3));
+cam(T(1,0),1.3,focus(1380,820,2.6),'power3.inOut');blur(T(1,0)+.1,.9);
+tl.to('#pb-cara',{opacity:.1,duration:.8},T(1,0)+.4).to('#cerebro',{opacity:1,duration:.6},T(1,0)+.5);
+const nodos=[...document.querySelectorAll('#cerebro .nodo')],enl=[...document.querySelectorAll('#cerebro .enlace')];
+tl.to(nodos,{fill:'#FFB703',duration:.25,stagger:(CL[4][1]-CL[4][0]-.8)/12},CL[4][0]).to(enl,{stroke:'#FFB703',duration:.25,stagger:(CL[4][1]-CL[4][0]-.8)/18},CL[4][0]+.2);
+for(let i=0;i<6;i++)sfx(CL[4][0]+i*.55,'tick',.5);
+tl.to('#cerebro',{opacity:0,duration:.5},T(2,0)).to('#pb-cara',{opacity:1,duration:.5},T(2,0));
+// S2 «bostezo contagioso» / «no necesitas estar cansado»
+cam(T(2,0),1.3,focus(960,930,.82),'power3.inOut');blur(T(2,0)+.1,.9);
+bostezar(A,CL[5][0]+.3,2.0,'m');onda(CL[5][0]+.8,540,1380);bostezar(B,CL[5][0]+1.9,2.2,'f');
+tl.fromTo(bat,{opacity:0,scale:.5},{opacity:1,scale:1,duration:.4,ease:'back.out(2)'},CL[6][0]+.1);sfx(CL[6][0]+.1,'pop',.6);
+tl.to(bat,{opacity:0,duration:.3},T(3,0)-.1);
+// S3 «ver o escuchar» + «investigan»
+cam(T(3,0),1.3,focus(960,900,.9));
+tl.fromTo(ojo,{opacity:0,scale:.5},{opacity:1,scale:1,duration:.4,ease:'back.out(2)'},CL[7][0]+.4).fromTo(oido,{opacity:0,scale:.5},{opacity:1,scale:1,duration:.4,ease:'back.out(2)'},C(7,.55));sfx(CL[7][0]+.4,'pop',.6);sfx(C(7,.55),'pop',.6);
+onda(CL[7][0]+.7,540,1380,935,.35);bostezar(B,C(7,.7),2.0,'f');
+tl.to([ojo,oido],{opacity:0,duration:.3},CL[8][0]-.4);
+const tP=CL[8][0];
+tl.to(por,{opacity:1,duration:.4},tP-.35);sfx(tP-.35,'pop',.7);
+cam(tP-.3,1.0,focus(960,560,3.0),'power3.inOut');blur(tP-.2,.8,6);
+cam(tP+.8,CL[8][1]-.3-(tP+.8),focus(960,560,3.35),'none');
+// los científicos piensan: cejas de intriga, miradas, cabeza ladeada, garabatos y «?»
+for(const S of[S1,S2]){tl.set(S.h,{transformOrigin:'50% 100%'},0);}
+tl.to(S1.cejas[0],{rotation:16,y:-3,duration:.4},tP+.6).to(S1.cejas[1],{rotation:-16,y:-3,duration:.4},tP+.6).to(S2.cejas[0],{rotation:16,y:-3,duration:.4},tP+.8).to(S2.cejas[1],{rotation:-16,y:-3,duration:.4},tP+.8);
+tl.to([...S1.pup,...S2.pup],{x:-4,y:-3,duration:.3},tP+.7).to([...S1.pup,...S2.pup],{x:4,y:-3,duration:.4},tP+1.4);
+tl.to(S1.h,{rotation:6,duration:.9,ease:'power1.inOut'},tP+.9).to(S2.h,{rotation:-6,duration:.9,ease:'power1.inOut'},tP+1.1);
+gar.forEach((g,i)=>{tl.set(g,{transformOrigin:'0% 50%'},0).fromTo(g,{scaleX:0},{scaleX:1,duration:.35,ease:'power1.out'},tP+.7+i*.25);sfx(tP+.7+i*.25,'tick',.4);});
+tl.fromTo(S1.q,{opacity:0,scale:.3},{opacity:1,scale:1,duration:.35,ease:'back.out(2.5)'},tP+.9).fromTo(S2.q,{opacity:0,scale:.3},{opacity:1,scale:1,duration:.35,ease:'back.out(2.5)'},tP+1.35);sfx(tP+.9,'pop',.6);sfx(tP+1.35,'pop',.6);
+tl.to(por,{opacity:0,duration:.4},CL[8][1]+.15);
+cam(CL[8][1]-.3,1.3,focus(960,860,1.0),'power3.inOut');blur(CL[8][1]-.2,.9,5);
+// S4 imitación / percepción social / sin explicación definitiva
+tl.to(red,{opacity:1,duration:.4},CL[9][0]+.2);
+pts.forEach((p,i)=>{tl.fromTo(p,{x:0,opacity:1},{x:490,opacity:1,duration:1.4,ease:'none'},CL[9][0]+.5+i*.45).fromTo(p,{x:490},{x:0,duration:1.4,ease:'none'},CL[9][0]+2.0+i*.45);});
+for(let i=0;i<4;i++)sfx(CL[9][0]+.5+i*.9,'tick',.45);
+tl.to(pts,{opacity:0,duration:.2},CL[10][0]-.2).to(red,{opacity:0,duration:.3},CL[10][0]).fromTo(inter,{opacity:0,scale:.4},{opacity:1,scale:1,duration:.5,ease:'back.out(2)'},CL[10][0]+.3);sfx(CL[10][0]+.3,'pop',.7);
+tl.to(inter,{opacity:0,duration:.3},T(5,0)-.1);
+// S5 animales: pan hacia el chimpancé y el perro
+cam(T(5,0),1.3,focus(960,930,.82),'power3.inOut');
+cam(CL[12][0]-.3,1.4,focus(2600,900,.8),'power3.inOut');
+bostezar(CH,tCh+.1,1.9,'c',.8);onda(tCh-.3,1380,2300,935,.45);
+bostezar(DG,tDg+.1,1.9,'d',.8);onda(tDg-.3,2300,2900,935,.45);
+// S6 pregunta al espectador y zoom-through en la boca de «tú»
+cam(T(6,0),1.5,focus(1720,950,.36),'power3.inOut');blur(T(6,0)+.1,1.0,6);
+onda(CL[13][0]+.2,540,1380,935,.3);onda(CL[13][0]+.7,1380,2300,935,.3);onda(CL[13][0]+1.2,2300,2900,935,.3);
+cam(DIVE0-.8,.7,focus(1380,900,1.6));
+tl.to(B.boca,{scaleY:1,duration:.5,ease:'power2.out'},DIVE0+.1).to(B.parp,{scaleY:1,duration:.4},DIVE0+.1);sfx(DIVE0+.1,'bostezo_f',.9,1.4);
+cam(DIVE0,1.4,focus(1380,935,64),'power3.in');
+tl.to('#world',{filter:'blur(10px)',duration:1.4,ease:'power2.in'},DIVE0);
+tl.to('#bg-grid',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},CTA).to('#dust',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},CTA);
+// ---- etiquetas ----
+etiquetas([[1.2,3.3,'¿TE CONTAGIAS?'],[CL[1][0]+.3,C(1,.55),'ALGUIEN BOSTEZA'],[C(1,.6),CL[1][1],'TÚ TAMBIÉN'],[CL[2][0],CL[2][1],'¿QUÉ PASA EN TU CEREBRO?'],
+ [CL[3][0]+.2,CL[3][1],'VES EL GESTO'],[CL[4][0],C(4,.6),'EL CEREBRO LO PROCESA'],[C(4,.62),CL[4][1],'RESPUESTA SIMILAR'],
+ [CL[5][0],CL[5][1],'BOSTEZO CONTAGIOSO'],[CL[6][0],CL[6][1],'NO HACE FALTA ESTAR CANSADO'],
+ [CL[7][0]+.4,C(7,.52),'VER'],[C(7,.55),CL[7][1],'ESCUCHAR'],[CL[8][0]+.5,CL[8][1],'SE SIGUE INVESTIGANDO'],
+ [CL[9][0],C(9,.5),'IMITACIÓN'],[C(9,.52),CL[9][1],'PERCEPCIÓN SOCIAL'],[CL[10][0],CL[10][1],'SIN EXPLICACIÓN DEFINITIVA','bad'],
+ [CL[11][0],CL[11][1],'NO SOLO HUMANOS'],[tCh,tDg-.2,'CHIMPANCÉS'],[tDg,CL[12][1],'PERROS'],
+ [CL[13][0],CL[13][1],'LLEGASTE HASTA AQUÍ'],[CL[15][0],CL[15][1],'¿GANAS DE BOSTEZAR?']]);
+
+// comun: cierre. «Sígueme» → aparece el perfil; «envíaselo» → hoja de compartir; «amigo» → se elige un contacto; después «Enviado».
+// Los tiempos salen de las palabras reales de CAPS (si no las encuentra, usa valores de reserva).
+(()=>{
+  const limpia=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\W/g,'').toLowerCase();
+  const cuando=(re,def)=>{const x=CAPS.find(c=>re.test(limpia(c.w)));return x?x.s:def;};
+  const tS=cuando(/^(sigueme|seguime)/,CTA+.1), tE0=cuando(/^enviaselo/,tS+1.2), tA0=cuando(/^amigo/,tE0+1.5);
+  // si la voz va muy rápida, cada paso espera a que el anterior se vea (≥ 1 s para el perfil, ≥ 0,9 s para elegir contacto)
+  const tE=Math.max(tE0,tS+1.3), tA=Math.max(tA0,tE+1.05), tSend=Math.min(tA+.9,TOT-1.0);
+  // avatares originales, alternando chico / chica
+  const AV=[['chico','#f2c9a5','#2b1b14','#4B5BFF','Mati'],['chica','#8d5a3b','#1c1c1c','#FFB703','Sofi'],['chico','#e0ac82','#6b3f1d','#2fb8a3','Nacho'],['chica','#f2c9a5','#a0522d','#e0556f','Vale']];
+  const cara=(t,piel,pelo,camisa)=>`<svg viewBox="0 0 100 100" width="140" height="140"><circle cx="50" cy="50" r="50" fill="#2b3148"/>${t==='chica'?`<path d="M20 78 Q14 26 50 20 Q86 26 80 78 Z" fill="${pelo}"/>`:''}<ellipse cx="50" cy="98" rx="34" ry="26" fill="${camisa}"/><rect x="43" y="60" width="14" height="14" rx="5" fill="${piel}"/><circle cx="50" cy="46" r="21" fill="${piel}"/>${t==='chica'?`<path d="M29 44 Q50 14 71 44 Q50 34 29 44Z" fill="${pelo}"/>`:`<path d="M28 44 Q28 22 50 22 Q72 22 72 44 Q62 34 50 36 Q38 34 28 44Z" fill="${pelo}"/>`}<circle cx="43" cy="48" r="2.6" fill="#1a1410"/><circle cx="57" cy="48" r="2.6" fill="#1a1410"/><path d="M43 56 Q50 62 57 56" stroke="#1a1410" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`;
+  const am=document.getElementById('amigos');
+  AV.forEach((a,i)=>{const d=document.createElement('div');d.className='amigo';d.style.left=(12+i*225)+'px';d.innerHTML=`<div class="circ">${cara(a[0],a[1],a[2],a[3])}</div><b>${a[4]}</b>`+(i===0?'<div id="chk">✓</div>':'');am.appendChild(d);});
+  const ring=(id,t0)=>tl.fromTo(id,{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},t0);
+  sfx(CTA,'impact',.7);sfx(Math.max(CTA+.2,tS),'pop',.8);sfx(tS+.55,'tap',.8);sfx(tS+.6,'confirm',.5);
+  sfx(tE-.35,'tap',.8);sfx(tE-.15,'swoosh',.8,.6);for(let i=0;i<4;i+=2)sfx(tE+.35+i*.08,'pop',.4);
+  sfx(tA,'tap',.8);sfx(tA+.15,'tick',1);sfx(tSend,'tap',.9);sfx(tSend+.3,'enviado',1);
+  // llegada: viene del zoom-through de la escena anterior
+  tl.from('#mock',{scale:1.45,opacity:0,filter:'blur(10px)',duration:.8,ease:'power3.out'},CTA);
+  // «Sígueme»: aparece el perfil y el botón pasa a «Siguiendo»
+  tl.from('#perfil',{y:40,opacity:0,duration:.5,ease:'back.out(1.6)'},Math.max(CTA+.2,tS));
+  ring('#ringS',tS+.55);
+  tl.to('#sig1',{opacity:0,duration:.15},tS+.6).to('#sig2',{opacity:1,duration:.15},tS+.6).to('#seguir',{backgroundColor:'#3a3f5c',borderColor:'#3a3f5c',duration:.2},tS+.6);
+  // «envíaselo»: se toca el icono de compartir y sube la hoja
+  ring('#ringI',tE-.35);
+  tl.to('#ico3',{scale:1.3,stroke:'#FFB703',duration:.2},tE-.35).to('#ico3',{scale:1,duration:.2},tE-.15);
+  tl.fromTo('#hoja',{y:700},{y:0,duration:.6,ease:'power3.out'},tE-.15).from('.amigo',{scale:0,duration:.3,stagger:.08},tE+.35);
+  // «amigo»: se elige el primer contacto; luego Enviar → Enviado
+  ring('#ringA',tA);
+  tl.to('#chk',{opacity:1,duration:.25},tA+.15);
+  ring('#ringE',tSend);
+  tl.to('#env1',{opacity:0,duration:.15},tSend+.3).to('#env2',{opacity:1,duration:.15},tSend+.3).to('#enviar',{backgroundColor:'#3a3f5c',duration:.2},tSend+.3);
+})();
+
+  window.__timelines=window.__timelines||{};window.__timelines['ep02-bostezo']=tl;
+  </script>
+</div></body></html>

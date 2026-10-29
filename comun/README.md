@@ -61,3 +61,6 @@ python3 comun/sonido/hacer_sonido.py episodios/ep01-qr   # construye, extrae se�
 - Evitar más de ~6 señales por segundo (el informe de `mezclar.py` lo indica).
 - `index.html` usa `audio.wav` si existe; si no, `voz.wav`. Subir `audio.wav` al repo para que Actions lo use.
 - La prueba mide niveles y tiempos, **no oye**: siempre escuchar el preview.
+
+### Efectos con muestras reales (opcional)
+Cualquier efecto sintetizado se puede sustituir por una grabación: guarda un WAV como `comun/sonido/muestras/<nombre>.wav` (p. ej. `bostezo_m.wav` para el chico, `bostezo_f.wav` para la chica) y `mezclar.py` lo usará en lugar del sintetizado (se recorta el silencio y se normaliza). Usar solo grabaciones propias o con licencia libre (CC0).

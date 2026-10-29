@@ -35,3 +35,19 @@ Marco de celular con iconos propios, perfil de la cuenta (logo + usuario + Segui
 - Cada recurso visual debe llevar su `sfx(tiempo,'nombre',vol,dur)` junto al código que lo anima.
 - Mapa útil: zoom/alejamiento → `whoosh_in`/`whoosh_out` (automático en `cam()`); inclinación → `tilt` (automático); etiqueta → `tick` o `error` (automático); haz de escaneo → `beam`; algo se fija → `lock`/`snap`; algo aparece en pantalla → `pop`/`tick`; confirmación → `confirm`/`enviado`; brillo/datos → `shimmer`; golpe físico → `thud`/`tap`/`scratch`/`splat`.
 - Lecciones validadas: whooshes **graves** y suaves; tecnología **electrónica**; **sin música**; no más de ~6 señales por segundo; agrupar series (un «pop» de cada dos o tres).
+
+## Personajes y ondas (Ep. 2, copiar de `episodios/ep02-bostezo/escena.js`)
+- `persona(id,x,y,{piel,piel2,pelo,camisa,largo})` y `animal(id,x,y,'chimp'|'dog')`: ilustraciones originales en HTML/CSS (boca y párpados son `div` animables).
+- `bostezar(p,t0,d)`: abre la boca, cierra los ojos y vuelve; registra el sonido `bostezo`. `onda(t0,x0,x1)`: tres anillos que viajan de un personaje a otro.
+- Rayos X: la cámara entra en la cabeza, `cara` baja a opacidad .1 y aparece el cerebro (SVG con nodos que se iluminan con `stagger`).
+- Los objetos van repartidos por un **mundo ancho** y la cámara se desplaza entre ellos (pan con `cam()`); si dos palabras se dicen con < 1 s de diferencia, encuadrar ambas en un solo plano.
+- Evitar propiedades de GSAP que no existen (p. ej. pasar `s` o `r` de `focus()` a `tl.set`): usar `x`, `y`, `scale`, `rotation`.
+- El identificador de la composición es el nombre de la carpeta del episodio (`construir.py`).
+
+### Lecciones del Ep. 2 (revisión)
+- **No inclinar en 3D a personajes**: la perspectiva deforma cabeza y hombros. `tilt()` solo para objetos y planos de entorno.
+- **Cuello y hombros en una sola pieza:** torso con radios elípticos que se funde con el suelo, escote (elipse del color de la piel) y cuello trapezoidal con sombra bajo la barbilla.
+- **`fromTo` con `immediateRender:false`** cuando el estado inicial del `from` no debe verse antes de que empiece la animación (anillos de onda).
+- **Sala dentro de un portal:** un `div` con `overflow:hidden` en el fondo del mundo; la cámara entra con `cam()` + `blur()` (zoom ≈ 3) y sale con otra `cam()`. Dentro, figuras pequeñas con cejas (`rotation`), pupilas (`x`,`y`) y «?» (`scale`).
+- **Bostezos con género:** `bostezar(p,t0,d,'m'|'f'|'c'|'d')` → sonido `bostezo_m` (grave), `bostezo_f` (agudo), `bostezo_c` (chimpancé), `bostezo_d` (perro). Síntesis: inhalación con aire + vocal con 3 formantes que baja de tono + exhalación.
+- **Bostezos reales:** `bostezo_m` y `bostezo_f` salen de grabaciones propias (`comun/sonido/muestras/`), recortadas y con la pausa/cola de la chica eliminadas. La animación toma su duración de `DUR_BOST` en `escena.js` para que la boca siga al audio. Cuando una síntesis no convence, grabar una muestra real es el camino más fiable.

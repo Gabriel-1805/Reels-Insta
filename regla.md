@@ -3,9 +3,9 @@
 Especificación viva para producir episodios de divulgación en formato vertical, renderizados con HyperFrames.
 Los patrones salen de un análisis de un video de referencia. **Todo el contenido (guion, textos, gráficos) es original.**
 
-Versión: **v0.5** · Fases 1, 2 y 3 y el cierre común validados en el Episodio 1 · Los valores `TBD` se completan al verificarlos.
+Versión: **v0.5.1** · Fases 1, 2 y 3 y el cierre común validados en el Episodio 1; reutilización de `comun/` validada en el Episodio 2 · Los valores `TBD` se completan al verificarlos.
 
-Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas · v0.4.1 cierre fijo común con perfil de la cuenta y hoja de compartir · **v0.5 sonido: solo voz y efectos (sin música), whooshes graves, sonidos del QR electrónicos, mezcla automática.**
+Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas · v0.4.1 cierre fijo común con perfil de la cuenta y hoja de compartir · v0.5 sonido: solo voz y efectos (sin música), whooshes graves, sonidos del QR electrónicos, mezcla automática · **v0.5.1 Episodio 2: flujo «audio primero», revisión de Whisper, personajes y animales, sala en un portal, muestras reales para sonidos orgánicos.**
 
 ---
 
@@ -151,6 +151,19 @@ Reels-Insta/
 
 ---
 
+## 8b. Lecciones del Episodio 2 (flujo «audio primero»)
+
+- **Orden:** 1) se genera el audio aparte → 2) se analiza (duración, pausas, volumen, tono) → 3) se transcribe y **se revisa a mano** → 4) se escribe `guion.txt` → 5) `alinear.py` → 6) se diseñan las escenas → 7) `construir.py` → 8) `hacer_sonido.py`.
+- **Whisper se equivoca en los bordes de cada tramo.** Casos reales: «Sígueme» partido en «Sí» + «gueme» (inventó un «Sí.»), «Mígueme», y «por qué ocurre» cortado al final de la ventana. **Antes de dar por buena una frase, volver a transcribir con una ventana más larga** y confirmar con el autor las palabras dudosas. Nunca añadir palabras que no se oyen.
+- **`comun/` se reutilizó sin tocar** la cámara, los subtítulos, las etiquetas y el cierre. Solo hizo falta generalizar el identificador de la composición (ahora es el nombre de la carpeta del episodio) y añadir efectos nuevos.
+- **Personajes y animales** (HTML/CSS originales): no inclinar en 3D (deforma); cuello y hombros en una sola pieza (escote + cuello trapezoidal + sombra); anillos de onda con `immediateRender:false` para que no se vean antes de tiempo.
+- **Mundo ancho + pan:** objetos repartidos a lo largo del mundo y cámara que se desplaza entre ellos; si dos palabras se dicen con < 1 s de diferencia, encuadrar ambas en un solo plano.
+- **Escena dentro de una escena:** un portal (div con `overflow:hidden`) al que entra la cámara con zoom + desenfoque y del que sale con otro movimiento; dentro, figuras pequeñas con cejas, pupilas y signos «?».
+- **Sonidos orgánicos (voz humana, bostezos): la síntesis no convenció (sonaba a whoosh).** Usar **grabaciones propias** en `comun/sonido/muestras/<nombre>.wav` (recortadas, con ruido reducido) y tomar la duración de la animación de la propia muestra (`DUR_BOST`). La síntesis sirve para sonidos electrónicos y de movimiento, no para voces.
+- **Un chico y una chica:** cada personaje usa su propio sonido (`bostezo_m`, `bostezo_f`).
+
+---
+
 ## 9. Flujo de un episodio
 
 1. Copiar `ep01-qr` a `epNN-tema` como base.
@@ -215,6 +228,7 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 | 1 | Cámara virtual, transiciones, subtítulos sincronizados, `comun/` | ✅ Validada (Ep. 1) |
 | 2 | Perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular, zoom a la pantalla | ✅ Validada (Ep. 1) |
 | 3 | Efectos de sonido (sin música): whooshes graves, sonidos electrónicos, mezcla automática | ✅ Validada (Ep. 1) |
+| — | Episodio 2: reutilización de `comun/` (flujo «audio primero») | ✅ Validado |
 | 4 | 3D real (three.js o clips externos) | Siguiente: probar primero en una escena aislada |
 
 ---
@@ -222,7 +236,8 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 ## 14. Pendientes
 
 - [ ] Fase 4: probar si three.js renderiza bien dentro de HyperFrames (escena piloto)
-- [ ] Episodio 2: comprobar que `comun/` (cámara, subtítulos, cierre, sonido) se reutiliza sin tocarla
+- [ ] Registrar las métricas del Ep. 2 y compararlas con las del Ep. 1
+- [ ] Probar el tercer episodio con un tema distinto para confirmar el flujo «audio primero»
 - [ ] Revisar con otros episodios que el cierre se ve bien en el preview (zona inferior de la plataforma)
 - [ ] Adaptar el TTS (Kokoro) para leer `guion.txt` y generar `voz.wav` dentro de `comun/`
 - [ ] Resolver las advertencias de subcomposición del lint

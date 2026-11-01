@@ -3,9 +3,9 @@
 Especificación viva para producir episodios de divulgación en formato vertical, renderizados con HyperFrames.
 Los patrones salen de un análisis de un video de referencia. **Todo el contenido (guion, textos, gráficos) es original.**
 
-Versión: **v0.5.1** · Fases 1, 2 y 3 y el cierre común validados en el Episodio 1; reutilización de `comun/` validada en el Episodio 2 · Los valores `TBD` se completan al verificarlos.
+Versión: **v0.6** · Fases 1, 2, 3 y 4 y el cierre común validados; reutilización de `comun/` validada en el Episodio 2; 3D real validado en preview y en render · Los valores `TBD` se completan al verificarlos.
 
-Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas · v0.4.1 cierre fijo común con perfil de la cuenta y hoja de compartir · v0.5 sonido: solo voz y efectos (sin música), whooshes graves, sonidos del QR electrónicos, mezcla automática · **v0.5.1 Episodio 2: flujo «audio primero», revisión de Whisper, personajes y animales, sala en un portal, muestras reales para sonidos orgánicos.**
+Historial: v0.1 análisis inicial · v0.2 tokens del logo, flujo Codespaces+Actions · v0.3 cámara virtual, subtítulos sin choque, recuadros por frase, `comun/`, reglas del lint · v0.4 perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular que escanea, zoom a la pantalla, banco de pruebas · v0.4.1 cierre fijo común con perfil de la cuenta y hoja de compartir · v0.5 sonido: solo voz y efectos (sin música), whooshes graves, sonidos del QR electrónicos, mezcla automática · v0.5.1 Episodio 2: flujo «audio primero», revisión de Whisper, personajes y animales, sala en un portal, muestras reales para sonidos orgánicos · **v0.6 Fase 4: 3D real con three.js (plantilla en `comun/plantillas/`), reglas de línea de tiempo y de render.**
 
 ---
 
@@ -74,6 +74,21 @@ Todo el contenido vive dentro de un «mundo» (`#world`) y se anima la cámara, 
 - **Celular que escanea:** pantalla al frente (visor con esquinas de enfoque), haz desde el borde superior, bits que viajan del objeto al celular. Zoom a la pantalla cuando la voz explica el resultado.
 - Metáfora de datos: bloques de respaldo que llegan a reconstruir una zona tapada.
 - Receta por receta y su código: `comun/patrones.md`.
+
+---
+
+## 4b. 3D real (Fase 4, validada)
+
+- **Validado:** la escena 3D se mueve en el **preview** de HyperFrames y sale en el **render de GitHub Actions** (WebGL disponible allí).
+- **Plantilla:** `comun/plantillas/escena3d.html` → `episodios/epNN/escena.capa3d.html` (sustituir `__T0__` y `__DUR__`). `construir.py` la coloca detrás del mundo 2D, las etiquetas y los subtítulos.
+- **Contrato con HyperFrames:** three.js 0.181.2 desde jsdelivr; escena creada de forma síncrona; `setSize(W,H,false)` y `setPixelRatio(1)`; **sin `requestAnimationFrame`**; dibujar solo en el evento `hf-seek` con el tiempo local (`global − T0`); **todo procedural y con semilla** (sin modelos ni texturas remotas).
+- **La línea de tiempo GSAP raíz debe durar TODA la composición.** Si solo dura lo que dura la última animación, el 3D se congela justo ahí (le pasó a la prueba: se quedó quieto en el segundo 1). `camara.js` ya lo garantiza en los episodios.
+- **Preview ≠ render.** Que el preview funcione no basta: renderizar siempre en Actions y mirar el MP4.
+- **Comprobar que Actions renderiza el episodio correcto** (el campo del episodio vuelve al valor por defecto en cada ejecución).
+- **Coste:** ≈ 1–2 s por fotograma en software (medido en local) → **usar 3D en pocas escenas**; un episodio entero en 3D tardaría demasiado.
+- **Cámara 3D propia**, independiente de la cámara virtual CSS. La franja de subtítulos queda libre con `setViewOffset` y una máscara en el canvas.
+- Para que una escena 3D ocupe toda la pantalla, ocultar lo 2D (mundo) en ese tramo; para un fondo 3D, dejar el mundo con transparencia.
+- Cada escena 3D necesita sus `sfx(...)` en `escena.js` (el 3D no registra sonidos solo).
 
 ---
 
@@ -192,6 +207,7 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 - Las advertencias `nested_structure_needs_subcomposition` no bloquean el render (pendiente).
 - Preview con video viejo: borrar `episodios/epNN/.hyperframes` (caché) y reabrir.
 - La simulación (`probar.js`) no ve imágenes: **siempre mirar el preview** antes de dar algo por bueno.
+- La línea de tiempo GSAP raíz debe cubrir toda la duración de la composición (ver 4b).
 
 ---
 
@@ -229,13 +245,15 @@ Git: `git add` desde la raíz; subir `voz.wav`; no subir `voces/`, `tmp/`, `*.mp
 | 2 | Perspectiva 3D, profundidad, etiquetas que se dibujan, escenario con celular, zoom a la pantalla | ✅ Validada (Ep. 1) |
 | 3 | Efectos de sonido (sin música): whooshes graves, sonidos electrónicos, mezcla automática | ✅ Validada (Ep. 1) |
 | — | Episodio 2: reutilización de `comun/` (flujo «audio primero») | ✅ Validado |
-| 4 | 3D real (three.js o clips externos) | Siguiente: probar primero en una escena aislada |
+| 4 | 3D real con three.js | ✅ Validada (prueba en preview y render) |
 
 ---
 
 ## 14. Pendientes
 
-- [ ] Fase 4: probar si three.js renderiza bien dentro de HyperFrames (escena piloto)
+- [ ] Integrar la **primera escena 3D real** en un episodio (elegir 1–2 escenas por episodio)
+- [ ] Anotar cuánto tarda el render de Actions con 3D (por segundo de video)
+- [ ] Decidir si los personajes 2D estilo «formas redondeadas» (idea aparcada) se hacen antes del Ep. 3
 - [ ] Registrar las métricas del Ep. 2 y compararlas con las del Ep. 1
 - [ ] Probar el tercer episodio con un tema distinto para confirmar el flujo «audio primero»
 - [ ] Revisar con otros episodios que el cierre se ve bien en el preview (zona inferior de la plataforma)

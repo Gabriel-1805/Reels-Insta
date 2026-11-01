@@ -11,6 +11,7 @@
 | `construir.py` | Arma `index.html` del episodio juntando `comun/` + lo propio del episodio |
 | `cierre.html/css/js` + `marca.json` + `marca/logo-avatar.png` | Escena de cierre común: al decir «Sígueme» aparece el perfil de la cuenta; al decir «envíaselo» sube la hoja de compartir con avatares chico/chica alternados; «amigo» elige un contacto y termina en «Enviado». Los tiempos salen de las palabras de la voz |
 | `sonido.js` + `sonido/` | Sonido: `sfx(t,'nombre',vol,dur)` registra señales; `cam()`, `tilt()`, `etiquetas()` y el cierre registran las suyas. `sonido/efectos.py` sintetiza los efectos (whooshes graves y suaves; sonidos del QR electrónicos; originales, sin licencias); `mezclar.py` mezcla voz+efectos en `audio.wav` (−14 LUFS); `hacer_sonido.py` lo hace todo en un comando |
+| `plantillas/escena3d.html` | Capa 3D con three.js lista para usar (QR en bloques como ejemplo). Se copia a `escena.capa3d.html` del episodio |
 | `probar.js` | Banco de pruebas de la línea de tiempo (errores, cámara, animaciones que se pisan, determinismo). No ve imágenes |
 | `patrones.md` | Recetas visuales validadas y dónde está su código |
 
@@ -64,3 +65,12 @@ python3 comun/sonido/hacer_sonido.py episodios/ep01-qr   # construye, extrae se�
 
 ### Efectos con muestras reales (opcional)
 Cualquier efecto sintetizado se puede sustituir por una grabación: guarda un WAV como `comun/sonido/muestras/<nombre>.wav` (p. ej. `bostezo_m.wav` para el chico, `bostezo_f.wav` para la chica) y `mezclar.py` lo usará en lugar del sintetizado (se recorta el silencio y se normaliza). Usar solo grabaciones propias o con licencia libre (CC0).
+
+## 3D real (Fase 4, validada)
+1. Copia `comun/plantillas/escena3d.html` a `episodios/epNN/escena.capa3d.html` y sustituye `__T0__` (segundo en que empieza) y `__DUR__` (duración).
+2. Cambia el bloque de la escena (objetos, luces, cámara). Todo debe ser **procedural y con semilla** (sin modelos ni texturas remotas).
+3. `python3 comun/construir.py episodios/epNN` la coloca **detrás** del mundo 2D, las etiquetas y los subtítulos.
+4. La cámara 3D es propia (no la virtual de CSS). Para que la escena 3D ocupe toda la pantalla, oculta lo 2D en ese tramo.
+5. **La línea de tiempo GSAP raíz debe durar toda la composición** (aquí lo garantiza `camara.js`); si no, el 3D se congela en el último segundo animado.
+6. Coste: ≈ 1–2 s por fotograma en software (medido en local). Usar 3D en **pocas escenas**.
+7. Ejemplo completo y validado: `episodios/prueba-3d/`.

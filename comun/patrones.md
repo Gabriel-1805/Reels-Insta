@@ -51,3 +51,9 @@ Marco de celular con iconos propios, perfil de la cuenta (logo + usuario + Segui
 - **Sala dentro de un portal:** un `div` con `overflow:hidden` en el fondo del mundo; la cámara entra con `cam()` + `blur()` (zoom ≈ 3) y sale con otra `cam()`. Dentro, figuras pequeñas con cejas (`rotation`), pupilas (`x`,`y`) y «?» (`scale`).
 - **Bostezos con género:** `bostezar(p,t0,d,'m'|'f'|'c'|'d')` → sonido `bostezo_m` (grave), `bostezo_f` (agudo), `bostezo_c` (chimpancé), `bostezo_d` (perro). Síntesis: inhalación con aire + vocal con 3 formantes que baja de tono + exhalación.
 - **Bostezos reales:** `bostezo_m` y `bostezo_f` salen de grabaciones propias (`comun/sonido/muestras/`), recortadas y con la pausa/cola de la chica eliminadas. La animación toma su duración de `DUR_BOST` en `escena.js` para que la boca siga al audio. Cuando una síntesis no convence, grabar una muestra real es el camino más fiable.
+
+## 3D real (`comun/plantillas/escena3d.html`)
+- Receta: QR hecho con bloques (`InstancedMesh`) que se levantan en ola desde el centro, luces (hemisférica + sol con sombra + contraluz azul), partículas con semilla, cámara que orbita, se acerca y entra en el código; los datos pasan de azul marino a ámbar con brillo.
+- Contrato con HyperFrames: escena síncrona, `renderer.setSize(W,H,false)`, `setPixelRatio(1)`, sin `requestAnimationFrame`, dibujar solo en el evento `hf-seek` con el tiempo **local** (`tiempo global − T0`).
+- `camera.setViewOffset` baja la escena para dejar libre la franja de subtítulos; el canvas lleva máscara en la parte superior.
+- Three.js 0.181.2 desde jsdelivr (versión fija; el render necesita internet).

@@ -12,6 +12,10 @@
 | `cierre.html/css/js` + `marca.json` + `marca/logo-avatar.png` | Escena de cierre común: al decir «Sígueme» aparece el perfil de la cuenta; al decir «envíaselo» sube la hoja de compartir con avatares chico/chica alternados; «amigo» elige un contacto y termina en «Enviado». Los tiempos salen de las palabras de la voz |
 | `sonido.js` + `sonido/` | Sonido: `sfx(t,'nombre',vol,dur)` registra señales; `cam()`, `tilt()`, `etiquetas()` y el cierre registran las suyas. `sonido/efectos.py` sintetiza los efectos (whooshes graves y suaves; sonidos del QR electrónicos; originales, sin licencias); `mezclar.py` mezcla voz+efectos en `audio.wav` (−14 LUFS); `hacer_sonido.py` lo hace todo en un comando |
 | `plantillas/escena3d.html` | Capa 3D con three.js lista para usar (QR en bloques como ejemplo). Se copia a `escena.capa3d.html` del episodio |
+| `audio/segmentar.py` | Divide la voz en tramos entre pausas y transcribe cada uno con Whisper → `segmentos.json` (tiempos exactos). Necesita sherpa-onnx y el modelo whisper-small (solo para analizar un audio nuevo) |
+| `concordancia.js` + `concordancia.py` | Control automático: eventos de objeto, cámara y etiqueta por cláusula; avisa de cláusulas sin evento, saturadas y huecos |
+| `tira.py` | Tira de escenas: un fotograma por frase con su texto (usa `npx hyperframes snapshot`) |
+| `metodo-escenas.md` | Método para que las escenas concuerden con el guion (5 reglas) |
 | `probar.js` | Banco de pruebas de la línea de tiempo (errores, cámara, animaciones que se pisan, determinismo). No ve imágenes |
 | `patrones.md` | Recetas visuales validadas y dónde está su código |
 
@@ -74,3 +78,11 @@ Cualquier efecto sintetizado se puede sustituir por una grabación: guarda un WA
 5. **La línea de tiempo GSAP raíz debe durar toda la composición** (aquí lo garantiza `camara.js`); si no, el 3D se congela en el último segundo animado.
 6. Coste: ≈ 1–2 s por fotograma en software (medido en local). Usar 3D en **pocas escenas**.
 7. Ejemplo completo y validado: `episodios/prueba-3d/`.
+
+## Escenas concordantes (método del Ep. 3)
+Ver `comun/metodo-escenas.md`. Comandos de control (una vez `npm install --no-save gsap jsdom` y `pip install pillow`):
+```
+python3 comun/concordancia.py episodios/epNN     # eventos por cláusula y huecos
+python3 comun/tira.py episodios/epNN             # tira de escenas con `npx hyperframes snapshot`
+```
+`alinear.py` tiene dos modos: **A** (si existe `segmentos.json`, tiempos medidos; 99 % de palabras enlazadas en el Ep. 3) y **B** (sin él, reparto por sílabas; menos preciso con voces con muchas pausas).

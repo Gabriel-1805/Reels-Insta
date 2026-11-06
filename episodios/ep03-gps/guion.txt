@@ -1,0 +1,10 @@
+¿Alguna vez abriste Google Maps y apareció un puntito azul justo donde estás parado? Parece algo normal, ¿no? Pero pensála un segundo. ¿Cómo sabe tu teléfono dónde estás, aunque estés en una ciudad que nunca visitaste?
+No tiene una cámara en el cielo que te esté mirando. Tampoco necesita que le digas dónde estás. Lo que hace es mucho más interesante.
+Imagina que estás perdido en una ciudad y tres amigos, que están en distintos lugares, te dicen a qué distancia estás de cada uno. Uno te dice, estás a dos kilómetros de mí, otro, estás a tres kilómetros, y el tercero, estás a un kilómetro.
+Con esas tres pistas ya puedes empezar a descubrir dónde estás, aunque no sepas en qué dirección está ninguno.
+Bueno, el GPS hace algo parecido, pero usa satélites. Estos satélites envían señales que le dicen al teléfono dónde están y a qué hora enviaron el mensaje.
+El teléfono mide cuánto tardó cada señal en llegar. Como sabe que viaja a la velocidad de la luz, calcula la distancia hasta cada satélite y repite esto con varios de ellos, hasta encontrar el lugar donde coinciden todas esas distancias.
+Necesita al menos cuatro para calcular tu ubicación y corregir los pequeños errores de su propio reloj. Y así aparece ese famoso puntito azul.
+Y atención a este detalle. Los satélites no reciben tu ubicación, ellos envían señales y tu teléfono hace los cálculos.
+Ahora ya sabes por qué puedes encontrar tu ubicación sin que nadie tenga que verte.
+Sígueme y envíaselo a ese amigo que siempre termina perdido aunque tenga GPS.

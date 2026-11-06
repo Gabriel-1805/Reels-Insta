@@ -1,0 +1,197 @@
+[
+ {
+  "s": 0.153,
+  "e": 1.492,
+  "texto": "¿Alguna vez abriste Google Maps"
+ },
+ {
+  "s": 1.683,
+  "e": 3.882,
+  "texto": "y apareció un puntito azul justo donde estás parado?"
+ },
+ {
+  "s": 4.198,
+  "e": 5.215,
+  "texto": "Parece algo normal, ¿no?"
+ },
+ {
+  "s": 5.565,
+  "e": 6.463,
+  "texto": "pero pensálo un segundo."
+ },
+ {
+  "s": 6.735,
+  "e": 8.26,
+  "texto": "¿Cómo sabe tu teléfono dónde estás?"
+ },
+ {
+  "s": 8.491,
+  "e": 10.618,
+  "texto": "aunque estés en una ciudad que nunca visitaste."
+ },
+ {
+  "s": 11.016,
+  "e": 12.785,
+  "texto": "No tiene una cámara en el cielo que te esté mirando."
+ },
+ {
+  "s": 13.123,
+  "e": 14.953,
+  "texto": "Tampoco necesita que le digas dónde estás."
+ },
+ {
+  "s": 15.404,
+  "e": 17.287,
+  "texto": "Lo que hace es mucho más interesante."
+ },
+ {
+  "s": 17.713,
+  "e": 19.995,
+  "texto": "Imagina que estás perdido en una ciudad y tres amigos."
+ },
+ {
+  "s": 20.314,
+  "e": 21.418,
+  "texto": "que están en distintos lugares."
+ },
+ {
+  "s": 21.66,
+  "e": 23.659,
+  "texto": "te dicen a qué distancia estás de cada uno."
+ },
+ {
+  "s": 24.002,
+  "e": 24.645,
+  "texto": "Uno te dice..."
+ },
+ {
+  "s": 24.97,
+  "e": 26.074,
+  "texto": "Estás a dos kilómetros de mí"
+ },
+ {
+  "s": 26.465,
+  "e": 26.795,
+  "texto": "Otro."
+ },
+ {
+  "s": 27.108,
+  "e": 28.303,
+  "texto": "Estás a 3 kilómetros."
+ },
+ {
+  "s": 28.68,
+  "e": 29.188,
+  "texto": "y el tercero."
+ },
+ {
+  "s": 29.463,
+  "e": 30.459,
+  "texto": "Estás a un kilómetro."
+ },
+ {
+  "s": 30.893,
+  "e": 31.842,
+  "texto": "con esas tres pistas"
+ },
+ {
+  "s": 31.966,
+  "e": 33.759,
+  "texto": "ya puedes empezar a descubrir dónde estás."
+ },
+ {
+  "s": 33.97,
+  "e": 35.843,
+  "texto": "Aunque no sepas en qué dirección está ninguno."
+ },
+ {
+  "s": 36.245,
+  "e": 38.281,
+  "texto": "Bueno, el GPS hace algo parecido."
+ },
+ {
+  "s": 38.429,
+  "e": 39.354,
+  "texto": "pero usas atélites."
+ },
+ {
+  "s": 39.793,
+  "e": 42.765,
+  "texto": "Estos satélites envían señales que le dicen al teléfono dónde están."
+ },
+ {
+  "s": 42.925,
+  "e": 44.242,
+  "texto": "y a qué hora enviaron el mensaje"
+ },
+ {
+  "s": 44.601,
+  "e": 46.692,
+  "texto": "El teléfono mide cuánto tardó cada señal en"
+ },
+ {
+  "s": 47.063,
+  "e": 48.685,
+  "texto": "Como sabe que viaja a la velocidad de la luz,"
+ },
+ {
+  "s": 48.92,
+  "e": 50.649,
+  "texto": "Calcula la distancia hasta cada satélite."
+ },
+ {
+  "s": 50.958,
+  "e": 52.404,
+  "texto": "y repite esto con varios de ellos."
+ },
+ {
+  "s": 52.673,
+  "e": 55.322,
+  "texto": "hasta encontrar el lugar donde coinciden todas esas distancias."
+ },
+ {
+  "s": 55.602,
+  "e": 57.867,
+  "texto": "Necesita al menos 4 para calcular tu ubicación."
+ },
+ {
+  "s": 58.009,
+  "e": 60.114,
+  "texto": "y corregir los pequeños errores de su propio reloj"
+ },
+ {
+  "s": 60.589,
+  "e": 62.779,
+  "texto": "y así aparece ese famoso puntito azul."
+ },
+ {
+  "s": 63.139,
+  "e": 64.045,
+  "texto": "y atención a este detalle."
+ },
+ {
+  "s": 64.459,
+  "e": 66.47,
+  "texto": "Los satélites no reciben tu ubicación."
+ },
+ {
+  "s": 66.797,
+  "e": 69.423,
+  "texto": "Ellos envían señales y tu teléfono hace los cálculos."
+ },
+ {
+  "s": 69.806,
+  "e": 73.249,
+  "texto": "Ahora ya sabes por qué puedes encontrar tu ubicación sin que nadie tenga que verte."
+ },
+ {
+  "s": 73.669,
+  "e": 74.122,
+  "texto": "Sígame."
+ },
+ {
+  "s": 74.38,
+  "e": 77.921,
+  "texto": "y envíaselo a ese amigo que siempre termina perdido aunque tenga GPS."
+ }
+]

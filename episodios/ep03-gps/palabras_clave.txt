@@ -1,0 +1,12 @@
+# palabras que siempre llevan recuadro (una por línea)
+gps
+satélites
+satélite
+señal
+señales
+reloj
+distancia
+distancias
+ubicación
+kilómetros
+luz

@@ -3,7 +3,7 @@
 Uso: python3 comun/concordancia.py episodios/ep03-gps     (necesita index.html y tiempos.json; node + gsap + jsdom)
 Escribe concordancia_auto.md con, por cláusula: eventos de objeto, de cámara y de etiqueta, y avisa de:
   · SIN EVENTO: cláusula de ≥ 1,5 s sin ningún objeto ni cámara nuevos
-  · SATURADA: más de 8 eventos de objeto en la misma cláusula
+  · SATURADA: más de 3 momentos con novedad por segundo (las escenas 3D declaran sus eventos en window.__eventos3d)
   · HUECO: más de 3,5 s seguidos sin ningún evento de objeto o de cámara"""
 import sys, json, subprocess
 from pathlib import Path
@@ -16,10 +16,10 @@ filas=["| # | Tiempo | Cláusula | Objeto | Cámara | Etiqueta | Aviso |","|---|
 for k,c in enumerate(T['clauses']):
     dentro=[e for e in E if c['s']-.05<=e['t']<c['e']+.05]
     # un evento «de objeto» = (instante redondeado, elemento): los tweens con stagger sobre varios elementos cuentan una vez
-    obj={(round(e['t'],1),e['quien']) for e in dentro if e['cat']=='objeto'}; cam=[e for e in dentro if e['cat']=='camara']; eti=[e for e in dentro if e['cat']=='etiqueta']
+    obj={int(e['t']/0.35) for e in dentro if e['cat']=='objeto'}; cam=[e for e in dentro if e['cat']=='camara']; eti=[e for e in dentro if e['cat']=='etiqueta']
     av=[]
     if not obj and not cam and c['e']-c['s']>=1.5: av.append('SIN EVENTO')
-    if len(obj)>8: av.append('SATURADA')
+    if len(obj)/max(c['e']-c['s'],1)>3.0: av.append('SATURADA')
     avisos+=bool(av)
     filas.append(f"| {k} | {c['s']:.1f}–{c['e']:.1f} | {c['t'][:60]} | {len(obj)} | {len(cam)} | {len(eti)//3 if eti else 0} | {' · '.join(av)} |")
 mov=sorted([e['t'] for e in E if e['cat'] in('objeto','camara')]); huecos=[]

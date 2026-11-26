@@ -17,4 +17,5 @@ const ev=[];
 tl.getChildren(false,true,false).forEach(tw=>{const t=tw.startTime();if(t<0.05)return;
   const els=tw.targets().filter(e=>e&&e.nodeType===1);if(!els.length)return;
   const c=cat(els[0]);const e0=els[0];ev.push({t:+t.toFixed(2),cat:c,dur:+tw.duration().toFixed(2),quien:e0.id||(e0.className&&e0.className.baseVal!==undefined?e0.className.baseVal:e0.className)||e0.tagName,n:els.length});});
+(w.__eventos3d||[]).forEach(e=>ev.push({t:e.t,cat:'objeto',dur:0,quien:'3D '+e.q,n:1}));   // escenas 3D: eventos declarados en window.__eventos3d = [{t,q}]
 process.stdout.write(JSON.stringify({duracion:tl.duration(),eventos:ev.sort((a,b)=>a.t-b.t)}));

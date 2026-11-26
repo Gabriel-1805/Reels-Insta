@@ -27,7 +27,12 @@ for f in carpeta.glob('frame-*-at-*s.png'):
 def cerca(t):
     k=min(fotos,key=lambda x:abs(x-t)) if fotos else None
     return fotos[k] if k is not None and abs(k-t)<0.35 else None
-W,H=270,480;cols=4;pie=92;fuente=ImageFont.load_default()
+W,H=270,480;cols=4;pie=92
+def _fuente():
+    for f in ('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf','/usr/share/fonts/dejavu/DejaVuSans.ttf','/System/Library/Fonts/Supplemental/Arial.ttf','C:/Windows/Fonts/arial.ttf'):
+        if Path(f).exists(): return ImageFont.truetype(f,11)
+    return ImageFont.load_default()
+fuente=_fuente()
 filas=(len(puntos)+cols-1)//cols
 hoja=Image.new('RGB',(cols*W,filas*(H+pie)),(16,18,30));d=ImageDraw.Draw(hoja);falt=[]
 for i,(t,txt) in enumerate(puntos):

@@ -1,0 +1,66 @@
+<canvas id="three-layer" class="clip" width="1080" height="1920" data-start="36.24" data-duration="19.08" data-track-index="1" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(180deg,transparent 430px,#000 530px);mask-image:linear-gradient(180deg,transparent 430px,#000 530px)"></canvas>
+<script type="module">
+// Ep. 03 · escena 3D: satélites alrededor de la Tierra, señales, esferas de distancia y su cruce en el punto azul (tiempo LOCAL tau = t − T0).
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.181.2/+esm";
+const W=1080,H=1920,T0=36.24,DUR=19.08;
+const canvas=document.getElementById('three-layer');
+const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+renderer.setSize(W,H,false);renderer.setPixelRatio(1);renderer.setClearColor(0x000000,0);
+renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,W/H,.1,300);camera.setViewOffset(W,H,0,-200,W,H);
+const rnd=(()=>{let a=5;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}})();
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),sm=(a,b,x)=>{const u=clamp((x-a)/(b-a));return u*u*(3-2*u)},lerp=(a,b,u)=>a+(b-a)*u;
+const R=6,P=new THREE.Vector3(0,R,0),Y=new THREE.Vector3(0,1,0);
+// ---- Tierra con cuadrícula y atmósfera ----
+const earth=new THREE.Mesh(new THREE.SphereGeometry(R,48,32),new THREE.MeshStandardMaterial({color:0x1c2d6e,roughness:.85,metalness:.05}));scene.add(earth);
+scene.add(new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.SphereGeometry(R+.02,28,18)),new THREE.LineBasicMaterial({color:0x4B5BFF,transparent:true,opacity:.35})));
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(R+.55,40,28),new THREE.MeshBasicMaterial({color:0x4B7BFF,transparent:true,opacity:.1,side:THREE.BackSide,depthWrite:false})));
+// ---- estrellas ----
+{const n=240,a=new Float32Array(n*3);for(let i=0;i<n;i++){const v=new THREE.Vector3(rnd()-.5,rnd()-.35,rnd()-.5).normalize().multiplyScalar(70+rnd()*30);a.set([v.x,v.y,v.z],i*3);}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(a,3));scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xb9c6ff,size:.35,transparent:true,opacity:.8,depthWrite:false})));}
+// ---- luces ----
+scene.add(new THREE.HemisphereLight(0xb4c0ff,0x0b0f24,1.0));
+const sun=new THREE.DirectionalLight(0xfff1d6,3.0);sun.position.set(-12,18,14);scene.add(sun);
+const rim=new THREE.DirectionalLight(0x4B5BFF,1.2);rim.position.set(14,6,-12);scene.add(rim);
+// ---- satélites ----
+const COLS=[0x4B5BFF,0xFFB703,0x2fb8a3,0xe0556f];
+const DIR=[[-.55,.82,.15],[.5,.85,-.2],[.1,.78,.62],[-.15,.9,-.5]].map(v=>new THREE.Vector3(...v).normalize());
+function mkSat(col){const g=new THREE.Group();
+  g.add(new THREE.Mesh(new THREE.BoxGeometry(.8,.55,.55),new THREE.MeshStandardMaterial({color:col,roughness:.35,metalness:.5})));
+  for(const s of[-1,1]){const p=new THREE.Mesh(new THREE.BoxGeometry(1.4,.06,.7),new THREE.MeshStandardMaterial({color:0x3a52d8,roughness:.3,metalness:.4,emissive:0x1d2b78,emissiveIntensity:.6}));p.position.x=s*1.15;g.add(p);}
+  const d=new THREE.Mesh(new THREE.SphereGeometry(.18,10,8),new THREE.MeshStandardMaterial({color:0xffffff}));d.position.y=.4;g.add(d);scene.add(g);return g;}
+const sats=COLS.map(mkSat);
+const satPos=(i,tau)=>{const ang=.10*Math.min(tau,10.8);const r=i<3?R+(12-R)*sm(0,1.8,tau):12+(1-sm(12.2,13.0,tau))*22;return DIR[i].clone().multiplyScalar(r).applyAxisAngle(Y,ang);};
+const dist=COLS.map((_,i)=>satPos(i,99).distanceTo(P));
+// ---- señales: sale del satélite, viaja hasta el celular ----
+const SIG=[];for(let j=0;j<5;j++)for(let i=0;i<3;i++)SIG.push({i,t0:3.7+j*.9+i*.3,dur:1.3,r:.13});SIG.push({i:0,t0:8.5,dur:1.9,r:.22});
+const sigM=SIG.map(s=>{const m=new THREE.Mesh(new THREE.SphereGeometry(s.r,14,10),new THREE.MeshBasicMaterial({color:COLS[s.i]}));m.visible=false;scene.add(m);return m;});
+// ---- rayo de luz (satélite 1 → celular) ----
+const beam=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,1,10),new THREE.MeshBasicMaterial({color:0xfff3c0,transparent:true,opacity:0,depthWrite:false}));scene.add(beam);
+// ---- esferas de distancia: 3 círculos máximos por satélite; todas pasan por el celular ----
+const shells=COLS.map((c,i)=>{const g=new THREE.Group(),mat=new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:0,depthWrite:false});
+  for(const rot of[[0,0,0],[Math.PI/2,0,0],[0,Math.PI/2,0]]){const r=new THREE.Mesh(new THREE.TorusGeometry(dist[i],.05,6,80),mat);r.rotation.set(...rot);g.add(r);}
+  g.position.copy(satPos(i,99));g.userData.mat=mat;scene.add(g);return g;});
+const SH=[12.9,13.9,14.9,15.9];
+// ---- punto azul (el celular) y su anillo ----
+const dot=new THREE.Mesh(new THREE.SphereGeometry(.32,20,14),new THREE.MeshStandardMaterial({color:0x2f6bff,emissive:0x2f6bff,emissiveIntensity:1.8}));dot.position.copy(P);scene.add(dot);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(.9,.07,10,48),new THREE.MeshBasicMaterial({color:0x6f9bff,transparent:true,opacity:0,depthWrite:false}));ring.position.copy(P);ring.rotation.x=Math.PI/2;scene.add(ring);
+// ---- cámara: plano amplio → órbita → entrada final al punto ----
+const KF=[[0,[4,19,22],[0,7.5,0]],[2.2,[10,19,34],[0,8,0]],[6,[20,20,39],[0,8,0]],[11,[-20,19,38],[0,8,0]],[16,[-17,17,29],[0,7.6,0]],[DUR,[-6,11,12],[0,6.3,0]]];
+function camAt(t){let k=0;while(k<KF.length-2&&t>KF[k+1][0])k++;const a=KF[k],b=KF[k+1],u=sm(a[0],b[0],t);
+  const p=a[1].map((v,i)=>lerp(v,b[1][i],u)),q=a[2].map((v,i)=>lerp(v,b[2][i],u));camera.position.set(...p);camera.lookAt(...q);}
+const up=new THREE.Vector3(0,1,0);
+function renderAt(tau){
+  tau=clamp(tau,0,DUR);canvas.style.opacity=sm(0,.5,tau)*(1-sm(DUR-.5,DUR,tau));
+  sats.forEach((s,i)=>{const p=satPos(i,tau);s.position.copy(p);s.lookAt(0,0,0);s.scale.setScalar(.85*(i<3?.35+.65*sm(0,1.8,tau):1));s.visible=i<3||tau>11.9;});
+  SIG.forEach((s,k)=>{const u=(tau-s.t0)/s.dur,m=sigM[k];m.visible=u>0&&u<1;if(m.visible)m.position.lerpVectors(satPos(s.i,tau),P,u);});
+  {const a=satPos(0,tau),b=P,len=a.distanceTo(b);beam.position.copy(a).add(b).multiplyScalar(.5);beam.scale.set(1,len,1);beam.quaternion.setFromUnitVectors(up,b.clone().sub(a).normalize());
+   beam.material.opacity=.9*sm(10.9,11.4,tau)*(1-sm(12.2,12.7,tau));}
+  shells.forEach((m,i)=>{m.userData.mat.opacity=.8*sm(SH[i],SH[i]+.5,tau);});
+  const f=tau>16.5?((tau-16.5)/1.1)%1:0;ring.material.opacity=tau>16.5?.9*(1-f):0;ring.scale.setScalar(1+3*f);dot.scale.setScalar(1+.25*Math.sin(tau*4)*(tau>16.5?1:0));
+  camAt(tau);renderer.render(scene,camera);
+}
+window.addEventListener('hf-seek',e=>renderAt(e.detail.time-T0));
+renderAt((window.__hfThreeTime||0)-T0);
+</script>

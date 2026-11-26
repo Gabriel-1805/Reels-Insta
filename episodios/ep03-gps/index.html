@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Así funciona</title>
+<style>
+/* comun: colores de marca, escenario, subtítulos, etiquetas, máscara anti-choque */
+:root{--navy:#192653;--bg:#0B0F24;--blue:#4B5BFF;--amber:#FFB703;--dim:#8A93B8;--bad:#FF5A5F}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:radial-gradient(circle at 50% 40%,#141c44,var(--bg) 70%);font-family:Montserrat,Inter,Arial,sans-serif;color:#fff}
+.abs{position:absolute}
+#bgclip{left:0;top:0;width:1080px;height:1920px}
+#qrclip{left:0;top:0;width:1080px;height:1920px;-webkit-mask-image:linear-gradient(180deg,transparent 430px,#000 530px);mask-image:linear-gradient(180deg,transparent 430px,#000 530px)}
+.grid{position:absolute;inset:-480px;background-image:linear-gradient(#ffffff0f 1px,transparent 1px),linear-gradient(90deg,#ffffff0f 1px,transparent 1px);background-size:60px 60px}
+#dust,#world{position:absolute;left:0;top:0;width:1080px;height:1920px;transform-origin:540px 960px}
+.dot{position:absolute;border-radius:50%;background:#9fb0ff}
+#cap{position:absolute;left:0;right:0;top:130px;height:290px}
+.chunk{position:absolute;left:0;right:0;top:0;text-align:center;font-size:72px;font-weight:600;line-height:1.3;opacity:0;visibility:hidden}
+.chunk span{color:var(--dim);display:inline-block;margin:0 10px;position:relative}
+.chunk span.key{border:4px solid var(--blue);padding:0 14px;border-radius:6px}
+.chunk span.key::before,.chunk span.key::after{content:"";position:absolute;width:18px;height:18px;border-radius:50%;background:var(--blue)}
+.chunk span.key::before{left:-12px;top:-12px}.chunk span.key::after{right:-12px;bottom:-12px}
+#lbls .lb{position:absolute;left:50%;top:1340px;transform:translateX(-50%);width:max-content;max-width:980px;text-align:center;font-size:40px;font-weight:800;letter-spacing:1.5px;padding:16px 36px;border-radius:44px;background:rgba(11,15,36,.92);border:3px solid #ffffff22;opacity:0;visibility:hidden}
+.lbl-line{position:absolute;left:538px;top:1210px;width:4px;height:130px;transform-origin:50% 100%}
+.lbl-node{position:absolute;left:531px;top:1201px;width:18px;height:18px;border-radius:50%}
+#tilt{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#fog{position:absolute;left:0;top:430px;width:1080px;height:640px;background:linear-gradient(180deg,rgba(11,15,36,.92),rgba(11,15,36,0));opacity:0;pointer-events:none}
+/* comun: escena de cierre (perfil de la cuenta + hoja de compartir). Se reutiliza en todos los episodios */
+#cierre{position:absolute;left:0;top:0;width:1080px;height:1920px}
+#mock{position:absolute;left:90px;top:470px;width:900px;height:960px;border-radius:70px;border:6px solid #2a3566;background:linear-gradient(180deg,#0e1330,#090c1f);overflow:hidden}
+.gridm{position:absolute;inset:0;background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:50px 50px}
+#rail{position:absolute;left:800px;top:70px;width:70px}
+#rail svg{display:block;width:56px;height:56px;margin:0 auto 34px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#perfil{position:absolute;left:40px;top:740px;width:820px;height:110px}
+#avlogo{position:absolute;left:0;top:5px;width:100px;height:100px;border-radius:50%;background-color:#fff;background-size:cover;background-position:center;border:3px solid #4B5BFF}
+#user{position:absolute;left:122px;top:30px;font-size:34px;font-weight:800;letter-spacing:.3px}
+#seguir{position:absolute;left:520px;top:24px;width:170px;height:56px;border-radius:14px;border:3px solid #fff;font-size:28px;font-weight:800}
+#seguir span,#enviar span{position:absolute;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center}
+#sig2,#env2{opacity:0}
+#cap2{position:absolute;left:40px;top:860px;width:700px;font-size:28px;line-height:1.3;color:#cfd5ee}
+#hoja{position:absolute;left:0;top:330px;width:900px;height:630px;border-radius:50px 50px 0 0;background:#1d2238;border-top:3px solid #ffffff1f}
+#hoja .asa{position:absolute;left:390px;top:16px;width:120px;height:8px;border-radius:4px;background:#555a75}
+#busca{position:absolute;left:36px;top:48px;width:828px;height:64px;border-radius:16px;background:#2b3148;color:#8f95b3;font-size:28px;padding:15px 24px 0 78px}
+#busca svg{position:absolute;left:26px;top:16px;width:32px;height:32px;fill:none;stroke:#cfd5ee;stroke-width:2.4;stroke-linecap:round}
+.amigo{position:absolute;top:150px;width:200px;text-align:center}
+.amigo .circ{position:relative;width:140px;height:140px;margin:0 auto;border-radius:50%;overflow:hidden;background:#2b3148}
+.amigo b{display:block;margin-top:14px;font-size:28px;font-weight:600}
+#chk{position:absolute;left:128px;top:100px;width:44px;height:44px;border-radius:50%;background:#4B5BFF;border:4px solid #1d2238;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;opacity:0}
+#msg{position:absolute;left:36px;top:370px;width:828px;height:70px;border-bottom:2px solid #353b57;color:#8f95b3;font-size:28px;padding:18px 0 0 12px}
+#enviar{position:absolute;left:36px;top:470px;width:828px;height:96px;border-radius:22px;background:#4B5BFF;font-size:36px;font-weight:800}
+.rg{position:absolute;width:130px;height:130px;border-radius:50%;border:6px solid #FFB703;opacity:0}
+#ringS{left:580px;top:727px}#ringI{left:770px;top:213px}#ringA{left:47px;top:485px}#ringE{left:385px;top:783px}
+/* propio del episodio: mapa genérico, personajes de formas redondeadas, celular, satélites */
+</style></head><body>
+<div id="stage" data-composition-id="ep03-gps" data-start="0" data-width="1080" data-height="1920">
+  <div id="bgclip" class="abs clip" data-start="0" data-duration="79.0" data-track-index="0"><div id="bg-grid" class="grid"></div><div id="dust"></div></div><canvas id="three-layer" class="clip" width="1080" height="1920" data-start="36.24" data-duration="19.08" data-track-index="1" style="position:absolute;left:0;top:0;width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(180deg,transparent 430px,#000 530px);mask-image:linear-gradient(180deg,transparent 430px,#000 530px)"></canvas>
+<script type="module">
+// Ep. 03 · escena 3D: satélites alrededor de la Tierra, señales, esferas de distancia y su cruce en el punto azul (tiempo LOCAL tau = t − T0).
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.181.2/+esm";
+const W=1080,H=1920,T0=36.24,DUR=19.08;
+const canvas=document.getElementById('three-layer');
+const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+renderer.setSize(W,H,false);renderer.setPixelRatio(1);renderer.setClearColor(0x000000,0);
+renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,W/H,.1,300);camera.setViewOffset(W,H,0,-200,W,H);
+const rnd=(()=>{let a=5;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}})();
+const clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),sm=(a,b,x)=>{const u=clamp((x-a)/(b-a));return u*u*(3-2*u)},lerp=(a,b,u)=>a+(b-a)*u;
+const R=6,P=new THREE.Vector3(0,R,0),Y=new THREE.Vector3(0,1,0);
+// ---- Tierra con cuadrícula y atmósfera ----
+const earth=new THREE.Mesh(new THREE.SphereGeometry(R,48,32),new THREE.MeshStandardMaterial({color:0x1c2d6e,roughness:.85,metalness:.05}));scene.add(earth);
+scene.add(new THREE.LineSegments(new THREE.WireframeGeometry(new THREE.SphereGeometry(R+.02,28,18)),new THREE.LineBasicMaterial({color:0x4B5BFF,transparent:true,opacity:.35})));
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(R+.55,40,28),new THREE.MeshBasicMaterial({color:0x4B7BFF,transparent:true,opacity:.1,side:THREE.BackSide,depthWrite:false})));
+// ---- estrellas ----
+{const n=240,a=new Float32Array(n*3);for(let i=0;i<n;i++){const v=new THREE.Vector3(rnd()-.5,rnd()-.35,rnd()-.5).normalize().multiplyScalar(70+rnd()*30);a.set([v.x,v.y,v.z],i*3);}
+ const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(a,3));scene.add(new THREE.Points(g,new THREE.PointsMaterial({color:0xb9c6ff,size:.35,transparent:true,opacity:.8,depthWrite:false})));}
+// ---- luces ----
+scene.add(new THREE.HemisphereLight(0xb4c0ff,0x0b0f24,1.0));
+const sun=new THREE.DirectionalLight(0xfff1d6,3.0);sun.position.set(-12,18,14);scene.add(sun);
+const rim=new THREE.DirectionalLight(0x4B5BFF,1.2);rim.position.set(14,6,-12);scene.add(rim);
+// ---- satélites ----
+const COLS=[0x4B5BFF,0xFFB703,0x2fb8a3,0xe0556f];
+const DIR=[[-.55,.82,.15],[.5,.85,-.2],[.1,.78,.62],[-.15,.9,-.5]].map(v=>new THREE.Vector3(...v).normalize());
+function mkSat(col){const g=new THREE.Group();
+  g.add(new THREE.Mesh(new THREE.BoxGeometry(.8,.55,.55),new THREE.MeshStandardMaterial({color:col,roughness:.35,metalness:.5})));
+  for(const s of[-1,1]){const p=new THREE.Mesh(new THREE.BoxGeometry(1.4,.06,.7),new THREE.MeshStandardMaterial({color:0x3a52d8,roughness:.3,metalness:.4,emissive:0x1d2b78,emissiveIntensity:.6}));p.position.x=s*1.15;g.add(p);}
+  const d=new THREE.Mesh(new THREE.SphereGeometry(.18,10,8),new THREE.MeshStandardMaterial({color:0xffffff}));d.position.y=.4;g.add(d);scene.add(g);return g;}
+const sats=COLS.map(mkSat);
+const satPos=(i,tau)=>{const ang=.10*Math.min(tau,10.8);const r=i<3?R+(12-R)*sm(0,1.8,tau):12+(1-sm(12.2,13.0,tau))*22;return DIR[i].clone().multiplyScalar(r).applyAxisAngle(Y,ang);};
+const dist=COLS.map((_,i)=>satPos(i,99).distanceTo(P));
+// ---- señales: sale del satélite, viaja hasta el celular ----
+const SIG=[];for(let j=0;j<5;j++)for(let i=0;i<3;i++)SIG.push({i,t0:3.7+j*.9+i*.3,dur:1.3,r:.13});SIG.push({i:0,t0:8.5,dur:1.9,r:.22});
+const sigM=SIG.map(s=>{const m=new THREE.Mesh(new THREE.SphereGeometry(s.r,14,10),new THREE.MeshBasicMaterial({color:COLS[s.i]}));m.visible=false;scene.add(m);return m;});
+// ---- rayo de luz (satélite 1 → celular) ----
+const beam=new THREE.Mesh(new THREE.CylinderGeometry(.07,.07,1,10),new THREE.MeshBasicMaterial({color:0xfff3c0,transparent:true,opacity:0,depthWrite:false}));scene.add(beam);
+// ---- esferas de distancia: 3 círculos máximos por satélite; todas pasan por el celular ----
+const shells=COLS.map((c,i)=>{const g=new THREE.Group(),mat=new THREE.MeshBasicMaterial({color:c,transparent:true,opacity:0,depthWrite:false});
+  for(const rot of[[0,0,0],[Math.PI/2,0,0],[0,Math.PI/2,0]]){const r=new THREE.Mesh(new THREE.TorusGeometry(dist[i],.05,6,80),mat);r.rotation.set(...rot);g.add(r);}
+  g.position.copy(satPos(i,99));g.userData.mat=mat;scene.add(g);return g;});
+const SH=[12.9,13.9,14.9,15.9];
+// ---- punto azul (el celular) y su anillo ----
+const dot=new THREE.Mesh(new THREE.SphereGeometry(.32,20,14),new THREE.MeshStandardMaterial({color:0x2f6bff,emissive:0x2f6bff,emissiveIntensity:1.8}));dot.position.copy(P);scene.add(dot);
+const ring=new THREE.Mesh(new THREE.TorusGeometry(.9,.07,10,48),new THREE.MeshBasicMaterial({color:0x6f9bff,transparent:true,opacity:0,depthWrite:false}));ring.position.copy(P);ring.rotation.x=Math.PI/2;scene.add(ring);
+// ---- cámara: plano amplio → órbita → entrada final al punto ----
+const KF=[[0,[4,19,22],[0,7.5,0]],[2.2,[10,19,34],[0,8,0]],[6,[20,20,39],[0,8,0]],[11,[-20,19,38],[0,8,0]],[16,[-17,17,29],[0,7.6,0]],[DUR,[-6,11,12],[0,6.3,0]]];
+function camAt(t){let k=0;while(k<KF.length-2&&t>KF[k+1][0])k++;const a=KF[k],b=KF[k+1],u=sm(a[0],b[0],t);
+  const p=a[1].map((v,i)=>lerp(v,b[1][i],u)),q=a[2].map((v,i)=>lerp(v,b[2][i],u));camera.position.set(...p);camera.lookAt(...q);}
+const up=new THREE.Vector3(0,1,0);
+function renderAt(tau){
+  tau=clamp(tau,0,DUR);canvas.style.opacity=sm(0,.5,tau)*(1-sm(DUR-.5,DUR,tau));
+  sats.forEach((s,i)=>{const p=satPos(i,tau);s.position.copy(p);s.lookAt(0,0,0);s.scale.setScalar(.85*(i<3?.35+.65*sm(0,1.8,tau):1));s.visible=i<3||tau>11.9;});
+  SIG.forEach((s,k)=>{const u=(tau-s.t0)/s.dur,m=sigM[k];m.visible=u>0&&u<1;if(m.visible)m.position.lerpVectors(satPos(s.i,tau),P,u);});
+  {const a=satPos(0,tau),b=P,len=a.distanceTo(b);beam.position.copy(a).add(b).multiplyScalar(.5);beam.scale.set(1,len,1);beam.quaternion.setFromUnitVectors(up,b.clone().sub(a).normalize());
+   beam.material.opacity=.9*sm(10.9,11.4,tau)*(1-sm(12.2,12.7,tau));}
+  shells.forEach((m,i)=>{m.userData.mat.opacity=.8*sm(SH[i],SH[i]+.5,tau);});
+  const f=tau>16.5?((tau-16.5)/1.1)%1:0;ring.material.opacity=tau>16.5?.9*(1-f):0;ring.scale.setScalar(1+3*f);dot.scale.setScalar(1+.25*Math.sin(tau*4)*(tau>16.5?1:0));
+  camAt(tau);renderer.render(scene,camera);
+}
+window.addEventListener('hf-seek',e=>renderAt(e.detail.time-T0));
+renderAt((window.__hfThreeTime||0)-T0);
+</script>
+
+  <div id="qrclip" class="abs clip" data-start="0" data-duration="73.7" data-track-index="1"><div id="world"><div id="tilt"><div id="esc" class="abs"></div>
+</div></div><div id="fog"></div></div>
+  <div id="lbls" class="clip" data-start="0" data-duration="73.7" data-track-index="2"></div>
+  <div id="hud3d" class="clip" data-start="44.6" data-duration="11.0" data-track-index="3">
+    <div id="crono" style="position:absolute;left:70px;top:600px;width:200px;height:200px;border:10px solid #FFB703;border-radius:50%;background:rgba(11,15,36,.85);opacity:0">
+      <div style="position:absolute;left:84px;top:84px;width:16px;height:16px;border-radius:50%;background:#FFB703;z-index:2"></div>
+      <div id="aguja" style="position:absolute;left:86px;top:20px;width:8px;height:70px;border-radius:4px;background:#e9ecf5"></div>
+    </div>
+    <div id="formula" style="position:absolute;left:60px;right:60px;top:1180px;padding:18px 10px;border-radius:30px;background:rgba(11,15,36,.92);border:3px solid #ffffff22;text-align:center;font-size:46px;font-weight:800;opacity:0"><span style="color:#FFB703">distancia</span> = <span style="color:#6f7dff">tiempo</span> × <span style="color:#fff">velocidad de la luz</span></div>
+  </div>
+
+  <div id="cierre" class="clip" data-start="73.7" data-duration="5.3" data-track-index="3">
+    <div id="mock"><div class="gridm"></div>
+      <div id="rail">
+        <svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>
+        <svg id="ico3" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg>
+      </div>
+      <div id="perfil"><div id="avlogo" style="background-image:url(data:image/png;base64,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)"></div><div id="user">asifunciona.reel</div>
+        <div id="seguir"><span id="sig1">Seguir</span><span id="sig2">Siguiendo</span></div></div>
+      <div id="cap2">¿Cómo sabe el GPS dónde estás?</div>
+      <div id="hoja"><div class="asa"></div>
+        <div id="busca"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="M15 15l5 5"/></svg>Buscar</div>
+        <div id="amigos"></div>
+        <div id="msg">Escribe un mensaje…</div>
+        <div id="enviar"><span id="env1">Enviar</span><span id="env2">✓ Enviado</span></div></div>
+      <div class="rg" id="ringS"></div><div class="rg" id="ringI"></div><div class="rg" id="ringA"></div><div class="rg" id="ringE"></div>
+    </div>
+  </div>
+
+  <div id="cap" class="clip" data-start="0" data-duration="79.0" data-track-index="5"></div>
+  <audio id="voz" src="audio.wav" data-start="0" data-duration="79.0" data-track-index="9" data-volume="1"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script>
+  const tl=gsap.timeline({paused:true});
+  const SC=[[0.0, 11.02], [11.02, 17.71], [17.71, 30.89], [30.89, 36.24], [36.24, 44.6], [44.6, 55.6], [55.6, 63.14], [63.14, 69.81], [69.81, 73.7], [73.7, 79.0]],CL=[[0.15, 3.88], [4.2, 5.09], [5.09, 5.21], [5.57, 6.46], [6.74, 8.26], [8.49, 10.62], [11.02, 12.79], [13.12, 14.95], [15.4, 17.29], [17.71, 20.0], [20.31, 21.42], [21.66, 23.66], [24.0, 24.64], [24.97, 26.07], [26.46, 26.8], [27.11, 28.3], [28.68, 29.19], [29.46, 30.46], [30.89, 33.76], [33.97, 35.84], [36.24, 36.58], [36.58, 38.28], [38.43, 39.35], [39.79, 44.24], [44.6, 46.69], [47.06, 48.68], [48.92, 52.4], [52.67, 55.32], [55.6, 60.11], [60.59, 62.78], [63.14, 64.05], [64.46, 66.47], [66.8, 69.42], [69.81, 73.25], [73.67, 77.92]],CTA=73.7,TOT=79.0;
+  const T=(i,f)=>SC[i][0]+f*(SC[i][1]-SC[i][0]);
+  const C=(k,f=0)=>CL[k][0]+f*(CL[k][1]-CL[k][0]);
+  const CAPS=[{"w": "¿Alguna", "s": 0.15, "e": 0.55}, {"w": "vez", "s": 0.55, "e": 0.69}, {"w": "abriste", "s": 0.69, "e": 1.09}, {"w": "Google", "s": 1.09, "e": 1.36}, {"w": "Maps", "s": 1.36, "e": 1.49}, {"w": "y", "s": 1.68, "e": 1.79}, {"w": "[apareció]", "s": 1.79, "e": 2.23}, {"w": "un", "s": 2.23, "e": 2.34}, {"w": "puntito", "s": 2.34, "e": 2.67}, {"w": "azul", "s": 2.67, "e": 2.89}, {"w": "justo", "s": 2.89, "e": 3.11}, {"w": "donde", "s": 3.11, "e": 3.33}, {"w": "estás", "s": 3.33, "e": 3.55}, {"w": "parado?", "s": 3.55, "e": 3.88, "f": true}, {"w": "[Parece]", "s": 4.2, "e": 4.58}, {"w": "algo", "s": 4.58, "e": 4.83}, {"w": "normal,", "s": 4.83, "e": 5.09, "f": true}, {"w": "¿no?", "s": 5.09, "e": 5.21, "f": true}, {"w": "Pero", "s": 5.57, "e": 5.76}, {"w": "[pensála]", "s": 5.76, "e": 6.06}, {"w": "un", "s": 6.06, "e": 6.16}, {"w": "segundo.", "s": 6.16, "e": 6.46, "f": true}, {"w": "¿Cómo", "s": 6.74, "e": 6.97}, {"w": "sabe", "s": 6.97, "e": 7.2}, {"w": "tu", "s": 7.2, "e": 7.32}, {"w": "[teléfono]", "s": 7.32, "e": 7.79}, {"w": "dónde", "s": 7.79, "e": 8.03}, {"w": "estás,", "s": 8.03, "e": 8.26, "f": true}, {"w": "aunque", "s": 8.49, "e": 8.76}, {"w": "estés", "s": 8.76, "e": 9.02}, {"w": "en", "s": 9.02, "e": 9.16}, {"w": "una", "s": 9.16, "e": 9.42}, {"w": "ciudad", "s": 9.42, "e": 9.69}, {"w": "que", "s": 9.69, "e": 9.82}, {"w": "nunca", "s": 9.82, "e": 10.09}, {"w": "[visitaste?]", "s": 10.09, "e": 10.62, "f": true}, {"w": "No", "s": 11.02, "e": 11.11}, {"w": "tiene", "s": 11.11, "e": 11.3}, {"w": "una", "s": 11.3, "e": 11.48}, {"w": "cámara", "s": 11.48, "e": 11.76}, {"w": "en", "s": 11.76, "e": 11.85}, {"w": "el", "s": 11.85, "e": 11.95}, {"w": "cielo", "s": 11.95, "e": 12.13}, {"w": "que", "s": 12.13, "e": 12.23}, {"w": "te", "s": 12.23, "e": 12.32}, {"w": "esté", "s": 12.32, "e": 12.51}, {"w": "[mirando.]", "s": 12.51, "e": 12.79, "f": true}, {"w": "Tampoco", "s": 13.12, "e": 13.49}, {"w": "[necesita]", "s": 13.49, "e": 13.98}, {"w": "que", "s": 13.98, "e": 14.1}, {"w": "le", "s": 14.1, "e": 14.22}, {"w": "digas", "s": 14.22, "e": 14.46}, {"w": "dónde", "s": 14.46, "e": 14.71}, {"w": "estás.", "s": 14.71, "e": 14.95, "f": true}, {"w": "Lo", "s": 15.4, "e": 15.55}, {"w": "que", "s": 15.55, "e": 15.69}, {"w": "hace", "s": 15.69, "e": 15.98}, {"w": "es", "s": 15.98, "e": 16.13}, {"w": "mucho", "s": 16.13, "e": 16.42}, {"w": "más", "s": 16.42, "e": 16.56}, {"w": "[interesante.]", "s": 16.56, "e": 17.29, "f": true}, {"w": "[Imagina]", "s": 17.71, "e": 18.17}, {"w": "que", "s": 18.17, "e": 18.28}, {"w": "estás", "s": 18.28, "e": 18.51}, {"w": "perdido", "s": 18.51, "e": 18.85}, {"w": "en", "s": 18.85, "e": 18.97}, {"w": "una", "s": 18.97, "e": 19.2}, {"w": "ciudad", "s": 19.2, "e": 19.42}, {"w": "y", "s": 19.42, "e": 19.54}, {"w": "tres", "s": 19.54, "e": 19.65}, {"w": "amigos,", "s": 19.65, "e": 20.0, "f": true}, {"w": "que", "s": 20.31, "e": 20.42}, {"w": "están", "s": 20.42, "e": 20.65}, {"w": "en", "s": 20.65, "e": 20.76}, {"w": "[distintos]", "s": 20.76, "e": 21.09}, {"w": "lugares,", "s": 21.09, "e": 21.42, "f": true}, {"w": "te", "s": 21.66, "e": 21.79}, {"w": "dicen", "s": 21.79, "e": 22.06}, {"w": "a", "s": 22.06, "e": 22.19}, {"w": "qué", "s": 22.19, "e": 22.33}, {"w": "[distancia]", "s": 22.33, "e": 22.73}, {"w": "estás", "s": 22.73, "e": 22.99}, {"w": "de", "s": 22.99, "e": 23.13}, {"w": "cada", "s": 23.13, "e": 23.39}, {"w": "uno.", "s": 23.39, "e": 23.66, "f": true}, {"w": "Uno", "s": 24.0, "e": 24.26}, {"w": "te", "s": 24.26, "e": 24.39}, {"w": "dice,", "s": 24.39, "e": 24.64, "f": true}, {"w": "estás", "s": 24.97, "e": 25.19}, {"w": "a", "s": 25.19, "e": 25.3}, {"w": "dos", "s": 25.3, "e": 25.41}, {"w": "[kilómetros]", "s": 25.41, "e": 25.85}, {"w": "de", "s": 25.85, "e": 25.96}, {"w": "mí,", "s": 25.96, "e": 26.07, "f": true}, {"w": "otro,", "s": 26.46, "e": 26.8, "f": true}, {"w": "estás", "s": 27.11, "e": 27.41}, {"w": "a", "s": 27.41, "e": 27.56}, {"w": "tres", "s": 27.56, "e": 27.71}, {"w": "[kilómetros,]", "s": 27.71, "e": 28.3, "f": true}, {"w": "y", "s": 28.68, "e": 28.78}, {"w": "el", "s": 28.78, "e": 28.88}, {"w": "[tercero,]", "s": 28.88, "e": 29.19, "f": true}, {"w": "estás", "s": 29.46, "e": 29.71}, {"w": "a", "s": 29.71, "e": 29.84}, {"w": "un", "s": 29.84, "e": 29.96}, {"w": "[kilómetro.]", "s": 29.96, "e": 30.46, "f": true}, {"w": "Con", "s": 30.89, "e": 31.05}, {"w": "esas", "s": 31.05, "e": 31.37}, {"w": "tres", "s": 31.37, "e": 31.53}, {"w": "pistas", "s": 31.53, "e": 31.84}, {"w": "ya", "s": 31.97, "e": 32.09}, {"w": "puedes", "s": 32.09, "e": 32.35}, {"w": "empezar", "s": 32.35, "e": 32.73}, {"w": "a", "s": 32.73, "e": 32.86}, {"w": "[descubrir]", "s": 32.86, "e": 33.25}, {"w": "dónde", "s": 33.25, "e": 33.5}, {"w": "estás,", "s": 33.5, "e": 33.76, "f": true}, {"w": "aunque", "s": 33.97, "e": 34.22}, {"w": "no", "s": 34.22, "e": 34.34}, {"w": "sepas", "s": 34.34, "e": 34.59}, {"w": "en", "s": 34.59, "e": 34.72}, {"w": "qué", "s": 34.72, "e": 34.84}, {"w": "[dirección]", "s": 34.84, "e": 35.22}, {"w": "está", "s": 35.22, "e": 35.47}, {"w": "ninguno.", "s": 35.47, "e": 35.84, "f": true}, {"w": "[Bueno,]", "s": 36.24, "e": 36.58, "f": true}, {"w": "el", "s": 36.58, "e": 36.75}, {"w": "[GPS]", "s": 36.75, "e": 36.92}, {"w": "hace", "s": 36.92, "e": 37.26}, {"w": "algo", "s": 37.26, "e": 37.6}, {"w": "parecido,", "s": 37.6, "e": 38.28, "f": true}, {"w": "pero", "s": 38.43, "e": 38.66}, {"w": "usa", "s": 38.66, "e": 38.89}, {"w": "[satélites.]", "s": 38.89, "e": 39.35, "f": true}, {"w": "Estos", "s": 39.79, "e": 40.04}, {"w": "[satélites]", "s": 40.04, "e": 40.54}, {"w": "envían", "s": 40.54, "e": 40.78}, {"w": "[señales]", "s": 40.78, "e": 41.16}, {"w": "que", "s": 41.16, "e": 41.28}, {"w": "le", "s": 41.28, "e": 41.4}, {"w": "dicen", "s": 41.4, "e": 41.65}, {"w": "al", "s": 41.65, "e": 41.77}, {"w": "teléfono", "s": 41.77, "e": 42.27}, {"w": "dónde", "s": 42.27, "e": 42.52}, {"w": "están", "s": 42.52, "e": 42.76}, {"w": "y", "s": 42.92, "e": 43.03}, {"w": "a", "s": 43.03, "e": 43.14}, {"w": "qué", "s": 43.14, "e": 43.25}, {"w": "hora", "s": 43.25, "e": 43.47}, {"w": "enviaron", "s": 43.47, "e": 43.8}, {"w": "el", "s": 43.8, "e": 43.91}, {"w": "mensaje.", "s": 43.91, "e": 44.24, "f": true}, {"w": "El", "s": 44.6, "e": 44.72}, {"w": "teléfono", "s": 44.72, "e": 45.18}, {"w": "mide", "s": 45.18, "e": 45.41}, {"w": "cuánto", "s": 45.41, "e": 45.65}, {"w": "tardó", "s": 45.65, "e": 45.88}, {"w": "cada", "s": 45.88, "e": 46.11}, {"w": "[señal]", "s": 46.11, "e": 46.34}, {"w": "en", "s": 46.34, "e": 46.46}, {"w": "llegar.", "s": 46.46, "e": 46.69, "f": true}, {"w": "Como", "s": 47.06, "e": 47.27}, {"w": "sabe", "s": 47.27, "e": 47.47}, {"w": "que", "s": 47.47, "e": 47.57}, {"w": "viaja", "s": 47.57, "e": 47.77}, {"w": "a", "s": 47.77, "e": 47.87}, {"w": "la", "s": 47.87, "e": 47.98}, {"w": "velocidad", "s": 47.98, "e": 48.38}, {"w": "de", "s": 48.38, "e": 48.48}, {"w": "la", "s": 48.48, "e": 48.58}, {"w": "[luz,]", "s": 48.58, "e": 48.68, "f": true}, {"w": "calcula", "s": 48.92, "e": 49.27}, {"w": "la", "s": 49.27, "e": 49.38}, {"w": "[distancia]", "s": 49.38, "e": 49.73}, {"w": "hasta", "s": 49.73, "e": 49.96}, {"w": "cada", "s": 49.96, "e": 50.19}, {"w": "[satélite]", "s": 50.19, "e": 50.65}, {"w": "y", "s": 50.96, "e": 51.08}, {"w": "repite", "s": 51.08, "e": 51.44}, {"w": "esto", "s": 51.44, "e": 51.68}, {"w": "con", "s": 51.68, "e": 51.8}, {"w": "varios", "s": 51.8, "e": 52.04}, {"w": "de", "s": 52.04, "e": 52.16}, {"w": "ellos,", "s": 52.16, "e": 52.4, "f": true}, {"w": "hasta", "s": 52.67, "e": 52.94}, {"w": "encontrar", "s": 52.94, "e": 53.34}, {"w": "el", "s": 53.34, "e": 53.47}, {"w": "lugar", "s": 53.47, "e": 53.73}, {"w": "donde", "s": 53.73, "e": 54.0}, {"w": "coinciden", "s": 54.0, "e": 54.39}, {"w": "todas", "s": 54.39, "e": 54.66}, {"w": "esas", "s": 54.66, "e": 54.92}, {"w": "[distancias.]", "s": 54.92, "e": 55.32, "f": true}, {"w": "Necesita", "s": 55.6, "e": 56.08}, {"w": "al", "s": 56.08, "e": 56.2}, {"w": "menos", "s": 56.2, "e": 56.44}, {"w": "cuatro", "s": 56.44, "e": 56.67}, {"w": "para", "s": 56.67, "e": 56.91}, {"w": "calcular", "s": 56.91, "e": 57.27}, {"w": "tu", "s": 57.27, "e": 57.39}, {"w": "[ubicación]", "s": 57.39, "e": 57.87}, {"w": "y", "s": 58.01, "e": 58.13}, {"w": "corregir", "s": 58.13, "e": 58.5}, {"w": "los", "s": 58.5, "e": 58.63}, {"w": "pequeños", "s": 58.63, "e": 59.0}, {"w": "errores", "s": 59.0, "e": 59.37}, {"w": "de", "s": 59.37, "e": 59.49}, {"w": "su", "s": 59.49, "e": 59.62}, {"w": "propio", "s": 59.62, "e": 59.87}, {"w": "[reloj.]", "s": 59.87, "e": 60.11, "f": true}, {"w": "Y", "s": 60.59, "e": 60.72}, {"w": "así", "s": 60.72, "e": 60.98}, {"w": "[aparece]", "s": 60.98, "e": 61.49}, {"w": "ese", "s": 61.49, "e": 61.75}, {"w": "famoso", "s": 61.75, "e": 62.13}, {"w": "puntito", "s": 62.13, "e": 62.52}, {"w": "azul.", "s": 62.52, "e": 62.78, "f": true}, {"w": "Y", "s": 63.14, "e": 63.23}, {"w": "[atención]", "s": 63.23, "e": 63.5}, {"w": "a", "s": 63.5, "e": 63.59}, {"w": "este", "s": 63.59, "e": 63.77}, {"w": "detalle.", "s": 63.77, "e": 64.05, "f": true}, {"w": "Los", "s": 64.46, "e": 64.6}, {"w": "[satélites]", "s": 64.6, "e": 65.18}, {"w": "no", "s": 65.18, "e": 65.32}, {"w": "reciben", "s": 65.32, "e": 65.75}, {"w": "tu", "s": 65.75, "e": 65.9}, {"w": "[ubicación,]", "s": 65.9, "e": 66.47, "f": true}, {"w": "ellos", "s": 66.8, "e": 67.07}, {"w": "envían", "s": 67.07, "e": 67.35}, {"w": "[señales]", "s": 67.35, "e": 67.76}, {"w": "y", "s": 67.76, "e": 67.9}, {"w": "tu", "s": 67.9, "e": 68.04}, {"w": "teléfono", "s": 68.04, "e": 68.59}, {"w": "hace", "s": 68.59, "e": 68.87}, {"w": "los", "s": 68.87, "e": 69.01}, {"w": "cálculos.", "s": 69.01, "e": 69.42, "f": true}, {"w": "Ahora", "s": 69.81, "e": 70.19}, {"w": "ya", "s": 70.19, "e": 70.32}, {"w": "sabes", "s": 70.32, "e": 70.57}, {"w": "por", "s": 70.57, "e": 70.7}, {"w": "qué", "s": 70.7, "e": 70.83}, {"w": "puedes", "s": 70.83, "e": 71.08}, {"w": "encontrar", "s": 71.08, "e": 71.46}, {"w": "tu", "s": 71.46, "e": 71.59}, {"w": "[ubicación]", "s": 71.59, "e": 72.1}, {"w": "sin", "s": 72.1, "e": 72.23}, {"w": "que", "s": 72.23, "e": 72.36}, {"w": "nadie", "s": 72.36, "e": 72.61}, {"w": "tenga", "s": 72.61, "e": 72.87}, {"w": "que", "s": 72.87, "e": 72.99}, {"w": "verte.", "s": 72.99, "e": 73.25, "f": true}, {"w": "Sígueme", "s": 73.67, "e": 74.12}, {"w": "y", "s": 74.38, "e": 74.52}, {"w": "envíaselo", "s": 74.52, "e": 75.09}, {"w": "a", "s": 75.09, "e": 75.23}, {"w": "ese", "s": 75.23, "e": 75.51}, {"w": "amigo", "s": 75.51, "e": 75.94}, {"w": "que", "s": 75.94, "e": 76.08}, {"w": "siempre", "s": 76.08, "e": 76.36}, {"w": "termina", "s": 76.36, "e": 76.79}, {"w": "perdido", "s": 76.79, "e": 77.21}, {"w": "aunque", "s": 77.21, "e": 77.5}, {"w": "tenga", "s": 77.5, "e": 77.78}, {"w": "[GPS.]", "s": 77.78, "e": 77.92, "f": true}];
+// comun: registro de señales de sonido. El audio se mezcla fuera del navegador (comun/sonido/mezclar.py) usando estos tiempos.
+// sfx(tiempo,'nombre',volumen,duración?) · cam() y tilt() registran sus «whoosh» solos.
+const CUES=[],CAMS=[];
+const sfx=(t,n,v=1,d)=>{CUES.push({t:+t.toFixed(3),n,v:+v.toFixed(2),...(d?{d:+d.toFixed(2)}:{})});};
+window.__cues=()=>{
+  const out=CUES.slice();let z=1;
+  CAMS.slice().sort((a,b)=>a.t-b.t).forEach(c=>{const dz=c.s-z;z=c.s;
+    if(c.s>=20)out.push({t:+c.t.toFixed(3),n:'whoosh_through',v:1,d:+c.dur.toFixed(2)});
+    else if(c.dur>=1&&Math.abs(dz)>.25)out.push({t:+c.t.toFixed(3),n:dz>0?'whoosh_in':'whoosh_out',v:+Math.min(1,.45+Math.abs(dz)/2).toFixed(2),d:+Math.min(c.dur,1.4).toFixed(2)});});
+  return {tot:TOT,cues:out.sort((a,b)=>a.t-b.t)};
+};
+
+// comun: polvo flotante + cámara virtual (focus, cam, blur) con paralaje del fondo
+(()=>{let a=11;const r=()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+  const dust=document.getElementById('dust');
+  for(let i=0;i<26;i++){const e=document.createElement('div');e.className='dot';const z=3+r()*5;e.style.cssText=`left:${r()*1080}px;top:${r()*1920}px;width:${z}px;height:${z}px;opacity:${.2+r()*.35}`;dust.appendChild(e);}})();
+tl.to('.dot',{y:i=>-(120+(i%5)*70),duration:TOT,ease:'none'},0);
+// focus(px,py,S): lleva el punto (px,py) del mundo al centro de la pantalla con zoom S
+const focus=(px,py,S)=>({x:-S*(px-540),y:-S*(py-960),s:S,r:0});
+const cl=(v,a)=>Math.max(-a,Math.min(a,v));
+function cam(t0,dur,st,ease='power2.inOut'){
+  const ps=Math.min(st.s,6);CAMS.push({t:t0,dur,s:st.s});
+  tl.to('#world',{x:st.x,y:st.y,scale:st.s,rotation:st.r,duration:dur,ease},t0)
+    .to('#bg-grid',{x:cl(st.x*.25,220),y:cl(st.y*.25,220),scale:1+(ps-1)*.2,duration:dur,ease},t0)
+    .to('#dust',{x:cl(st.x*.5,400),y:cl(st.y*.5,400),scale:1+(ps-1)*.4,duration:dur,ease},t0);
+}
+const blur=(t0,dur,px=7)=>tl.to('#world',{filter:`blur(${px}px)`,duration:dur/2,ease:'power1.out'},t0).to('#world',{filter:'blur(0px)',duration:dur/2,ease:'power1.in'},t0+dur/2);
+// tilt(inicio,duración,{rx,ry,rz}): inclina el mundo en 3D (perspectiva) y activa la niebla de profundidad si hay inclinación
+tl.set('#tilt',{transformPerspective:1400,rotationX:0,rotationY:0,rotationZ:0},0);
+const tilt=(t0,dur,s,ease='power2.inOut')=>(sfx(t0,'tilt',.8,dur),0)||tl.to('#tilt',{rotationX:s.rx||0,rotationY:s.ry||0,rotationZ:s.rz||0,duration:dur,ease},t0).to('#fog',{opacity:s.rx?1:0,duration:dur,ease:'none'},t0);
+// enganchar(inicio,{rx,ry,rz},dur): el mundo llega torcido y se endereza con un rebote suave (como al «fijar» las esquinas); deja la inclinación rx
+function enganchar(t0,s,dur=1.0){tilt(t0,dur,s);return tl.to('#tilt',{rotationZ:0,rotationY:0,duration:.9,ease:'back.out(1.4)'},t0+dur+.1);}
+
+// comun: etiquetas con fondo propio y línea guía que se dibuja. etiquetas([[inicio,fin,'TEXTO','bad'?], ...])
+function etiquetas(LB){
+  const lb=document.getElementById('lbls');
+  LB.forEach(([a,b,txt,c])=>{
+    const col=c==='bad'?'var(--bad)':'var(--amber)';
+    const e=document.createElement('div');e.className='lb';e.textContent=txt;e.style.color=col;
+    const l=document.createElement('div');l.className='lbl-line';l.style.background=col;
+    const n=document.createElement('div');n.className='lbl-node';n.style.background=col;
+    lb.append(l,n,e);sfx(a+.05,c==='bad'?'error':'tick',c==='bad'?.8:.8);
+    tl.fromTo(l,{scaleY:0},{scaleY:1,duration:.3,ease:'power2.out'},Math.max(0,a-.2))
+      .fromTo(n,{scale:0},{scale:1,duration:.2,ease:'back.out(2)'},a+.05)
+      .fromTo(e,{autoAlpha:0},{autoAlpha:1,duration:.25},a)
+      .to(e,{autoAlpha:0,duration:.2},b).to(l,{scaleY:0,duration:.2},b).to(n,{scale:0,duration:.15},b);
+  });
+}
+
+// comun: subtítulos karaoke. Usa CAPS = [{w,s,e,f}] (palabra, inicio, fin, fin de cláusula). Las [palabras] llevan recuadro.
+const cap=document.getElementById('cap');
+const G=[];let cur=[];
+CAPS.forEach(x=>{cur.push(x);if(cur.length===3||x.f){G.push(cur);cur=[];}});
+if(cur.length)G.push(cur);
+G.forEach((g,gi)=>{
+  const el=document.createElement('div');el.className='chunk';
+  const sp=g.map(x=>{const s=document.createElement('span');s.textContent=x.w.replace(/[\[\]]/g,'');if(/\[.*\]/.test(x.w))s.className='key';el.appendChild(s);return s;});
+  cap.appendChild(el);
+  const s0=Math.max(0,g[0].s-0.08),nx=G[gi+1];
+  const e0=Math.min(Math.max(s0+.2,Math.min(g[g.length-1].e+0.25,1e9)),nx?nx[0].s-0.09:1e9);   // el grupo anterior se apaga justo antes de que entre el siguiente (sin solape)
+  tl.set(el,{autoAlpha:1},s0).set(el,{autoAlpha:0},e0);
+  sp.forEach((s,j)=>tl.set(s,{color:'#fff',fontWeight:800},g[j].s));
+});
+
+// Ep. 03 · ¿Cómo sabe el GPS dónde estás? Todo dibujado con HTML/CSS (originales). Los tiempos salen de CL[k] (tiempos.json).
+const M=document.getElementById('esc');
+const D=(p,css,cls)=>{const e=document.createElement('div');e.style.cssText='position:absolute;'+css;if(cls)e.className=cls;p.appendChild(e);return e;};
+const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\W/g,'').toLowerCase();
+const palabra=(re,desde,def)=>{const x=CAPS.find(c=>c.s>=desde-.02&&re.test(norm(c.w)));return x?x.s:(def??desde);};   // inicio de la primera palabra que cumple re desde el instante «desde»
+const rnd=(s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296})(11);
+const COL={a:'#4B5BFF',b:'#FFB703',c:'#2fb8a3',d:'#e0556f'};
+// ---------- mapa genérico: manzanas, calles y parques ----------
+function mapa(parent,w,h,tono=1){
+  const m=D(parent,`left:0;top:0;width:${w}px;height:${h}px;overflow:hidden;background:#0f1a3d`);const bl=[];
+  const cw=64,ch=64;
+  for(let r=0;r<Math.ceil(h/ch);r++)for(let c=0;c<Math.ceil(w/cw);c++){
+    const park=rnd()<.12,bw=cw-14-rnd()*10,bh=ch-14-rnd()*10,x=c*cw+7,y=r*ch+7;
+    D(m,`left:${x}px;top:${y}px;width:${bw}px;height:${bh}px;border-radius:10px;background:${park?'#16483f':'#1b2a5c'};opacity:${tono}`);bl.push([x+bw/2,y+bh/2,park]);}
+  D(m,`left:0;top:${Math.round(h*.45)}px;width:${w}px;height:10px;background:#34458c;opacity:${tono}`);D(m,`left:${Math.round(w*.4)}px;top:0;width:10px;height:${h}px;background:#34458c;opacity:${tono}`);
+  m.bl=bl;return m;
+}
+// ---------- punto azul con anillos de pulso ----------
+function punto(parent,x,y,k){
+  const ani=[0,1,2].map(()=>D(parent,`left:${x-16*k}px;top:${y-16*k}px;width:${32*k}px;height:${32*k}px;border:${4*k}px solid #4B8BFF;border-radius:50%;opacity:0`));
+  const dot=D(parent,`left:${x-14*k}px;top:${y-14*k}px;width:${28*k}px;height:${28*k}px;border:${5*k}px solid #fff;border-radius:50%;background:#2f6bff;box-shadow:0 0 ${18*k}px #2f6bff;opacity:0`);
+  return{dot,ani};
+}
+// ---------- personajes de formas redondeadas (originales): cabeza grande, ojos ovalados, sonrisa pequeña, mejilla, manos redondas ----------
+function bola(id,cx,cy,o){
+  const k=o.k||1,g=D(M,`left:${cx}px;top:${cy}px;width:0;height:0`);g.id=id;
+  if(o.piernas){D(g,`left:${-44*k}px;top:${180*k}px;width:${40*k}px;height:${170*k}px;border-radius:${20*k}px;background:${o.pantalon||'#2a3a7a'}`);D(g,`left:${4*k}px;top:${180*k}px;width:${40*k}px;height:${170*k}px;border-radius:${20*k}px;background:${o.pantalon||'#2a3a7a'}`);
+    D(g,`left:${-54*k}px;top:${336*k}px;width:${56*k}px;height:${20*k}px;border-radius:${12*k}px;background:#141b3d`);D(g,`left:${2*k}px;top:${336*k}px;width:${56*k}px;height:${20*k}px;border-radius:${12*k}px;background:#141b3d`);}
+  const bI=D(g,`left:${-96*k}px;top:${84*k}px;width:${34*k}px;height:${130*k}px`),bD=D(g,`left:${62*k}px;top:${84*k}px;width:${34*k}px;height:${130*k}px`);
+  for(const b of[bI,bD]){D(b,`left:0;top:0;width:${34*k}px;height:${100*k}px;border-radius:${17*k}px;background:${o.ropa}`);D(b,`left:0;top:${96*k}px;width:${34*k}px;height:${34*k}px;border-radius:50%;background:${o.piel}`);}
+  D(g,`left:${-66*k}px;top:${66*k}px;width:${132*k}px;height:${160*k}px;border-radius:${60*k}px ${60*k}px ${46*k}px ${46*k}px;background:${o.ropa}`);
+  const cab=D(g,'left:0;top:0;width:0;height:0');
+  D(cab,`left:${-56*k}px;top:${-56*k}px;width:${112*k}px;height:${112*k}px;border-radius:50%;background:${o.piel}`);
+  D(cab,`left:${-60*k}px;top:${-62*k}px;width:${120*k}px;height:${62*k}px;border-radius:${60*k}px ${60*k}px ${22*k}px ${22*k}px;background:${o.pelo}`);
+  for(const x of[-30,16])D(cab,`left:${x*k}px;top:${-4*k}px;width:${14*k}px;height:${19*k}px;border-radius:50%;background:#1a1410`);
+  const ce=[-31,15].map(x=>D(cab,`left:${x*k}px;top:${-22*k}px;width:${16*k}px;height:${5*k}px;border-radius:${3*k}px;background:#1a1410`));
+  const boca=D(cab,`left:${-13*k}px;top:${24*k}px;width:${26*k}px;height:${12*k}px;border-bottom:${4*k}px solid #7a3b3b;border-radius:0 0 ${26*k}px ${26*k}px`);
+  D(cab,`left:${26*k}px;top:${18*k}px;width:${16*k}px;height:${12*k}px;border-radius:50%;background:rgba(240,110,110,.35)`);
+  tl.set(cab,{transformOrigin:'50% 100%'},0);
+  return{g,cab,bI,bD,ce,boca,k};
+}
+// ---------- celular de frente con pantalla ----------
+function celular(id,cx,cy,k){
+  const t=D(M,`left:${cx-190*k}px;top:${cy-360*k}px;width:${380*k}px;height:${720*k}px;border-radius:${54*k}px;background:#141b3d;border:${6*k}px solid #3d4a95`);t.id=id;
+  const p=D(t,`left:${12*k}px;top:${12*k}px;width:${344*k}px;height:${684*k}px;border-radius:${38*k}px;overflow:hidden;background:#0b0f24`);
+  D(t,`left:${135*k}px;top:${20*k}px;width:${100*k}px;height:${22*k}px;border-radius:${11*k}px;background:#05070f;z-index:3`);
+  return{t,p,cx,cy,k};
+}
+// ---------- satélite ----------
+function sat(cx,cy,k,color){
+  const g=D(M,`left:${cx}px;top:${cy}px;width:0;height:0`);
+  for(const s of[-1,1])D(g,`left:${s>0?46*k:-136*k}px;top:${-18*k}px;width:${90*k}px;height:${36*k}px;border-radius:${6*k}px;background:repeating-linear-gradient(90deg,#3a52d8 0 ${14*k}px,#1d2b78 ${14*k}px ${16*k}px);border:${2*k}px solid #7f8fff`);
+  D(g,`left:${-46*k}px;top:${-32*k}px;width:${92*k}px;height:${64*k}px;border-radius:${16*k}px;background:${color};border:${3*k}px solid #ffffff55`);
+  D(g,`left:${-6*k}px;top:${-48*k}px;width:${12*k}px;height:${20*k}px;background:#cfd5ee`);D(g,`left:${-10*k}px;top:${-58*k}px;width:${20*k}px;height:${20*k}px;border-radius:50%;background:#fff`);
+  return g;
+}
+const pin=(x,y,c)=>{const g=D(M,`left:${x}px;top:${y}px;width:0;height:0;opacity:0`);D(g,`left:-16px;top:-44px;width:32px;height:32px;border-radius:50%;background:${c};border:5px solid #fff`);D(g,'left:-11px;top:-14px;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:20px solid #fff');return g;};
+const flecha=(x,y,len,ang,c)=>{const g=D(M,`left:${x}px;top:${y}px;width:0;height:0;opacity:0`);D(g,`left:0;top:-5px;width:${len-18}px;height:10px;border-radius:5px;background:${c}`);D(g,`left:${len-22}px;top:-16px;width:0;height:0;border-top:16px solid transparent;border-bottom:16px solid transparent;border-left:26px solid ${c}`);tl.set(g,{rotation:ang,transformOrigin:'0 50%'},0);return g;};
+const equis=(x,y,s=120,c='#FF5A5F')=>{const e=D(M,`left:${x-s/2}px;top:${y-s/2}px;width:${s}px;height:${s}px;line-height:${s}px;text-align:center;font-size:${s}px;font-weight:800;color:${c};opacity:0`);e.textContent='✕';return e;};
+const txt=(x,y,s,c,t,w=400)=>{const e=D(M,`left:${x-w/2}px;top:${y}px;width:${w}px;text-align:center;font-size:${s}px;font-weight:800;color:${c};opacity:0;white-space:nowrap`);e.textContent=t;return e;};
+// =============== ESCENARIO A: celular con mapa, persona y cielo (x ≈ 540) ===============
+D(M,'left:-300px;top:1490px;width:1500px;height:420px;background:linear-gradient(180deg,#1b2552,#0e1330 70%,rgba(11,15,36,0))');
+const PA=celular('telA',540,1130,1);
+const mA=mapa(PA.p,344,684),mA2=mapa(PA.p,344,684);mA2.style.opacity=0;
+const dotA=punto(PA.p,172,342,1);
+const barra=D(PA.p,'left:16px;top:70px;width:312px;height:56px;border-radius:28px;background:#e9ecf5;opacity:0');
+const barraTxt=D(barra,'left:22px;top:12px;width:260px;overflow:hidden;white-space:nowrap;font-size:26px;font-weight:600;color:#0b0f24');barraTxt.textContent='¿Dónde estás?';
+const PER=bola('per',185,1040,{k:1,piel:'#f2c9a5',pelo:'#2b1b14',ropa:COL.a,piernas:true});
+const maleta=D(M,'left:236px;top:1262px;width:84px;height:104px;border-radius:14px;background:#8a5a2b;border:6px solid #5a3a18;opacity:0');D(maleta,'left:18px;top:-26px;width:36px;height:22px;border:6px solid #5a3a18;border-bottom:0;border-radius:12px 12px 0 0');
+const lineaA=D(M,'left:250px;top:1018px;width:310px;height:5px;background:repeating-linear-gradient(90deg,#FFB703 0 14px,transparent 14px 26px);opacity:0');tl.set(lineaA,{rotation:20.8,transformOrigin:'0 50%'},0);
+const qA=txt(540,800,120,'#FFB703','?',200);
+// cámara de vigilancia en el cielo
+const camG=D(M,'left:0;top:0;width:0;height:0;opacity:0');
+D(camG,'left:520px;top:582px;width:40px;height:34px;background:#cfd5ee;border-radius:8px');D(camG,'left:465px;top:610px;width:150px;height:70px;border-radius:24px;background:#e9ecf5');D(camG,'left:578px;top:628px;width:34px;height:34px;border-radius:50%;background:#1a2350;border:5px solid #4B5BFF');
+const cono=D(M,'left:440px;top:690px;width:300px;height:240px;background:linear-gradient(180deg,rgba(255,183,3,.4),rgba(255,183,3,0));clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);opacity:0');
+const xCam=equis(540,650,150);const xBar=equis(540,886,110);
+// =============== ESCENARIO B: «tú» y tres amigos (x ≈ 2200) ===============
+const U={x:2200,y:1100},FA={x:1880,y:984,r:340},FB={x:2662,y:884,r:510},FC={x:2200,y:1270,r:170};   // 1 km = 170 px
+const wB=D(M,'left:1250px;top:330px;width:2200px;height:1500px;opacity:.55;-webkit-mask-image:radial-gradient(closest-side,#000 45%,transparent 100%);mask-image:radial-gradient(closest-side,#000 45%,transparent 100%)');mapa(wB,2200,1500,.8);
+const TU=bola('tu',U.x,U.y,{k:.5,piel:'#e0ac82',pelo:'#6b3f1d',ropa:'#ff8a5b'});
+const fa=bola('fa',FA.x,FA.y,{k:.62,piel:'#f2c9a5',pelo:'#2b1b14',ropa:COL.a}),fb=bola('fb',FB.x,FB.y,{k:.62,piel:'#c68863',pelo:'#1c1c1c',ropa:COL.b}),fc=bola('fc',FC.x,FC.y,{k:.62,piel:'#f2c9a5',pelo:'#a0522d',ropa:COL.c});
+for(const f of[fa,fb,fc])f.g.style.opacity=0;
+const qU=txt(U.x,U.y-130,84,'#FFB703','?',120);
+const pins=[pin(FA.x,FA.y-48,COL.a),pin(FB.x,FB.y-48,COL.b),pin(FC.x,FC.y-48,COL.c)];
+const linea=(x1,y1,x2,y2,c)=>{const dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy),e=D(M,`left:${x1}px;top:${y1-3}px;width:${l}px;height:6px;background:repeating-linear-gradient(90deg,${c} 0 14px,transparent 14px 26px);opacity:0`);tl.set(e,{rotation:Math.atan2(dy,dx)*180/Math.PI,transformOrigin:'0 50%'},0);return e;};
+const lineas=[linea(FA.x,FA.y,U.x,U.y,COL.a),linea(FB.x,FB.y,U.x,U.y,COL.b),linea(FC.x,FC.y,U.x,U.y,COL.c)];
+const globo=(x,y,t)=>{const e=D(M,`left:${x-90}px;top:${y}px;width:180px;height:48px;line-height:48px;border-radius:24px;background:#fff;color:#0b0f24;text-align:center;font-size:24px;font-weight:800;opacity:0`);e.textContent=t;return e;};
+const globos=[globo(FA.x,FA.y-130,'¿DISTANCIA?'),globo(FB.x,FB.y-130,'¿DISTANCIA?'),globo(FC.x+230,FC.y-30,'¿DISTANCIA?')];
+const circ=(c,col)=>{const e=D(M,`left:${c.x-c.r}px;top:${c.y-c.r}px;width:${2*c.r}px;height:${2*c.r}px;border:8px solid ${col};border-radius:50%;opacity:0;box-sizing:border-box;box-shadow:0 0 0 0 rgba(255,255,255,0)`);return e;};
+const cA=circ(FA,COL.a),cB=circ(FB,COL.b),cC=circ(FC,COL.c);
+const kA=txt(1586,1154,64,COL.a,'2 km',200),kB=txt(2954,1302,64,COL.b,'3 km',200),kC=txt(2091,1400,64,COL.c,'1 km',200);
+const ringsU=[0,1].map(()=>D(M,`left:${U.x-60}px;top:${U.y-60}px;width:120px;height:120px;border:6px solid #FFB703;border-radius:50%;opacity:0`));
+const brj=[flecha(FA.x+40,FA.y-10,70,-35,'#cfd5ee'),flecha(FB.x+40,FB.y-10,70,50,'#cfd5ee'),flecha(FC.x+40,FC.y-10,70,170,'#cfd5ee')];
+const brjQ=[txt(FA.x+100,FA.y-70,60,'#cfd5ee','?',80),txt(FB.x+100,FB.y-70,60,'#cfd5ee','?',80),txt(FC.x+100,FC.y-70,60,'#cfd5ee','?',80)];
+const brjX=[equis(FA.x+70,FA.y-20,90),equis(FB.x+70,FB.y-20,90),equis(FC.x+70,FC.y-20,90)];
+// =============== ESCENARIO D: satélites y celular (x ≈ 3900) ===============
+const K=.85,PD=celular('telD',3900,1420,K),mD=mapa(PD.p,344*K,684*K);
+const dotD=punto(PD.p,172*K,342*K,K);
+const SX=[3560,3760,4040,4240],SY=700,SCOL=[COL.a,COL.b,COL.c,COL.d],sats=SX.map((x,i)=>sat(x,SY,.6,SCOL[i]));
+const topD={x:3900,y:1420-360*K+4};
+const lineasD=SX.map((x,i)=>linea(x,SY+30,topD.x,topD.y,SCOL[i]));
+const paq=SX.map((x,i)=>D(M,`left:${x-12}px;top:${SY+18}px;width:24px;height:24px;border-radius:50%;background:${SCOL[i]};box-shadow:0 0 18px ${SCOL[i]};opacity:0`));
+const badge=SX.map((x,i)=>{const e=D(M,`left:${x-26}px;top:${SY-120}px;width:52px;height:52px;line-height:52px;border-radius:50%;background:${SCOL[i]};color:#fff;text-align:center;font-size:34px;font-weight:800;opacity:0`);e.textContent=i+1;return e;});
+const reloj=D(M,'left:3430px;top:1370px;width:150px;height:150px;border:8px solid #FFB703;border-radius:50%;opacity:0;background:#0b0f24');
+D(reloj,'left:63px;top:63px;width:12px;height:12px;border-radius:50%;background:#FFB703;z-index:2');
+const hora=D(reloj,'left:63px;top:30px;width:10px;height:44px;border-radius:5px;background:#e9ecf5');const minu=D(reloj,'left:64px;top:14px;width:8px;height:60px;border-radius:4px;background:#FFB703');tl.set([hora,minu],{transformOrigin:'50% 100%'},0);tl.set(hora,{rotation:-60},0);
+const errT=txt(3505,1330,36,'#FF5A5F','± ERROR',240),okT=txt(3505,1330,52,'#4ade80','✓',120);
+const pinD=pin(3900,1100,COL.b);
+const flUp=flecha(3900,1100,350,-102,'#cfd5ee');const xUp=equis(3840,900,110);
+const flDn=[0,1,2].map(i=>flecha(SX[i],SY+50,Math.hypot(3880+(i-1)*40-SX[i],1100-(SY+50)),Math.atan2(1100-(SY+50),3880+(i-1)*40-SX[i])*180/Math.PI,SCOL[i]));
+const calc=D(M,'left:3835px;top:1330px;width:130px;height:170px;border-radius:18px;background:#e9ecf5;opacity:0');D(calc,'left:14px;top:14px;width:102px;height:34px;border-radius:6px;background:#0b0f24');
+for(let i=0;i<9;i++)D(calc,`left:${14+(i%3)*36}px;top:${64+Math.floor(i/3)*32}px;width:30px;height:24px;border-radius:6px;background:#4B5BFF`);
+const ojos=[[3560,1250],[4240,1250],[3560,1500],[4240,1500]].map(([x,y])=>{const e=D(M,`left:${x-50}px;top:${y-30}px;width:100px;height:60px;border-radius:50%;background:#fff;opacity:0`);D(e,'left:34px;top:12px;width:34px;height:34px;border-radius:50%;background:#1a2350');D(e,'left:44px;top:22px;width:14px;height:14px;border-radius:50%;background:#000');return e;});
+const ojosX=[[3560,1250],[4240,1250],[3560,1500],[4240,1500]].map(([x,y])=>equis(x,y,100));
+const okF=txt(3900,1590,90,'#4ade80','✓',120);
+// =============== COREOGRAFÍA ===============
+const pop=(e,t0,d=.4,snd='pop')=>{tl.fromTo(e,{opacity:0,scale:.4},{opacity:1,scale:1,duration:d,ease:'back.out(2)',immediateRender:false},t0);if(snd)sfx(t0,snd,.45);};
+const fade=(e,t0,d=.35)=>tl.to(e,{opacity:1,duration:d},t0);
+const sale=(e,t0,d=.3)=>tl.to(e,{opacity:0,duration:d},t0);
+const pulso=(r,t0,n,esc=3.2)=>{for(let i=0;i<n;i++)tl.fromTo(r[i%r.length],{scale:1,opacity:.7},{scale:esc,opacity:0,duration:1.1,ease:'power1.out',immediateRender:false},t0+i*.55);};
+const asentir=(p,t0)=>tl.to(p.cab,{rotation:7,duration:.18},t0).to(p.cab,{rotation:-4,duration:.18},t0+.18).to(p.cab,{rotation:0,duration:.18},t0+.36);
+const revela=(e,t0,d=.5)=>{tl.set(e,{opacity:1},t0).fromTo(e,{scaleX:0},{scaleX:1,duration:d,ease:'power2.out',immediateRender:false},t0);};
+const ondaV=(t0)=>{const r=[0,1,2].map(()=>D(M,'left:470px;top:570px;width:140px;height:140px;border:7px solid #FFB703;border-radius:50%;opacity:0'));tl.fromTo(r,{y:0,scale:.3,opacity:.9},{y:560,scale:2.4,opacity:0,duration:1.6,ease:'power1.out',stagger:.25,immediateRender:false},t0);sfx(t0,'swoosh',.45,1.2);};
+tl.set(barraTxt,{transformOrigin:'0 50%'},0);
+{const f=focus(540,1100,1.0);tl.set('#world',{x:f.x,y:f.y,scale:1,rotation:0,filter:'blur(0px)'},0);}
+// ---- ESCENARIO A ----
+const tPunto=palabra(/^puntito/,CL[0][0]),tPar=palabra(/^parado/,tPunto);
+cam(0,CL[3][0]-.3,focus(540,1100,1.06),'none');
+pop(dotA.dot,tPunto);pulso(dotA.ani,tPunto+.3,Math.max(1,Math.floor((CL[3][0]-.6-(tPunto+.3))/.55)));revela(lineaA,tPar);sfx(tPar,'tick',.5);
+asentir(PER,CL[1][0]+.5);
+cam(CL[3][0]-.2,1.2,focus(540,1130,1.55),'power3.inOut');
+pop(qA,palabra(/^pensala/,CL[3][0]));pulso(dotA.ani,CL[4][0]+.3,3);sale(qA,CL[5][0]-.25);
+const tCiu=palabra(/^ciudad/,CL[5][0]);tl.to(mA2,{opacity:1,duration:.7},tCiu);sfx(tCiu,'swoosh',.4,.7);pop(maleta,palabra(/^nunca/,tCiu));pulso(dotA.ani,tCiu+.9,2);
+cam(CL[6][0]-.25,1.3,focus(540,770,.95),'power3.inOut');
+fade(camG,palabra(/^camara/,CL[6][0]));fade(cono,palabra(/^mirando/,CL[6][0]));pop(xCam,CL[6][1]-.45,.4,'error');
+const tDigas=palabra(/^digas/,CL[7][0]);
+cam(CL[7][0]-.15,1.2,focus(540,1090,1.45),'power3.inOut');sale([camG,cono,xCam],CL[7][0]-.15);
+fade(barra,tDigas-.1);tl.fromTo(barraTxt,{scaleX:0},{scaleX:1,duration:.9,ease:'none',immediateRender:false},tDigas);pop(xBar,palabra(/^estas/,tDigas),.4,'error');
+cam(CL[8][0]-.15,1.3,focus(540,830,.9),'power3.inOut');sale([barra,xBar],CL[8][0]+.05);
+ondaV(palabra(/^interesante/,CL[8][0])-.1);
+// ---- ESCENARIO B ----
+cam(CL[8][1]+.05,1.4,focus(2356,1070,.62),'power3.inOut');
+pop(qU,palabra(/^perdido/,CL[9][0]));
+const tAm=palabra(/^amigos/,CL[9][0]);pop(fa.g,tAm);pop(fb.g,tAm+.35);pop(fc.g,tAm+.7);
+const tDis=palabra(/^distintos/,CL[10][0]);pins.forEach((p,i)=>pop(p,tDis+i*.25));sale(qU,tDis);
+const tD=palabra(/^distancia/,CL[11][0]);lineas.forEach((l,i)=>revela(l,tD+i*.2,.5));globos.forEach((g,i)=>pop(g,tD+.1+i*.25));
+const crec=(c,t0,k,kt)=>{tl.set(c,{opacity:1},t0).fromTo(c,{scale:.02},{scale:1,duration:.9,ease:'power2.out',immediateRender:false},t0);pop(kt,t0+.55);sfx(t0,'shimmer',.4,.9);};
+const tDos=palabra(/^dos$/,CL[13][0]),tTres=palabra(/^tres$/,CL[15][0]),tUn=palabra(/^un$/,CL[17][0]);sale(globos,tDos-.3);
+cam(tDos-.55,1.0,focus(2040,1042,.9),'power3.inOut');crec(cA,tDos,0,kA);
+cam(tTres-.55,1.0,focus(2431,992,.72),'power3.inOut');crec(cB,tTres,0,kB);
+cam(tUn-.55,1.0,focus(2200,1185,1.05),'power3.inOut');crec(cC,tUn,0,kC);
+const tPist=palabra(/^pistas/,CL[18][0]);
+cam(CL[18][0]-.1,1.4,focus(2200,1100,.9));
+tl.to([cA,cB,cC],{boxShadow:'0 0 40px 8px rgba(255,255,255,.35)',duration:.5},tPist);tl.to([fa.g,fb.g,fc.g],{opacity:.3,duration:.5},tPist+.2);sale([...lineas,...pins],tPist);sale([kA,kB,kC],tPist);
+pulso(ringsU,palabra(/^descubrir/,CL[18][0]),3,3.5);sfx(palabra(/^descubrir/,CL[18][0]),'lock',.6);
+tl.to([cA,cB,cC],{boxShadow:'0 0 0 0 rgba(255,255,255,0)',duration:.4},CL[19][0]-.2);
+cam(CL[19][0]-.1,1.3,focus(2356,1070,.68));
+const tDir=palabra(/^direccion/,CL[19][0]);brj.forEach((b,i)=>{pop(b,tDir+i*.25,.35,null);pop(brjQ[i],tDir+i*.25,.35,null);});sfx(tDir,'pop',.45);
+const tNin=palabra(/^ninguno/,CL[19][0]);brjX.forEach((x,i)=>pop(x,tNin+i*.15,.35,i?null:'error'));
+tl.to('#world',{opacity:0,duration:.3},CL[19][1]+.05);
+{const f=focus(3900,1130,1.0),ps=Math.min(f.s,6),cl_=(v,a)=>Math.max(-a,Math.min(a,v));
+  tl.set('#world',{x:f.x,y:f.y,scale:f.s,rotation:0,filter:'blur(0px)'},CL[20][0]+.1);
+  tl.set('#bg-grid',{x:cl_(f.x*.25,220),y:cl_(f.y*.25,220),scale:1+(ps-1)*.2},CL[20][0]+.1);tl.set('#dust',{x:cl_(f.x*.5,400),y:cl_(f.y*.5,400),scale:1+(ps-1)*.4},CL[20][0]+.1);}
+// ---- ESCENA 3D (CL20 a CL27): sonidos y marcadores del HUD (los elementos 3D están en escena.capa3d.html) ----
+const T0=CL[20][0];
+sfx(T0+.1,'swoosh',.6,1.6);for(let j=0;j<5;j++)sfx(T0+3.7+j*.9,'tick',.4);
+const hud=document.getElementById('crono'),aguja=document.getElementById('aguja'),form=document.getElementById('formula');
+tl.set(aguja,{transformOrigin:'50% 100%'},0);
+fade(hud,CL[24][0]+.1);tl.fromTo(aguja,{rotation:0},{rotation:300,duration:1.9,ease:'none',immediateRender:false},T0+8.5);sfx(T0+8.5,'tick',.5);sfx(T0+10.4,'confirm',.7);sale(hud,T0+11.4);
+sfx(CL[25][0],'beam',.7,1.5);
+fade(form,palabra(/^calcula/,CL[26][0]));sfx(palabra(/^calcula/,CL[26][0]),'lock',.5);
+[12.9,13.9,14.9,15.9].forEach(t=>sfx(T0+t,'tick',.6));sfx(T0+12.2,'swoosh',.5,.9);sfx(T0+16.5,'shimmer',.7,1.4);sfx(T0+16.6,'confirm',.7);
+sale(form,CL[27][0]+.1);
+// eventos de la escena 3D (la herramienta de concordancia no ve dentro de WebGL: se declaran aquí)
+window.__eventos3d=[[0.1,'los satélites suben'],[1.8,'llegan a su órbita'],[2.2,'la cámara 3D se aleja'],[3.7,'primera señal'],[4.6,'señales'],[5.5,'señales'],[6.4,'señales'],[7.3,'señales'],[8.5,'señal con cronómetro'],[10.4,'la señal llega'],[10.9,'rayo de luz'],[12.2,'cuarto satélite'],[12.9,'esfera 1'],[13.9,'esfera 2'],[14.9,'esfera 3'],[15.9,'esfera 4'],[16.5,'las esferas coinciden en el punto azul']].map(([t,q])=>({t:+(T0+t).toFixed(2),q}));
+// ---- ESCENARIO D ----
+tl.to('#world',{opacity:1,duration:.45},CL[27][1]-.1);
+const tCuatro=palabra(/^cuatro/,CL[28][0]);
+lineasD.forEach((l,i)=>revela(l,tCuatro+i*.3,.4));badge.forEach((b,i)=>pop(b,tCuatro+i*.3,.35));
+paq.forEach((p,i)=>{tl.set(p,{opacity:1},tCuatro+.2+i*.3).fromTo(p,{x:0,y:0},{x:topD.x-SX[i],y:topD.y-(SY+30),duration:1.2,ease:'none',immediateRender:false},tCuatro+.2+i*.3).to(p,{opacity:0,duration:.15},tCuatro+1.4+i*.3);});
+pop(pinD,palabra(/^ubicacion/,CL[28][0]));
+const tCorr=palabra(/^corregir/,CL[28][0]),tRel=palabra(/^reloj/,tCorr);fade(reloj,tCorr-.2);tl.to(minu,{rotation:38,duration:.5},tCorr+.1);pop(errT,tCorr+.4,.35,'error');
+tl.to(minu,{rotation:0,duration:.5},tRel);sale(errT,tRel-.05);pop(okT,tRel+.3,.4,'confirm');
+cam(CL[29][0]-.2,1.2,focus(3900,1420,1.7),'power3.inOut');sale([reloj,okT,pinD],CL[29][0]);
+const tPD=palabra(/^puntito/,CL[29][0]);pop(dotD.dot,tPD);pulso(dotD.ani,tPD+.3,3);
+cam(CL[30][0]-.1,1.2,focus(3900,1130,1.0),'power3.inOut');
+const tRec=palabra(/^reciben/,CL[31][0]);fade(flUp,tRec-.5);pop(xUp,tRec+.3,.4,'error');
+sale([flUp,xUp],CL[32][0]-.2);const tEnv=palabra(/^envian/,CL[32][0]);flDn.forEach((f,i)=>{fade(f,tEnv+i*.25);});sfx(tEnv,'swoosh',.4,.8);pop(calc,palabra(/^calculos/,CL[32][0]));
+sale([calc,...flDn],CL[33][0]);
+cam(CL[33][0]-.1,1.3,focus(3900,1250,1.05),'power3.inOut');
+const tSin=palabra(/^sin$/,CL[33][0]),tNad=palabra(/^nadie/,CL[33][0]);ojos.forEach((o,i)=>pop(o,tSin+i*.15,.35,null));sfx(tSin,'pop',.45);ojosX.forEach((x,i)=>pop(x,tNad+i*.15,.35,i?null:'error'));pop(okF,tNad+.7,.4,'confirm');
+// ---- zoom-through al cierre: se entra en una manzana oscura del mapa del celular ----
+const DIVE0=CTA-1.1,bk=mD.bl.filter(b=>!b[2]).sort((a,b)=>Math.hypot(a[0]-110*K,a[1]-560*K)-Math.hypot(b[0]-110*K,b[1]-560*K))[0];
+cam(DIVE0,1.1,focus(3900-172*K+bk[0],1420-342*K+bk[1],64),'power3.in');
+tl.to('#world',{filter:'blur(10px)',duration:1.1,ease:'power2.in'},DIVE0);
+tl.to('#bg-grid',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},CTA).to('#dust',{x:0,y:0,scale:1,duration:1.6,ease:'power2.out'},CTA);
+// ---- etiquetas ----
+etiquetas([[tPunto+.2,CL[0][1],'PUNTO AZUL'],[CL[1][0]+.2,CL[2][1],'NORMAL ✓'],[CL[4][0],CL[4][1],'¿CÓMO?'],[tCiu,CL[5][1],'CIUDAD NUEVA'],
+ [palabra(/^camara/,CL[6][0]),CL[6][1],'SIN CÁMARA EN EL CIELO'],[tDigas,CL[7][1],'NO LE ESCRIBES NADA'],[palabra(/^interesante/,CL[8][0])-.3,CL[8][1],'MÁS INTERESANTE'],
+ [tPist,CL[18][1],'3 PISTAS = 1 PUNTO'],[tDir,CL[19][1],'SIN DIRECCIÓN'],
+ [palabra(/^gps/,CL[21][0]),CL[21][1],'GPS'],[CL[22][0],CL[22][1],'SATÉLITES'],[palabra(/^donde/,CL[23][0]),palabra(/^donde/,CL[23][0])+1.3,'POSICIÓN'],[palabra(/^hora/,CL[23][0]),CL[23][1],'HORA'],
+ [CL[24][0]+.2,CL[24][1],'TIEMPO DE VIAJE'],[CL[25][0],CL[25][1],'VELOCIDAD DE LA LUZ ≈ 300.000 km/s'],[palabra(/^coinciden/,CL[27][0]),CL[27][1],'COINCIDEN EN UN PUNTO'],
+ [tCuatro,tCorr-.1,'4 SATÉLITES'],[tCorr,CL[29][0]-.15,'AJUSTA SU RELOJ'],[tPD,CL[29][1],'TU UBICACIÓN'],[CL[30][0],CL[30][1],'ATENCIÓN'],
+ [tRec-.2,CL[31][1],'NO RECIBEN TU UBICACIÓN','bad'],[tEnv,CL[32][1],'LOS CÁLCULOS SON DE TU TELÉFONO'],[tNad,CL[33][1],'NADIE TE VE']]);
+
+// comun: cierre. «Sígueme» → aparece el perfil; «envíaselo» → hoja de compartir; «amigo» → se elige un contacto; después «Enviado».
+// Los tiempos salen de las palabras reales de CAPS (si no las encuentra, usa valores de reserva).
+(()=>{
+  const limpia=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\W/g,'').toLowerCase();
+  const cuando=(re,def)=>{const x=CAPS.find(c=>re.test(limpia(c.w)));return x?x.s:def;};
+  const tS=cuando(/^(sigueme|seguime)/,CTA+.1), tE0=cuando(/^enviaselo/,tS+1.2), tA0=cuando(/^amigo/,tE0+1.5);
+  // si la voz va muy rápida, cada paso espera a que el anterior se vea (≥ 1 s para el perfil, ≥ 0,9 s para elegir contacto)
+  const tE=Math.max(tE0,tS+1.3), tA=Math.max(tA0,tE+1.05), tSend=Math.min(tA+.9,TOT-1.0);
+  // avatares originales, alternando chico / chica
+  const AV=[['chico','#f2c9a5','#2b1b14','#4B5BFF','Mati'],['chica','#8d5a3b','#1c1c1c','#FFB703','Sofi'],['chico','#e0ac82','#6b3f1d','#2fb8a3','Nacho'],['chica','#f2c9a5','#a0522d','#e0556f','Vale']];
+  const cara=(t,piel,pelo,camisa)=>`<svg viewBox="0 0 100 100" width="140" height="140"><circle cx="50" cy="50" r="50" fill="#2b3148"/>${t==='chica'?`<path d="M20 78 Q14 26 50 20 Q86 26 80 78 Z" fill="${pelo}"/>`:''}<ellipse cx="50" cy="98" rx="34" ry="26" fill="${camisa}"/><rect x="43" y="60" width="14" height="14" rx="5" fill="${piel}"/><circle cx="50" cy="46" r="21" fill="${piel}"/>${t==='chica'?`<path d="M29 44 Q50 14 71 44 Q50 34 29 44Z" fill="${pelo}"/>`:`<path d="M28 44 Q28 22 50 22 Q72 22 72 44 Q62 34 50 36 Q38 34 28 44Z" fill="${pelo}"/>`}<circle cx="43" cy="48" r="2.6" fill="#1a1410"/><circle cx="57" cy="48" r="2.6" fill="#1a1410"/><path d="M43 56 Q50 62 57 56" stroke="#1a1410" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`;
+  const am=document.getElementById('amigos');
+  AV.forEach((a,i)=>{const d=document.createElement('div');d.className='amigo';d.style.left=(12+i*225)+'px';d.innerHTML=`<div class="circ">${cara(a[0],a[1],a[2],a[3])}</div><b>${a[4]}</b>`+(i===0?'<div id="chk">✓</div>':'');am.appendChild(d);});
+  const ring=(id,t0)=>tl.fromTo(id,{scale:.2,opacity:1},{scale:1.4,opacity:0,duration:.6},t0);
+  sfx(CTA,'impact',.7);sfx(Math.max(CTA+.2,tS),'pop',.8);sfx(tS+.55,'tap',.8);sfx(tS+.6,'confirm',.5);
+  sfx(tE-.35,'tap',.8);sfx(tE-.15,'swoosh',.8,.6);for(let i=0;i<4;i+=2)sfx(tE+.35+i*.08,'pop',.4);
+  sfx(tA,'tap',.8);sfx(tA+.15,'tick',1);sfx(tSend,'tap',.9);sfx(tSend+.3,'enviado',1);
+  // llegada: viene del zoom-through de la escena anterior
+  tl.from('#mock',{scale:1.45,opacity:0,filter:'blur(10px)',duration:.8,ease:'power3.out'},CTA);
+  // «Sígueme»: aparece el perfil y el botón pasa a «Siguiendo»
+  tl.from('#perfil',{y:40,opacity:0,duration:.5,ease:'back.out(1.6)'},Math.max(CTA+.2,tS));
+  ring('#ringS',tS+.55);
+  tl.to('#sig1',{opacity:0,duration:.15},tS+.6).to('#sig2',{opacity:1,duration:.15},tS+.6).to('#seguir',{backgroundColor:'#3a3f5c',borderColor:'#3a3f5c',duration:.2},tS+.6);
+  // «envíaselo»: se toca el icono de compartir y sube la hoja
+  ring('#ringI',tE-.35);
+  tl.to('#ico3',{scale:1.3,stroke:'#FFB703',duration:.2},tE-.35).to('#ico3',{scale:1,duration:.2},tE-.15);
+  tl.fromTo('#hoja',{y:700},{y:0,duration:.6,ease:'power3.out'},tE-.15).from('.amigo',{scale:0,duration:.3,stagger:.08},tE+.35);
+  // «amigo»: se elige el primer contacto; luego Enviar → Enviado
+  ring('#ringA',tA);
+  tl.to('#chk',{opacity:1,duration:.25},tA+.15);
+  ring('#ringE',tSend);
+  tl.to('#env1',{opacity:0,duration:.15},tSend+.3).to('#env2',{opacity:1,duration:.15},tSend+.3).to('#enviar',{backgroundColor:'#3a3f5c',duration:.2},tSend+.3);
+})();
+
+  window.__timelines=window.__timelines||{};window.__timelines['ep03-gps']=tl;
+  </script>
+</div></body></html>
